@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>NCR Air Watch</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #eef6f4;
+            color: #173b3a;
+        }
+
+        header {
+            background: #063b3b;
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 30px;
+        }
+
+        header p {
+            margin: 8px 0 0;
+            opacity: 0.85;
+        }
+
+        .container {
+            padding: 20px;
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        .status {
+            background: white;
+            padding: 18px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+        }
+
+        .status span {
+            color: #0a9b63;
+            font-weight: bold;
+        }
+
+        .locations {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 18px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+        }
+
+        .card h2 {
+            margin-top: 0;
+        }
+
+        .aqi {
+            font-size: 35px;
+            font-weight: bold;
+        }
+
+        .live {
+            color: #0a9b63;
+            font-weight: bold;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: #607d7b;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>🌍 NCR AIR WATCH</h1>
+    <p>Live Air Quality & Atmospheric Monitoring</p>
+</header>
+
+<div class="container">
+
+    <div class="status">
+        <h2>System Status</h2>
+        <p>Monitoring: <span>● LIVE</span></p>
+        <p>Forecast Window: 72 Hours</p>
+        <p>Atmospheric changes are continuously monitored.</p>
+    </div>
+
+    <h2>NCR Monitoring Locations</h2>
+
+    <div class="locations">
+
+        <div class="card">
+            <h2>Delhi</h2>
+            <p class="live">● LIVE</p>
+            <p>AQI</p>
+            <div class="aqi">--</div>
+            <p>Waiting for live data...</p>
+        </div>
+
+        <div class="card">
+            <h2>Gurugram</h2>
+            <p class="live">● LIVE</p>
+            <p>AQI</p>
+            <div class="aqi">--</div>
+            <p>Waiting for live data...</p>
+        </div>
+
+        <div class="card">
+            <h2>Noida</h2>
+            <p class="live">● LIVE</p>
+            <p>AQI</p>
+            <div class="aqi">--</div>
+            <p>Waiting for live data...</p>
+        </div>
+
+        <div class="card">
+            <h2>Ghaziabad</h2>
+            <p class="live">● LIVE</p>
+            <p>AQI</p>
+            <div class="aqi">--</div>
+            <p>Waiting for live data...</p>
+        </div>
+
+    </div>
+
+</div>
+
+<footer>
+    NCR AIR WATCH • AI-powered environmental monitoring
+</footer>
+
+</body>
+</html>
