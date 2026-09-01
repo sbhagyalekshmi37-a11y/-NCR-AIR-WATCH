@@ -186,6 +186,7 @@ button{
 }
 
 canvas{
+    display:block;
     width:100%;
     height:320px;
     border:1px solid #dce9e6;
@@ -209,6 +210,11 @@ footer{
 .small{
     font-size:12px;
     color:#718381;
+}
+
+.errorText{
+    color:#d63031;
+    font-weight:bold;
 }
 
 </style>
@@ -236,7 +242,7 @@ Live Air Quality & Atmospheric Monitoring
 
 <p>
 Monitoring:
-<span id="systemStatus">● CONNECTING...</span>
+<span id="systemStatus">● STARTING...</span>
 </p>
 
 <p>
@@ -269,7 +275,7 @@ Haryana, Uttar Pradesh and Rajasthan.
 </p>
 
 <div class="ncr-clock" id="ncrClock">
---:--:--
+Loading NCR time...
 </div>
 
 <p>
@@ -321,7 +327,7 @@ Haryana, Uttar Pradesh and Rajasthan.
 <div class="aqi">--</div>
 
 <div class="data">
-Loading...
+Loading live data...
 </div>
 
 </div>
@@ -339,7 +345,7 @@ Loading...
 <div class="aqi">--</div>
 
 <div class="data">
-Loading...
+Loading live data...
 </div>
 
 </div>
@@ -357,7 +363,7 @@ Loading...
 <div class="aqi">--</div>
 
 <div class="data">
-Loading...
+Loading live data...
 </div>
 
 </div>
@@ -375,7 +381,7 @@ Loading...
 <div class="aqi">--</div>
 
 <div class="data">
-Loading...
+Loading live data...
 </div>
 
 </div>
@@ -455,43 +461,103 @@ Data: Open-Meteo / CAMS
 
 <script>
 
+/* =====================================================
+   NCR AIR WATCH
+   LIVE MONITORING + 72 HOUR PREDICTION
+===================================================== */
 
-/* =========================
-   NCR LIVE CLOCK
-========================= */
+
+/* =====================================================
+   GLOBAL ERROR HANDLER
+===================================================== */
+
+window.addEventListener("error", function(event){
+
+    console.error("JavaScript error:", event.error);
+
+    const status =
+        document.getElementById("systemStatus");
+
+    if(status){
+
+        status.textContent =
+            "● ERROR";
+
+        status.style.color =
+            "#d63031";
+
+    }
+
+    const box =
+        document.getElementById("alertBox");
+
+    if(box){
+
+        box.style.display =
+            "block";
+
+        box.innerHTML =
+            "<b>⚠️ System Error</b><br>" +
+            event.message;
+
+    }
+
+});
+
+
+/* =====================================================
+   LIVE NCR CLOCK
+===================================================== */
 
 function updateNCRClock(){
 
-    const now = new Date();
+    const clock =
+        document.getElementById("ncrClock");
 
-    const time =
-        now.toLocaleTimeString(
-            "en-IN",
-            {
-                timeZone:"Asia/Kolkata",
-                hour:"2-digit",
-                minute:"2-digit",
-                second:"2-digit",
-                hour12:true
-            }
-        );
+    if(!clock){
+        return;
+    }
 
-    const date =
-        now.toLocaleDateString(
-            "en-IN",
-            {
-                timeZone:"Asia/Kolkata",
-                day:"2-digit",
-                month:"short",
-                year:"numeric"
-            }
-        );
+    const now =
+        new Date();
 
-    document.getElementById(
-        "ncrClock"
-    ).textContent =
-        date + " • " + time + " IST";
+    try{
+
+        const time =
+            now.toLocaleTimeString(
+                "en-IN",
+                {
+                    timeZone:"Asia/Kolkata",
+                    hour:"2-digit",
+                    minute:"2-digit",
+                    second:"2-digit",
+                    hour12:true
+                }
+            );
+
+        const date =
+            now.toLocaleDateString(
+                "en-IN",
+                {
+                    timeZone:"Asia/Kolkata",
+                    day:"2-digit",
+                    month:"short",
+                    year:"numeric"
+                }
+            );
+
+        clock.textContent =
+            date + " • " + time + " IST";
+
+    }catch(error){
+
+        clock.textContent =
+            now.toLocaleString();
+
+    }
+
 }
+
 
 updateNCRClock();
 
@@ -501,10 +567,9 @@ setInterval(
 );
 
 
-
-/* =========================
+/* =====================================================
    LOCATIONS
-========================= */
+===================================================== */
 
 const locations = {
 
@@ -535,61 +600,73 @@ const locations = {
 };
 
 
-
 let previousData = {};
 
 let forecastData = {};
 
-let selectedForecast = "delhi";
+let selectedForecast =
+    "delhi";
 
 
-
-/* =========================
-   GET AIR + WEATHER DATA
-========================= */
+/* =====================================================
+   GET DATA
+===================================================== */
 
 async function getData(key){
 
-    const loc = locations[key];
-
+    const loc =
+        locations[key];
 
     const airURL =
-        `https://air-quality-api.open-meteo.com/v1/air-quality` +
-        `?latitude=${loc.lat}` +
-        `&longitude=${loc.lon}` +
-        `&hourly=pm2_5,pm10,nitrogen_dioxide,ozone,european_aqi` +
-        `&forecast_hours=72` +
-        `&timezone=Asia%2FKolkata`;
+        "https://air-quality-api.open-meteo.com/v1/air-quality" +
+        "?latitude=" + loc.lat +
+        "&longitude=" + loc.lon +
+        "&hourly=pm2_5,pm10,nitrogen_dioxide,ozone,european_aqi" +
+        "&forecast_hours=72" +
+        "&timezone=Asia%2FKolkata";
 
 
     const weatherURL =
-        `https://api.open-meteo.com/v1/forecast` +
-        `?latitude=${loc.lat}` +
-        `&longitude=${loc.lon}` +
-        `&current=temperature_2m,relative_humidity_2m,wind_speed_10m,pressure_msl` +
-        `&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m,pressure_msl` +
-        `&forecast_hours=72` +
-        `&timezone=Asia%2FKolkata`;
+        "https://api.open-meteo.com/v1/forecast" +
+        "?latitude=" + loc.lat +
+        "&longitude=" + loc.lon +
+        "&current=temperature_2m,relative_humidity_2m,wind_speed_10m,pressure_msl" +
+        "&forecast_hours=72" +
+        "&timezone=Asia%2FKolkata";
 
 
     try{
 
-        const [
-            airResponse,
-            weatherResponse
-        ] =
+        const results =
             await Promise.all([
                 fetch(airURL),
                 fetch(weatherURL)
             ]);
 
 
-        if(
-            !airResponse.ok ||
-            !weatherResponse.ok
-        ){
+        const airResponse =
+            results[0];
 
-            throw new Error("API error");
+        const weatherResponse =
+            results[1];
+
+
+        if(!airResponse.ok){
+
+            throw new Error(
+                "Air Quality API error: " +
+                airResponse.status
+            );
+
+        }
+
+
+        if(!weatherResponse.ok){
+
+            throw new Error(
+                "Weather API error: " +
+                weatherResponse.status
+            );
 
         }
 
@@ -601,9 +678,23 @@ async function getData(key){
             await weatherResponse.json();
 
 
+        if(
+            !air.hourly ||
+            !air.hourly.time ||
+            !air.hourly.european_aqi
+        ){
+
+            throw new Error(
+                "Invalid air-quality response"
+            );
+
+        }
+
+
         forecastData[key] = {
 
-            time: air.hourly.time,
+            time:
+                air.hourly.time,
 
             aqi:
                 air.hourly.european_aqi,
@@ -631,31 +722,57 @@ async function getData(key){
         );
 
 
-        if(key === selectedForecast){
+        if(
+            key === selectedForecast
+        ){
 
             drawForecast(key);
 
         }
 
 
+        return true;
+
+
     }catch(error){
 
-        document.querySelector(
-            `#${key} .data`
-        ).innerHTML =
-            "⚠️ Live data unavailable";
+        console.error(
+            key,
+            error
+        );
 
-        console.log(error);
+
+        const card =
+            document.getElementById(key);
+
+
+        if(card){
+
+            const data =
+                card.querySelector(".data");
+
+            if(data){
+
+                data.innerHTML =
+                    "<span class='errorText'>" +
+                    "⚠️ Live data unavailable" +
+                    "</span>";
+
+            }
+
+        }
+
+
+        return false;
 
     }
 
 }
 
 
-
-/* =========================
-   UPDATE LOCATION CARD
-========================= */
+/* =====================================================
+   UPDATE CARD
+===================================================== */
 
 function updateCard(
     key,
@@ -666,6 +783,11 @@ function updateCard(
 
     const card =
         document.getElementById(key);
+
+
+    if(!card){
+        return;
+    }
 
 
     const aqi =
@@ -684,18 +806,21 @@ function updateCard(
         air.hourly.ozone[0];
 
 
+    const current =
+        weather.current || {};
+
+
     const temp =
-        weather.current.temperature_2m;
+        current.temperature_2m;
 
     const humidity =
-        weather.current.relative_humidity_2m;
+        current.relative_humidity_2m;
 
     const wind =
-        weather.current.wind_speed_10m;
+        current.wind_speed_10m;
 
     const pressure =
-        weather.current.pressure_msl;
-
+        current.pressure_msl;
 
 
     const aqiElement =
@@ -703,7 +828,9 @@ function updateCard(
 
 
     aqiElement.textContent =
-        Math.round(aqi ?? 0);
+        aqi == null
+        ? "--"
+        : Math.round(aqi);
 
 
     aqiElement.className =
@@ -711,21 +838,41 @@ function updateCard(
         getAQIClass(aqi);
 
 
+    card.querySelector(".data").innerHTML =
 
-    card.querySelector(
-        ".data"
-    ).innerHTML =
+        "<b>PM2.5:</b> " +
+        format(pm25) +
+        " μg/m³<br>" +
 
-        `<b>PM2.5:</b> ${format(pm25)} μg/m³<br>
-         <b>PM10:</b> ${format(pm10)} μg/m³<br>
-         <b>NO₂:</b> ${format(no2)} μg/m³<br>
-         <b>O₃:</b> ${format(ozone)} μg/m³<br>
-         <b>Temperature:</b> ${format(temp)} °C<br>
-         <b>Humidity:</b> ${format(humidity)} %<br>
-         <b>Wind:</b> ${format(wind)} km/h<br>
-         <b>Pressure:</b> ${format(pressure)} hPa
-         <br><br>
-         <b>72-hour forecast:</b> Available`;
+        "<b>PM10:</b> " +
+        format(pm10) +
+        " μg/m³<br>" +
+
+        "<b>NO₂:</b> " +
+        format(no2) +
+        " μg/m³<br>" +
+
+        "<b>O₃:</b> " +
+        format(ozone) +
+        " μg/m³<br>" +
+
+        "<b>Temperature:</b> " +
+        format(temp) +
+        " °C<br>" +
+
+        "<b>Humidity:</b> " +
+        format(humidity) +
+        " %<br>" +
+
+        "<b>Wind:</b> " +
+        format(wind) +
+        " km/h<br>" +
+
+        "<b>Pressure:</b> " +
+        format(pressure) +
+        " hPa<br><br>" +
+
+        "<b>72-hour forecast:</b> Available";
 
 
     detectChange(
@@ -758,9 +905,870 @@ function updateCard(
 }
 
 
-
-/* =========================
+/* =====================================================
    CHANGE DETECTION
-========================= */
+===================================================== */
 
-function detectChange
+function detectChange(
+    key,
+    loc,
+    current
+){
+
+    const old =
+        previousData[key];
+
+
+    if(!old){
+        return;
+    }
+
+
+    const changes = [];
+
+
+    if(
+        validNumber(current.pm25) &&
+        validNumber(old.pm25) &&
+        Math.abs(
+            current.pm25 -
+            old.pm25
+        ) >= 10
+    ){
+
+        changes.push(
+            "PM2.5 changed significantly"
+        );
+
+    }
+
+
+    if(
+        validNumber(current.pm10) &&
+        validNumber(old.pm10) &&
+        Math.abs(
+            current.pm10 -
+            old.pm10
+        ) >= 15
+    ){
+
+        changes.push(
+            "PM10 changed significantly"
+        );
+
+    }
+
+
+    if(
+        validNumber(current.temp) &&
+        validNumber(old.temp) &&
+        Math.abs(
+            current.temp -
+            old.temp
+        ) >= 3
+    ){
+
+        changes.push(
+            "Temperature changed"
+        );
+
+    }
+
+
+    if(
+        validNumber(current.wind) &&
+        validNumber(old.wind) &&
+        Math.abs(
+            current.wind -
+            old.wind
+        ) >= 10
+    ){
+
+        changes.push(
+            "Wind speed changed"
+        );
+
+    }
+
+
+    if(
+        validNumber(current.pressure) &&
+        validNumber(old.pressure) &&
+        Math.abs(
+            current.pressure -
+            old.pressure
+        ) >= 5
+    ){
+
+        changes.push(
+            "Atmospheric pressure changed"
+        );
+
+    }
+
+
+    if(
+        validNumber(current.aqi) &&
+        validNumber(old.aqi) &&
+        current.aqi >
+        old.aqi + 10
+    ){
+
+        changes.push(
+            "AQI increased"
+        );
+
+    }
+
+
+    if(changes.length > 0){
+
+        const message =
+            "⚠️ " +
+            loc.name +
+            ": " +
+            changes.join(", ");
+
+
+        showAlert(message);
+
+
+        sendNotification(
+            "NCR AIR WATCH Alert",
+            message
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   ALERT
+===================================================== */
+
+function showAlert(message){
+
+    const box =
+        document.getElementById(
+            "alertBox"
+        );
+
+
+    if(!box){
+        return;
+    }
+
+
+    box.style.display =
+        "block";
+
+
+    box.innerHTML =
+        "<b>⚠️ Atmospheric Change Detected</b>" +
+        "<br>" +
+        message;
+
+}
+
+
+/* =====================================================
+   NOTIFICATIONS
+===================================================== */
+
+function sendNotification(
+    title,
+    message
+){
+
+    if(
+        "Notification" in window &&
+        Notification.permission ===
+        "granted"
+    ){
+
+        try{
+
+            new Notification(
+                title,
+                {
+                    body:message
+                }
+            );
+
+        }catch(error){
+
+            console.log(
+                "Notification error",
+                error
+            );
+
+        }
+
+    }
+
+}
+
+
+function enableNotifications(){
+
+    if(
+        !("Notification" in window)
+    ){
+
+        alert(
+            "Browser notifications are not supported."
+        );
+
+        return;
+
+    }
+
+
+    Notification.requestPermission()
+    .then(function(permission){
+
+        if(
+            permission ===
+            "granted"
+        ){
+
+            alert(
+                "🔔 Alerts enabled!"
+            );
+
+        }else{
+
+            alert(
+                "Notification permission was not granted."
+            );
+
+        }
+
+    });
+
+}
+
+
+/* =====================================================
+   AQI CLASS
+===================================================== */
+
+function getAQIClass(aqi){
+
+    if(
+        !validNumber(aqi)
+    ){
+
+        return "";
+
+    }
+
+
+    if(aqi <= 40){
+
+        return "good";
+
+    }
+
+
+    if(aqi <= 80){
+
+        return "warning";
+
+    }
+
+
+    return "danger";
+
+}
+
+
+/* =====================================================
+   FORMAT
+===================================================== */
+
+function format(value){
+
+    if(
+        value === null ||
+        value === undefined ||
+        Number.isNaN(
+            Number(value)
+        )
+    ){
+
+        return "--";
+
+    }
+
+
+    return Number(value)
+        .toFixed(1);
+
+}
+
+
+function validNumber(value){
+
+    return (
+        value !== null &&
+        value !== undefined &&
+        Number.isFinite(
+            Number(value)
+        )
+    );
+
+}
+
+
+/* =====================================================
+   FORECAST BUTTON
+===================================================== */
+
+function showForecast(key){
+
+    selectedForecast =
+        key;
+
+
+    document
+        .querySelectorAll(
+            ".forecast-buttons button"
+        )
+        .forEach(function(button){
+
+            button.classList.remove(
+                "active"
+            );
+
+        });
+
+
+    const button =
+        document.getElementById(
+            "btn-" + key
+        );
+
+
+    if(button){
+
+        button.classList.add(
+            "active"
+        );
+
+    }
+
+
+    drawForecast(key);
+
+}
+
+
+/* =====================================================
+   DRAW 72-HOUR GRAPH
+===================================================== */
+
+function drawForecast(key){
+
+    const data =
+        forecastData[key];
+
+
+    const canvas =
+        document.getElementById(
+            "forecastCanvas"
+        );
+
+
+    const info =
+        document.getElementById(
+            "forecastInfo"
+        );
+
+
+    if(
+        !data ||
+        !data.aqi ||
+        data.aqi.length === 0
+    ){
+
+        info.textContent =
+            "Loading 72-hour prediction...";
+
+        return;
+
+    }
+
+
+    const width =
+        canvas.clientWidth;
+
+
+    const height =
+        canvas.clientHeight;
+
+
+    if(
+        width <= 0 ||
+        height <= 0
+    ){
+
+        return;
+
+    }
+
+
+    const dpr =
+        window.devicePixelRatio || 1;
+
+
+    canvas.width =
+        width * dpr;
+
+
+    canvas.height =
+        height * dpr;
+
+
+    const ctx =
+        canvas.getContext("2d");
+
+
+    ctx.setTransform(
+        dpr,
+        0,
+        0,
+        dpr,
+        0,
+        0
+    );
+
+
+    ctx.clearRect(
+        0,
+        0,
+        width,
+        height
+    );
+
+
+    const values =
+        data.aqi
+        .slice(0,72)
+        .map(function(value){
+
+            return Number(value) || 0;
+
+        });
+
+
+    if(values.length === 0){
+
+        info.textContent =
+            "No prediction data available.";
+
+        return;
+
+    }
+
+
+    const maxValue =
+        Math.max(
+            100,
+            ...values
+        );
+
+
+    const left = 45;
+    const right = 15;
+    const top = 25;
+    const bottom = 45;
+
+
+    const graphWidth =
+        width -
+        left -
+        right;
+
+
+    const graphHeight =
+        height -
+        top -
+        bottom;
+
+
+    /* GRID */
+
+    ctx.strokeStyle =
+        "#dce9e6";
+
+    ctx.lineWidth = 1;
+
+
+    for(
+        let i = 0;
+        i <= 5;
+        i++
+    ){
+
+        const y =
+            top +
+            graphHeight *
+            i / 5;
+
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+            left,
+            y
+        );
+
+        ctx.lineTo(
+            width - right,
+            y
+        );
+
+        ctx.stroke();
+
+
+        const label =
+            Math.round(
+                maxValue -
+                (
+                    maxValue *
+                    i / 5
+                )
+            );
+
+
+        ctx.fillStyle =
+            "#607d7b";
+
+        ctx.font =
+            "11px Arial";
+
+
+        ctx.fillText(
+            label,
+            8,
+            y + 4
+        );
+
+    }
+
+
+    /* LINE */
+
+    ctx.strokeStyle =
+        "#063b3b";
+
+    ctx.lineWidth =
+        3;
+
+    ctx.beginPath();
+
+
+    values.forEach(
+        function(value,index){
+
+            const x =
+                left +
+                graphWidth *
+                index /
+                Math.max(
+                    1,
+                    values.length - 1
+                );
+
+
+            const y =
+                top +
+                graphHeight *
+                (
+                    1 -
+                    (
+                        value /
+                        maxValue
+                    )
+                );
+
+
+            if(index === 0){
+
+                ctx.moveTo(
+                    x,
+                    y
+                );
+
+            }else{
+
+                ctx.lineTo(
+                    x,
+                    y
+                );
+
+            }
+
+        }
+    );
+
+
+    ctx.stroke();
+
+
+    /* POINTS */
+
+    ctx.fillStyle =
+        "#0a9b63";
+
+
+    values.forEach(
+        function(value,index){
+
+            if(
+                index % 6 !== 0
+            ){
+
+                return;
+
+            }
+
+
+            const x =
+                left +
+                graphWidth *
+                index /
+                Math.max(
+                    1,
+                    values.length - 1
+                );
+
+
+            const y =
+                top +
+                graphHeight *
+                (
+                    1 -
+                    (
+                        value /
+                        maxValue
+                    )
+                );
+
+
+            ctx.beginPath();
+
+            ctx.arc(
+                x,
+                y,
+                3,
+                0,
+                Math.PI * 2
+            );
+
+            ctx.fill();
+
+        }
+    );
+
+
+    /* TIME LABELS */
+
+    ctx.fillStyle =
+        "#607d7b";
+
+    ctx.font =
+        "11px Arial";
+
+
+    data.time
+        .slice(0,72)
+        .forEach(
+            function(time,index){
+
+                if(
+                    index % 12 !== 0
+                ){
+
+                    return;
+
+                }
+
+
+                const x =
+                    left +
+                    graphWidth *
+                    index /
+                    Math.max(
+                        1,
+                        values.length - 1
+                    );
+
+
+                let label =
+                    time;
+
+
+                if(
+                    typeof time ===
+                    "string" &&
+                    time.length >= 16
+                ){
+
+                    label =
+                        time.substring(
+                            11,
+                            16
+                        );
+
+                }
+
+
+                ctx.fillText(
+                    label,
+                    x - 12,
+                    height - 15
+                );
+
+            }
+        );
+
+
+    info.innerHTML =
+        "<b>" +
+        locations[key].name +
+        "</b> • 72 hourly AQI predictions displayed." +
+        "<br>" +
+        "Forecast source: Open-Meteo / CAMS";
+
+}
+
+
+/* =====================================================
+   LOAD ALL
+===================================================== */
+
+async function loadAll(){
+
+    const status =
+        document.getElementById(
+            "systemStatus"
+        );
+
+
+    status.textContent =
+        "● UPDATING...";
+
+
+    status.style.color =
+        "#e67e22";
+
+
+    const keys =
+        Object.keys(
+            locations
+        );
+
+
+    const results =
+        await Promise.all(
+            keys.map(function(key){
+
+                return getData(key);
+
+            })
+        );
+
+
+    const successful =
+        results.filter(
+            Boolean
+        ).length;
+
+
+    if(
+        successful > 0
+    ){
+
+        status.textContent =
+            "● LIVE";
+
+        status.style.color =
+            "#0a9b63";
+
+    }else{
+
+        status.textContent =
+            "● OFFLINE";
+
+        status.style.color =
+            "#d63031";
+
+    }
+
+
+    document.getElementById(
+        "lastUpdated"
+    ).textContent =
+        new Date().toLocaleString(
+            "en-IN",
+            {
+                dateStyle:"medium",
+                timeStyle:"short"
+            }
+        );
+
+
+    drawForecast(
+        selectedForecast
+    );
+
+}
+
+
+/* =====================================================
+   START
+===================================================== */
+
+try{
+
+    loadAll();
+
+}catch(error){
+
+    console.error(error);
+
+}
+
+
+/* =====================================================
+   AUTO REFRESH
+===================================================== */
+
+setInterval(
+    loadAll,
+    15 * 60 * 1000
+);
+
+
+/* =====================================================
+   RESIZE
+===================================================== */
+
+window.addEventListener(
+    "resize",
+    function(){
+
+        drawForecast(
+            selectedForecast
+        );
+
+    }
+);
+
+</script>
+
+</body>
+    </html>
