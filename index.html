@@ -5,7 +5,36 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>NCR AIR WATCH</title>
+.ncr-summary{
+    background:white;
+    padding:20px;
+    border-radius:18px;
+    margin:20px 0;
+    box-shadow:0 3px 12px rgba(0,0,0,.08);
+}
 
+.ncr-clock{
+    font-size:26px;
+    font-weight:bold;
+    color:#063b3b;
+}
+
+.ncr-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:12px;
+    margin-top:15px;
+}
+
+.ncr-region{
+    background:#f4f9f8;
+    padding:15px;
+    border-radius:12px;
+}
+
+.ncr-region h3{
+    margin-top:0;
+}
 <style>
 *{
     box-sizing:border-box;
@@ -167,7 +196,48 @@ footer{
         <div id="alertBox" class="alertBox"></div>
 
     </div>
+<div class="ncr-summary">
 
+    <h2>🌍 NCR-Level Monitoring</h2>
+
+    <p>
+        Monitoring the National Capital Region
+        across Delhi, Haryana, Uttar Pradesh and Rajasthan.
+    </p>
+
+    <div class="ncr-clock" id="ncrClock">
+        --:--:--
+    </div>
+
+    <p>
+        <b>IST • Live Monitoring</b>
+    </p>
+
+    <div class="ncr-grid">
+
+        <div class="ncr-region">
+            <h3>🇮🇳 Delhi</h3>
+            <p>Whole NCT Delhi</p>
+        </div>
+
+        <div class="ncr-region">
+            <h3>Haryana</h3>
+            <p>14 NCR districts</p>
+        </div>
+
+        <div class="ncr-region">
+            <h3>Uttar Pradesh</h3>
+            <p>8 NCR districts</p>
+        </div>
+
+        <div class="ncr-region">
+            <h3>Rajasthan</h3>
+            <p>2 NCR districts</p>
+        </div>
+
+    </div>
+
+</div>
     <h2>NCR Monitoring Locations</h2>
 
     <div class="locations">
@@ -218,7 +288,41 @@ footer{
 
 
 <script>
+function updateNCRClock(){
 
+    const now = new Date();
+
+    const time = now.toLocaleTimeString(
+        "en-IN",
+        {
+            timeZone:"Asia/Kolkata",
+            hour:"2-digit",
+            minute:"2-digit",
+            second:"2-digit",
+            hour12:true
+        }
+    );
+
+    const date = now.toLocaleDateString(
+        "en-IN",
+        {
+            timeZone:"Asia/Kolkata",
+            day:"2-digit",
+            month:"short",
+            year:"numeric"
+        }
+    );
+
+    document.getElementById("ncrClock").textContent =
+        date + " • " + time + " IST";
+}
+
+updateNCRClock();
+
+setInterval(
+    updateNCRClock,
+    1000
+);
 const locations = {
 
     delhi:{
