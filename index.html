@@ -1,88 +1,135 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>NCR Air Watch</title>
+<title>NCR AIR WATCH</title>
 
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #eef6f4;
-            color: #173b3a;
-        }
+<style>
+*{
+    box-sizing:border-box;
+}
 
-        header {
-            background: #063b3b;
-            color: white;
-            padding: 25px;
-            text-align: center;
-        }
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#eef6f4;
+    color:#173b3a;
+}
 
-        header h1 {
-            margin: 0;
-            font-size: 30px;
-        }
+header{
+    background:#063b3b;
+    color:white;
+    padding:25px 15px;
+    text-align:center;
+}
 
-        header p {
-            margin: 8px 0 0;
-            opacity: 0.85;
-        }
+header h1{
+    margin:0;
+    font-size:30px;
+}
 
-        .container {
-            padding: 20px;
-            max-width: 1000px;
-            margin: auto;
-        }
+header p{
+    margin:8px 0 0;
+    opacity:.85;
+}
 
-        .status {
-            background: white;
-            padding: 18px;
-            border-radius: 15px;
-            margin-bottom: 20px;
-            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
-        }
+.container{
+    padding:20px;
+    max-width:1000px;
+    margin:auto;
+}
 
-        .status span {
-            color: #0a9b63;
-            font-weight: bold;
-        }
+.status{
+    background:white;
+    padding:18px;
+    border-radius:15px;
+    margin-bottom:20px;
+    box-shadow:0 3px 12px rgba(0,0,0,.08);
+}
 
-        .locations {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-        }
+.status span{
+    color:#0a9b63;
+    font-weight:bold;
+}
 
-        .card {
-            background: white;
-            padding: 20px;
-            border-radius: 18px;
-            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
-        }
+.locations{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:15px;
+}
 
-        .card h2 {
-            margin-top: 0;
-        }
+.card{
+    background:white;
+    padding:20px;
+    border-radius:18px;
+    box-shadow:0 3px 12px rgba(0,0,0,.08);
+}
 
-        .aqi {
-            font-size: 35px;
-            font-weight: bold;
-        }
+.card h2{
+    margin-top:0;
+}
 
-        .live {
-            color: #0a9b63;
-            font-weight: bold;
-        }
+.aqi{
+    font-size:38px;
+    font-weight:bold;
+    margin:8px 0;
+}
 
-        footer {
-            text-align: center;
-            padding: 25px;
-            color: #607d7b;
-        }
-    </style>
+.live{
+    color:#0a9b63;
+    font-weight:bold;
+}
+
+.good{
+    color:#0a9b63;
+}
+
+.warning{
+    color:#e67e22;
+}
+
+.danger{
+    color:#d63031;
+}
+
+.data{
+    font-size:14px;
+    line-height:1.7;
+}
+
+.alertBox{
+    background:#fff3cd;
+    color:#856404;
+    padding:15px;
+    border-radius:12px;
+    margin-top:20px;
+    display:none;
+}
+
+button{
+    border:none;
+    background:#063b3b;
+    color:white;
+    padding:10px 15px;
+    border-radius:8px;
+    margin-top:8px;
+    cursor:pointer;
+}
+
+footer{
+    text-align:center;
+    padding:25px;
+    color:#607d7b;
+    font-size:13px;
+}
+
+.small{
+    font-size:12px;
+    color:#718381;
+}
+</style>
 </head>
 
 <body>
@@ -95,46 +142,66 @@
 <div class="container">
 
     <div class="status">
+
         <h2>System Status</h2>
-        <p>Monitoring: <span>● LIVE</span></p>
-        <p>Forecast Window: 72 Hours</p>
-        <p>Atmospheric changes are continuously monitored.</p>
+
+        <p>
+            Monitoring:
+            <span id="systemStatus">● CONNECTING...</span>
+        </p>
+
+        <p>
+            Forecast Window:
+            <b>72 Hours</b>
+        </p>
+
+        <p>
+            Last Updated:
+            <b id="lastUpdated">--</b>
+        </p>
+
+        <button onclick="enableNotifications()">
+            🔔 Enable Alerts
+        </button>
+
+        <div id="alertBox" class="alertBox"></div>
+
     </div>
 
     <h2>NCR Monitoring Locations</h2>
 
     <div class="locations">
 
-        <div class="card">
+        <div class="card" id="delhi">
             <h2>Delhi</h2>
             <p class="live">● LIVE</p>
             <p>AQI</p>
             <div class="aqi">--</div>
-            <p>Waiting for live data...</p>
+            <div class="data">Loading...</div>
         </div>
 
-        <div class="card">
+        <div class="card" id="gurugram">
             <h2>Gurugram</h2>
             <p class="live">● LIVE</p>
             <p>AQI</p>
             <div class="aqi">--</div>
-            <p>Waiting for live data...</p>
+            <div class="data">Loading...</div>
         </div>
 
-        <div class="card">
+        <div class="card" id="noida">
             <h2>Noida</h2>
             <p class="live">● LIVE</p>
             <p>AQI</p>
             <div class="aqi">--</div>
-            <p>Waiting for live data...</p>
+            <div class="data">Loading...</div>
         </div>
 
-        <div class="card">
+        <div class="card" id="ghaziabad">
             <h2>Ghaziabad</h2>
             <p class="live">● LIVE</p>
             <p>AQI</p>
             <div class="aqi">--</div>
-            <p>Waiting for live data...</p>
+            <div class="data">Loading...</div>
         </div>
 
     </div>
@@ -143,7 +210,396 @@
 
 <footer>
     NCR AIR WATCH • AI-powered environmental monitoring
+    <br>
+    <span class="small">
+        Data: Open-Meteo / CAMS
+    </span>
 </footer>
+
+
+<script>
+
+const locations = {
+
+    delhi:{
+        name:"Delhi",
+        lat:28.6139,
+        lon:77.2090
+    },
+
+    gurugram:{
+        name:"Gurugram",
+        lat:28.4595,
+        lon:77.0266
+    },
+
+    noida:{
+        name:"Noida",
+        lat:28.5355,
+        lon:77.3910
+    },
+
+    ghaziabad:{
+        name:"Ghaziabad",
+        lat:28.6692,
+        lon:77.4538
+    }
+
+};
+
+
+let previousData = {};
+
+
+async function getData(key){
+
+    const loc = locations[key];
+
+    const airURL =
+        `https://air-quality-api.open-meteo.com/v1/air-quality` +
+        `?latitude=${loc.lat}` +
+        `&longitude=${loc.lon}` +
+        `&hourly=pm2_5,pm10,nitrogen_dioxide,ozone,european_aqi` +
+        `&forecast_hours=72` +
+        `&timezone=Asia%2FKolkata`;
+
+    const weatherURL =
+        `https://api.open-meteo.com/v1/forecast` +
+        `?latitude=${loc.lat}` +
+        `&longitude=${loc.lon}` +
+        `&current=temperature_2m,relative_humidity_2m,wind_speed_10m,pressure_msl` +
+        `&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m,pressure_msl` +
+        `&forecast_hours=72` +
+        `&timezone=Asia%2FKolkata`;
+
+    try{
+
+        const [airResponse,weatherResponse] =
+            await Promise.all([
+                fetch(airURL),
+                fetch(weatherURL)
+            ]);
+
+        if(!airResponse.ok || !weatherResponse.ok){
+            throw new Error("API error");
+        }
+
+        const air = await airResponse.json();
+        const weather = await weatherResponse.json();
+
+        updateCard(
+            key,
+            loc,
+            air,
+            weather
+        );
+
+    }catch(error){
+
+        document.querySelector(`#${key} .data`).innerHTML =
+            "⚠️ Live data unavailable";
+
+        console.log(error);
+
+    }
+}
+
+
+function updateCard(key,loc,air,weather){
+
+    const card = document.getElementById(key);
+
+    const aqi =
+        air.hourly.european_aqi[0];
+
+    const pm25 =
+        air.hourly.pm2_5[0];
+
+    const pm10 =
+        air.hourly.pm10[0];
+
+    const no2 =
+        air.hourly.nitrogen_dioxide[0];
+
+    const ozone =
+        air.hourly.ozone[0];
+
+    const temp =
+        weather.current.temperature_2m;
+
+    const humidity =
+        weather.current.relative_humidity_2m;
+
+    const wind =
+        weather.current.wind_speed_10m;
+
+    const pressure =
+        weather.current.pressure_msl;
+
+
+    const aqiElement =
+        card.querySelector(".aqi");
+
+    aqiElement.textContent =
+        Math.round(aqi ?? 0);
+
+    aqiElement.className =
+        "aqi " + getAQIClass(aqi);
+
+
+    card.querySelector(".data").innerHTML =
+
+        `<b>PM2.5:</b> ${format(pm25)} μg/m³<br>
+         <b>PM10:</b> ${format(pm10)} μg/m³<br>
+         <b>NO₂:</b> ${format(no2)} μg/m³<br>
+         <b>O₃:</b> ${format(ozone)} μg/m³<br>
+         <b>Temperature:</b> ${format(temp)} °C<br>
+         <b>Humidity:</b> ${format(humidity)} %<br>
+         <b>Wind:</b> ${format(wind)} km/h<br>
+         <b>Pressure:</b> ${format(pressure)} hPa
+         <br><br>
+         <b>72-hour forecast:</b> Available`;
+
+
+    detectChange(
+        key,
+        loc,
+        {
+            aqi,
+            pm25,
+            pm10,
+            temp,
+            humidity,
+            wind,
+            pressure
+        }
+    );
+
+
+    previousData[key] = {
+        aqi,
+        pm25,
+        pm10,
+        temp,
+        humidity,
+        wind,
+        pressure
+    };
+
+}
+
+
+function detectChange(key,loc,current){
+
+    const old = previousData[key];
+
+    if(!old) return;
+
+
+    let changes = [];
+
+
+    if(Math.abs(current.pm25 - old.pm25) >= 10){
+
+        changes.push(
+            `PM2.5 changed significantly`
+        );
+
+    }
+
+
+    if(Math.abs(current.pm10 - old.pm10) >= 15){
+
+        changes.push(
+            `PM10 changed significantly`
+        );
+
+    }
+
+
+    if(Math.abs(current.temp - old.temp) >= 3){
+
+        changes.push(
+            `Temperature changed`
+        );
+
+    }
+
+
+    if(Math.abs(current.wind - old.wind) >= 10){
+
+        changes.push(
+            `Wind speed changed`
+        );
+
+    }
+
+
+    if(Math.abs(current.pressure - old.pressure) >= 5){
+
+        changes.push(
+            `Atmospheric pressure changed`
+        );
+
+    }
+
+
+    if(current.aqi > old.aqi + 10){
+
+        changes.push(
+            `AQI increased`
+        );
+
+    }
+
+
+    if(changes.length > 0){
+
+        const message =
+            `⚠️ ${loc.name}: ${changes.join(", ")}`;
+
+        showAlert(message);
+
+        sendNotification(
+            "NCR AIR WATCH Alert",
+            message
+        );
+
+    }
+
+}
+
+
+function showAlert(message){
+
+    const box =
+        document.getElementById("alertBox");
+
+    box.style.display = "block";
+
+    box.innerHTML =
+        `<b>⚠️ Atmospheric Change Detected</b>
+        <br>${message}`;
+
+}
+
+
+function sendNotification(title,message){
+
+    if(
+        "Notification" in window &&
+        Notification.permission === "granted"
+    ){
+
+        new Notification(
+            title,
+            {
+                body:message,
+                icon:"https://cdn-icons-png.flaticon.com/512/1163/1163624.png"
+            }
+        );
+
+    }
+
+}
+
+
+function enableNotifications(){
+
+    if(!("Notification" in window)){
+
+        alert(
+            "Browser notifications are not supported."
+        );
+
+        return;
+
+    }
+
+
+    Notification.requestPermission()
+        .then(permission => {
+
+            if(permission === "granted"){
+
+                alert(
+                    "🔔 Alerts enabled!"
+                );
+
+            }else{
+
+                alert(
+                    "Notification permission was not granted."
+                );
+
+            }
+
+        });
+
+}
+
+
+function getAQIClass(aqi){
+
+    if(aqi <= 40)
+        return "good";
+
+    if(aqi <= 80)
+        return "warning";
+
+    return "danger";
+
+}
+
+
+function format(value){
+
+    if(value === null || value === undefined)
+        return "--";
+
+    return Number(value).toFixed(1);
+
+}
+
+
+async function loadAll(){
+
+    document.getElementById(
+        "systemStatus"
+    ).textContent = "● LIVE";
+
+
+    for(const key in locations){
+
+        await getData(key);
+
+    }
+
+
+    document.getElementById(
+        "lastUpdated"
+    ).textContent =
+        new Date().toLocaleString(
+            "en-IN",
+            {
+                dateStyle:"medium",
+                timeStyle:"short"
+            }
+        );
+
+}
+
+
+loadAll();
+
+
+// Refresh every 15 minutes
+setInterval(
+    loadAll,
+    15 * 60 * 1000
+);
+
+</script>
 
 </body>
 </html>
