@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>NCR AIR WATCH</title>
 
 <link
-  rel="stylesheet"
-  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+rel="stylesheet"
+href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
 />
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -24,15 +25,15 @@
 body{
   margin:0;
   font-family:Arial,Helvetica,sans-serif;
-  background:#f4f7fb;
+  background:#f3f7fb;
   color:#17202a;
 }
 
 header{
-  background:linear-gradient(135deg,#0b3d91,#00796b);
+  background:linear-gradient(135deg,#063b8c,#00796b);
   color:white;
-  padding:25px 18px;
   text-align:center;
+  padding:28px 15px;
 }
 
 header h1{
@@ -61,7 +62,7 @@ header p{
 
 h2{
   margin-top:0;
-  color:#0b3d91;
+  color:#063b8c;
 }
 
 .searchBox{
@@ -74,16 +75,16 @@ input{
   flex:1;
   min-width:200px;
   padding:13px;
-  border:1px solid #ccd6e0;
+  border:1px solid #ccd5df;
   border-radius:10px;
   font-size:15px;
 }
 
 button{
-  padding:13px 17px;
   border:0;
   border-radius:10px;
-  background:#0b3d91;
+  padding:13px 17px;
+  background:#063b8c;
   color:white;
   font-weight:bold;
   cursor:pointer;
@@ -99,76 +100,56 @@ button:hover{
 
 .grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  grid-template-columns:
+  repeat(auto-fit,minmax(170px,1fr));
   gap:12px;
 }
 
 .stat{
   background:#f7f9fc;
-  padding:15px;
+  padding:16px;
   border-radius:14px;
   text-align:center;
 }
 
-.stat .value{
-  font-size:27px;
-  font-weight:bold;
-  margin-top:7px;
+.label{
+  font-size:13px;
+  color:#687684;
 }
 
-.label{
-  color:#687684;
-  font-size:13px;
+.value{
+  font-size:28px;
+  font-weight:bold;
+  margin-top:6px;
+}
+
+.big{
+  font-size:55px;
+  font-weight:bold;
 }
 
 #map{
-  height:400px;
+  height:420px;
   border-radius:15px;
 }
 
 .aqiBox{
   text-align:center;
   padding:25px;
-  border-radius:18px;
   background:#f7f9fc;
+  border-radius:18px;
 }
 
-.aqiNumber{
-  font-size:60px;
-  font-weight:bold;
-}
-
-.good{color:#168a45}
-.moderate{color:#c58b00}
-.bad{color:#e66b00}
-.verybad{color:#d83232}
-.danger{color:#8b0000}
-
-table{
-  width:100%;
-  border-collapse:collapse;
-  font-size:13px;
-}
-
-th,td{
-  padding:9px;
-  border-bottom:1px solid #e4e8ed;
-  text-align:center;
-}
-
-th{
-  background:#eef3f8;
-}
-
-.tableWrap{
-  overflow-x:auto;
-}
+.good{color:#14833b}
+.moderate{color:#c28600}
+.bad{color:#e66a00}
+.verybad{color:#d22e2e}
+.danger{color:#880000}
 
 .status{
-  padding:10px;
+  padding:12px;
   border-radius:10px;
   background:#eef3f8;
-  margin-top:10px;
 }
 
 .ok{
@@ -182,17 +163,67 @@ th{
 }
 
 .warning{
-  color:#b06b00;
+  color:#ad6800;
   font-weight:bold;
 }
 
-.influence{
-  font-size:30px;
+.small{
+  color:#687684;
+  font-size:12px;
+  line-height:1.5;
+}
+
+.fireCard{
+  background:
+    linear-gradient(
+      135deg,
+      #fff8f0,
+      #fff
+    );
+}
+
+.fireNumber{
+  font-size:35px;
   font-weight:bold;
+}
+
+.progress{
+  width:100%;
+  height:13px;
+  background:#e5e9ee;
+  border-radius:20px;
+  overflow:hidden;
+  margin-top:8px;
+}
+
+.progressBar{
+  height:100%;
+  width:0%;
+  transition:.5s;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  font-size:13px;
+}
+
+th,td{
+  padding:9px;
+  text-align:center;
+  border-bottom:1px solid #e2e7ec;
+}
+
+th{
+  background:#edf2f7;
+}
+
+.tableWrap{
+  overflow-x:auto;
 }
 
 .sliderRow{
-  margin:15px 0;
+  margin:16px 0;
 }
 
 .sliderRow label{
@@ -205,42 +236,33 @@ input[type=range]{
   width:100%;
 }
 
-.small{
-  font-size:12px;
-  color:#6c757d;
-  line-height:1.5;
-}
-
-.source{
-  padding:9px;
-  border-radius:8px;
-  margin:5px 0;
-  background:#f5f7fa;
-}
-
 footer{
   text-align:center;
   padding:25px;
-  color:#697586;
+  color:#687684;
 }
 
 </style>
+
 </head>
 
+
 <body>
+
 
 <header>
 
 <h1>🌍 NCR AIR WATCH</h1>
 
 <p>
-Live Air Quality • GPS Location • Weather • 72-Hour Forecast • Traffic Influence
+Live AQI • GPS • Weather • Traffic • Satellite Fire Monitoring • 72H Forecast
 </p>
 
 </header>
 
 
 <div class="container">
+
 
 <!-- LOCATION -->
 
@@ -251,40 +273,73 @@ Live Air Quality • GPS Location • Weather • 72-Hour Forecast • Traffic I
 <div class="searchBox">
 
 <input
-  id="locationSearch"
-  placeholder="Search city / place..."
-/>
+id="locationSearch"
+placeholder="Search city / place..."
+>
 
 <button onclick="searchLocation()">
 🔎 Search
 </button>
 
-<button class="gps" onclick="useGPS()">
+<button
+class="gps"
+onclick="useGPS()"
+>
 📱 Use My GPS
 </button>
 
 </div>
 
-<div class="grid" style="margin-top:15px">
+<br>
+
+<div class="grid">
 
 <div class="stat">
-<div class="label">Place</div>
-<div id="place">--</div>
+
+<div class="label">
+Place
+</div>
+
+<div id="place">
+New Delhi
+</div>
+
 </div>
 
 <div class="stat">
-<div class="label">Latitude</div>
-<div id="lat">--</div>
+
+<div class="label">
+Latitude
+</div>
+
+<div id="lat">
+28.6139
+</div>
+
 </div>
 
 <div class="stat">
-<div class="label">Longitude</div>
-<div id="lon">--</div>
+
+<div class="label">
+Longitude
+</div>
+
+<div id="lon">
+77.2090
+</div>
+
 </div>
 
 <div class="stat">
-<div class="label">Data Status</div>
-<div id="dataStatus">Waiting...</div>
+
+<div class="label">
+Data Status
+</div>
+
+<div id="dataStatus">
+Waiting...
+</div>
+
 </div>
 
 </div>
@@ -296,14 +351,14 @@ Live Air Quality • GPS Location • Weather • 72-Hour Forecast • Traffic I
 
 <div class="card">
 
-<h2>🗺️ Live Location Map</h2>
+<h2>🗺️ NCR Air Pollution Map</h2>
 
 <div id="map"></div>
 
 </div>
 
 
-<!-- AIR QUALITY -->
+<!-- AQ -->
 
 <div class="card">
 
@@ -311,17 +366,19 @@ Live Air Quality • GPS Location • Weather • 72-Hour Forecast • Traffic I
 
 <div class="aqiBox">
 
-<div class="label">European AQI</div>
+<div class="label">
+European AQI
+</div>
 
 <div
-  id="aqi"
-  class="aqiNumber"
+id="aqi"
+class="big"
 >
 --
 </div>
 
 <div id="aqiText">
-Waiting for data...
+Waiting...
 </div>
 
 </div>
@@ -333,37 +390,37 @@ Waiting for data...
 <div class="stat">
 <div class="label">PM2.5</div>
 <div class="value" id="pm25">--</div>
-<div class="label">µg/m³</div>
+<div class="small">µg/m³</div>
 </div>
 
 <div class="stat">
 <div class="label">PM10</div>
 <div class="value" id="pm10">--</div>
-<div class="label">µg/m³</div>
+<div class="small">µg/m³</div>
 </div>
 
 <div class="stat">
 <div class="label">NO₂</div>
 <div class="value" id="no2">--</div>
-<div class="label">µg/m³</div>
+<div class="small">µg/m³</div>
 </div>
 
 <div class="stat">
 <div class="label">SO₂</div>
 <div class="value" id="so2">--</div>
-<div class="label">µg/m³</div>
+<div class="small">µg/m³</div>
 </div>
 
 <div class="stat">
 <div class="label">O₃</div>
 <div class="value" id="o3">--</div>
-<div class="label">µg/m³</div>
+<div class="small">µg/m³</div>
 </div>
 
 <div class="stat">
 <div class="label">CO</div>
 <div class="value" id="co">--</div>
-<div class="label">µg/m³</div>
+<div class="small">µg/m³</div>
 </div>
 
 </div>
@@ -375,32 +432,38 @@ Waiting for data...
 
 <div class="card">
 
-<h2>🌤️ Current Weather</h2>
+<h2>🌤️ Weather & Dispersion</h2>
 
 <div class="grid">
 
 <div class="stat">
 <div class="label">Temperature</div>
 <div class="value" id="temperature">--</div>
-<div class="label">°C</div>
+<div class="small">°C</div>
 </div>
 
 <div class="stat">
 <div class="label">Humidity</div>
 <div class="value" id="humidity">--</div>
-<div class="label">%</div>
+<div class="small">%</div>
 </div>
 
 <div class="stat">
-<div class="label">Wind Speed</div>
+<div class="label">Wind</div>
 <div class="value" id="wind">--</div>
-<div class="label">km/h</div>
+<div class="small">km/h</div>
 </div>
 
 <div class="stat">
 <div class="label">Pressure</div>
 <div class="value" id="pressure">--</div>
-<div class="label">hPa</div>
+<div class="small">hPa</div>
+</div>
+
+<div class="stat">
+<div class="label">Wind Direction</div>
+<div class="value" id="windDirection">--</div>
+<div class="small">degrees</div>
 </div>
 
 </div>
@@ -408,36 +471,213 @@ Waiting for data...
 </div>
 
 
-<!-- TRAFFIC + BURNING -->
+<!-- CPCB / ISRO FIRE -->
+
+<div class="card fireCard">
+
+<h2>🔥 Satellite Active Fire Monitoring</h2>
+
+<p class="small">
+
+India's satellite-based agricultural-fire monitoring concept.
+Active fire detections are treated as
+<b>possible crop-residue burning signals</b>, not proof that every fire is stubble burning.
+
+</p>
+
+
+<div class="grid">
+
+
+<div class="stat">
+
+<div class="label">
+Punjab
+</div>
+
+<div
+class="fireNumber"
+id="punjabFire"
+>
+--
+</div>
+
+<div class="small">
+Active fire events
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div class="label">
+Haryana
+</div>
+
+<div
+class="fireNumber"
+id="haryanaFire"
+>
+--
+</div>
+
+<div class="small">
+Active fire events
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div class="label">
+Uttar Pradesh
+</div>
+
+<div
+class="fireNumber"
+id="upFire"
+>
+--
+</div>
+
+<div class="small">
+Active fire events
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div class="label">
+NCR Fire Signal
+</div>
+
+<div
+class="fireNumber"
+id="ncrFire"
+>
+--
+</div>
+
+<div class="small">
+Nearby signal
+</div>
+
+</div>
+
+</div>
+
+
+<br>
+
+
+<div class="grid">
+
+
+<div class="stat">
+
+<div class="label">
+Total Regional Fire Signal
+</div>
+
+<div
+class="value"
+id="totalFire"
+>
+--
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div class="label">
+Burning Pressure
+</div>
+
+<div
+class="value"
+id="burningPressure"
+>
+--
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div class="label">
+Satellite Status
+</div>
+
+<div
+id="fireStatus"
+>
+Checking...
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div class="label">
+Season
+</div>
+
+<div
+id="fireSeason"
+>
+--
+</div>
+
+</div>
+
+</div>
+
+
+<div
+id="fireNotice"
+class="status"
+style="margin-top:15px"
+>
+Checking satellite fire monitoring status...
+</div>
+
+</div>
+
+
+<!-- TRAFFIC -->
 
 <div class="card">
 
-<h2>🚦 Traffic + 🔥 Burning Influence</h2>
+<h2>🚦 Traffic Pollution Signal</h2>
 
 <p class="small">
-This section estimates how traffic pressure and possible biomass-burning
-conditions may influence pollution. It is a model-based estimate, not
-scientific source-apportionment.
+
+Live traffic is shown only when a valid traffic API is connected.
+No fake traffic values are generated.
+
 </p>
 
 <div class="grid">
 
 <div class="stat">
 
-<div class="label">Traffic Status</div>
-
-<div
-  class="influence"
-  id="trafficStatus"
->
-Not connected
+<div class="label">
+Traffic Status
 </div>
 
 <div
-  class="small"
-  id="trafficDetails"
+class="value"
+id="trafficStatus"
 >
-Live traffic API not configured.
+Unavailable
 </div>
 
 </div>
@@ -445,17 +685,19 @@ Live traffic API not configured.
 
 <div class="stat">
 
-<div class="label">Traffic Pressure</div>
+<div class="label">
+Current Speed
+</div>
 
 <div
-  class="influence"
-  id="trafficPressure"
+class="value"
+id="trafficSpeed"
 >
 --
 </div>
 
 <div class="small">
-Relative congestion
+km/h
 </div>
 
 </div>
@@ -463,45 +705,66 @@ Relative congestion
 
 <div class="stat">
 
-<div class="label">Burning / Fire Signal</div>
-
-<div
-  class="influence"
-  id="burningStatus"
->
-Not connected
+<div class="label">
+Free Flow Speed
 </div>
 
 <div
-  class="small"
-  id="burningDetails"
->
-No live fire-hotspot source connected.
-</div>
-
-</div>
-
-
-<div class="stat">
-
-<div class="label">Dispersion</div>
-
-<div
-  class="influence"
-  id="dispersion"
+class="value"
+id="freeSpeed"
 >
 --
 </div>
 
 <div class="small">
-Based on wind
+km/h
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div class="label">
+Congestion
+</div>
+
+<div
+class="value"
+id="congestion"
+>
+--
 </div>
 
 </div>
 
 </div>
 
-<br>
+<div
+id="trafficNotice"
+class="status"
+style="margin-top:15px"
+>
+Live traffic API not connected.
+</div>
+
+</div>
+
+
+<!-- POLLUTION INFLUENCE -->
+
+<div class="card">
+
+<h2>🧠 Pollution Influence Intelligence</h2>
+
+<p class="small">
+
+This is a scenario/indicator model using observed air quality,
+traffic pressure, satellite fire signals and meteorology.
+It is not official source apportionment.
+
+</p>
+
 
 <div class="grid">
 
@@ -512,8 +775,8 @@ Observed PM2.5
 </div>
 
 <div
-  class="value"
-  id="observedPM"
+class="value"
+id="observedPM"
 >
 --
 </div>
@@ -524,12 +787,67 @@ Observed PM2.5
 <div class="stat">
 
 <div class="label">
-Traffic-adjusted PM2.5
+Traffic Pressure
 </div>
 
 <div
-  class="value"
-  id="adjustedPM"
+class="value"
+id="trafficInfluence"
+>
+--
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div class="label">
+Burning Pressure
+</div>
+
+<div
+class="value"
+id="fireInfluence"
+>
+--
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div class="label">
+Wind Dispersion
+</div>
+
+<div
+class="value"
+id="dispersion"
+>
+--
+</div>
+
+</div>
+
+</div>
+
+
+<br>
+
+
+<div class="grid">
+
+<div class="stat">
+
+<div class="label">
+Scenario PM2.5
+</div>
+
+<div
+class="value"
+id="scenarioPM"
 >
 --
 </div>
@@ -544,8 +862,8 @@ Scenario AQI
 </div>
 
 <div
-  class="value"
-  id="scenarioAQI"
+class="value"
+id="scenarioAQI"
 >
 --
 </div>
@@ -556,12 +874,12 @@ Scenario AQI
 <div class="stat">
 
 <div class="label">
-Pollution Pressure
+Overall Pressure
 </div>
 
 <div
-  class="value"
-  id="pollutionPressure"
+class="value"
+id="overallPressure"
 >
 --
 </div>
@@ -577,37 +895,42 @@ Pollution Pressure
 
 <div class="card">
 
-<h2>🧠 Pollution Explanation</h2>
+<h2>💡 Why is Air Quality Changing?</h2>
 
-<div id="explanation">
-Waiting for live data...
+<div
+id="explanation"
+class="status"
+>
+Waiting for data...
 </div>
 
 </div>
 
 
-<!-- 72 HOUR CHART -->
+<!-- FORECAST -->
 
 <div class="card">
 
-<h2>📈 72-Hour Air Quality Forecast</h2>
+<h2>📈 72-Hour AQI Forecast</h2>
 
 <canvas id="aqChart"></canvas>
 
 <p class="small">
-Forecast comes from Open-Meteo's air-quality model.
-Traffic/fire influence is shown separately as a scenario estimate.
-Future live traffic cannot be known exactly in advance.
+
+Open-Meteo provides the baseline air-quality forecast.
+Traffic and satellite-fire signals are not known for future hours,
+so they are displayed as current-condition indicators.
+
 </p>
 
 </div>
 
 
-<!-- FORECAST TABLE -->
+<!-- TABLE -->
 
 <div class="card">
 
-<h2>🕒 72-Hour Forecast Table</h2>
+<h2>🕒 72-Hour Forecast</h2>
 
 <div class="tableWrap">
 
@@ -621,15 +944,14 @@ Future live traffic cannot be known exactly in advance.
 <th>AQI</th>
 <th>PM2.5</th>
 <th>PM10</th>
+<th>Temp</th>
 <th>Wind</th>
-<th>Temperature</th>
 
 </tr>
 
 </thead>
 
 <tbody id="forecastTable">
-
 </tbody>
 
 </table>
@@ -643,56 +965,67 @@ Future live traffic cannot be known exactly in advance.
 
 <div class="card">
 
-<h2>⚠️ Predictive Pollution Risk</h2>
+<h2>⚠️ Pollution Risk</h2>
 
 <div class="grid">
 
 <div class="stat">
 
-<div class="label">NOW</div>
+<div class="label">
+NOW
+</div>
 
 <div
-  class="value"
-  id="riskNow"
+class="value"
+id="riskNow"
 >
 --
 </div>
 
 </div>
+
 
 <div class="stat">
 
-<div class="label">24H</div>
+<div class="label">
+24 HOURS
+</div>
 
 <div
-  class="value"
-  id="risk24"
+class="value"
+id="risk24"
 >
 --
 </div>
 
 </div>
+
 
 <div class="stat">
 
-<div class="label">48H</div>
+<div class="label">
+48 HOURS
+</div>
 
 <div
-  class="value"
-  id="risk48"
+class="value"
+id="risk48"
 >
 --
 </div>
 
 </div>
+
 
 <div class="stat">
 
-<div class="label">72H</div>
+<div class="label">
+72 HOURS
+</div>
 
 <div
-  class="value"
-  id="risk72"
+class="value"
+id="risk72"
 >
 --
 </div>
@@ -704,17 +1037,17 @@ Future live traffic cannot be known exactly in advance.
 </div>
 
 
-<!-- EARLY WARNING -->
+<!-- WARNING -->
 
 <div class="card">
 
-<h2>🚨 Early Warning System</h2>
+<h2>🚨 Early Warning</h2>
 
 <div
-  id="warning"
-  class="status"
+id="warning"
+class="status"
 >
-Waiting for data...
+Waiting...
 </div>
 
 </div>
@@ -724,10 +1057,12 @@ Waiting for data...
 
 <div class="card">
 
-<h2>🧪 What-If Pollution Simulation</h2>
+<h2>🧪 What-If Simulation</h2>
 
 <p class="small">
-This is a scenario simulator. It does not represent an official forecast.
+
+Try increasing traffic or emissions to see a scenario AQI.
+
 </p>
 
 
@@ -735,17 +1070,19 @@ This is a scenario simulator. It does not represent an official forecast.
 
 <label>
 🚗 Traffic Change:
-<span id="trafficValue">0%</span>
+<span id="trafficValue">
+0%
+</span>
 </label>
 
 <input
-  type="range"
-  id="trafficSlider"
-  min="-50"
-  max="100"
-  value="0"
-  oninput="runSimulation()"
-/>
+type="range"
+id="trafficSlider"
+min="-50"
+max="100"
+value="0"
+oninput="runSimulation()"
+>
 
 </div>
 
@@ -754,17 +1091,19 @@ This is a scenario simulator. It does not represent an official forecast.
 
 <label>
 🏭 Emission Change:
-<span id="emissionValue">0%</span>
+<span id="emissionValue">
+0%
+</span>
 </label>
 
 <input
-  type="range"
-  id="emissionSlider"
-  min="-50"
-  max="100"
-  value="0"
-  oninput="runSimulation()"
-/>
+type="range"
+id="emissionSlider"
+min="-50"
+max="100"
+value="0"
+oninput="runSimulation()"
+>
 
 </div>
 
@@ -778,8 +1117,8 @@ Base AQI
 </div>
 
 <div
-  class="value"
-  id="simBase"
+class="value"
+id="simBase"
 >
 --
 </div>
@@ -790,12 +1129,12 @@ Base AQI
 <div class="stat">
 
 <div class="label">
-Simulated AQI
+Scenario AQI
 </div>
 
 <div
-  class="value"
-  id="simAQI"
+class="value"
+id="simAQI"
 >
 --
 </div>
@@ -813,28 +1152,44 @@ Simulated AQI
 
 <h2>📡 Data Sources</h2>
 
-<div class="source">
-📱 <b>Phone GPS</b> — Current location
+<div class="status">
+📱 Phone GPS — Location
 </div>
 
-<div class="source">
-🗺️ <b>OpenStreetMap</b> — Map & location search
+<br>
+
+<div class="status">
+🗺️ OpenStreetMap — Map / Geocoding
 </div>
 
-<div class="source">
-🌫️ <b>Open-Meteo Air Quality</b> — AQI & pollutants
+<br>
+
+<div class="status">
+🌫️ Open-Meteo — Air Quality
 </div>
 
-<div class="source">
-🌤️ <b>Open-Meteo Weather</b> — Weather conditions
+<br>
+
+<div class="status">
+🌤️ Open-Meteo — Weather
 </div>
 
-<div class="source">
-🚦 <b>Live Traffic API</b> — Optional; API key required
+<br>
+
+<div class="status">
+🔥 ISRO/NRSC Bhuvan — Active Agricultural Fire concept
 </div>
 
-<div class="source">
-🔥 <b>Fire/Biomass Burning API</b> — Optional; no NASA
+<br>
+
+<div class="status">
+🏛️ CPCB — Satellite AFE monitoring methodology/reference
+</div>
+
+<br>
+
+<div class="status">
+🚦 Traffic API — Optional live integration
 </div>
 
 </div>
@@ -845,36 +1200,53 @@ Simulated AQI
 
 <footer>
 
-NCR AIR WATCH • Live environmental monitoring dashboard
+NCR AIR WATCH<br>
+Satellite + Weather + Air Quality + Traffic Intelligence
 
 </footer>
 
 
 <script>
 
+
 /* =========================================================
-   CONFIGURATION
+   CONFIG
 ========================================================= */
 
 /*
-   NASA is NOT used.
 
-   If you have a traffic API key, put it here.
+OPTIONAL TRAFFIC API KEY
 
-   Example:
-   const TRAFFIC_API_KEY = "YOUR_KEY";
+Example provider:
+TomTom Traffic Flow API
+
+Paste your key here:
+
+const TRAFFIC_API_KEY = "YOUR_KEY";
+
 */
 
 const TRAFFIC_API_KEY = "";
 
 
 /*
-   Optional fire / biomass-burning API.
+   IMPORTANT
 
-   Leave empty if you don't have one.
+   NASA FIRMS IS NOT USED.
+
+   For official Indian agricultural fire information,
+   this dashboard references the ISRO/NRSC Bhuvan
+   Active Agricultural Fire service.
+
+   Bhuvan does not expose a simple public browser JSON
+   endpoint for us to safely pretend it is an API.
+
+   Therefore the code NEVER invents fire numbers.
+
 */
 
-const FIRE_API_URL = "";
+const BHUVAN_FIRE_PAGE =
+"https://bhuvan-app1.nrsc.gov.in/moef/";
 
 
 /* =========================================================
@@ -894,6 +1266,10 @@ let weatherData = null;
 
 let chart = null;
 
+let trafficCongestion = 0;
+
+let firePressure = 0;
+
 
 /* =========================================================
    MAP
@@ -901,60 +1277,95 @@ let chart = null;
 
 function initMap(){
 
-  map = L.map("map").setView(
-    [currentLat,currentLon],
-    10
-  );
+  map =
+    L.map("map")
+    .setView(
+      [currentLat,currentLon],
+      9
+    );
+
 
   L.tileLayer(
     "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
     {
       maxZoom:19,
-      attribution:"© OpenStreetMap contributors"
+      attribution:
+      "© OpenStreetMap contributors"
     }
   ).addTo(map);
 
-  marker = L.marker(
-    [currentLat,currentLon]
-  ).addTo(map);
+
+  marker =
+    L.marker(
+      [currentLat,currentLon]
+    )
+    .addTo(map)
+    .bindPopup(
+      "NCR AIR WATCH"
+    );
 
 }
 
 
 /* =========================================================
-   UPDATE LOCATION
+   LOCATION
 ========================================================= */
 
-async function setLocation(lat,lon,name){
+async function setLocation(
+  lat,
+  lon,
+  name
+){
 
-  currentLat = Number(lat);
-  currentLon = Number(lon);
+  currentLat =
+    Number(lat);
 
-  currentPlace = name || "Selected Location";
+  currentLon =
+    Number(lon);
 
-  document.getElementById("place").innerText =
+  currentPlace =
+    name ||
+    "Selected Location";
+
+
+  document.getElementById(
+    "place"
+  ).innerText =
     currentPlace;
 
-  document.getElementById("lat").innerText =
+
+  document.getElementById(
+    "lat"
+  ).innerText =
     currentLat.toFixed(5);
 
-  document.getElementById("lon").innerText =
+
+  document.getElementById(
+    "lon"
+  ).innerText =
     currentLon.toFixed(5);
 
 
-  if(map){
+  map.setView(
+    [
+      currentLat,
+      currentLon
+    ],
+    10
+  );
 
-    map.setView(
-      [currentLat,currentLon],
-      11
+
+  marker
+    .setLatLng(
+      [
+        currentLat,
+        currentLon
+      ]
+    )
+    .bindPopup(
+      currentPlace
     );
 
-    marker
-      .setLatLng([currentLat,currentLon])
-      .bindPopup(currentPlace)
-      .openPopup();
-
-  }
 
   await loadAllData();
 
@@ -967,19 +1378,28 @@ async function setLocation(lat,lon,name){
 
 function useGPS(){
 
-  if(!navigator.geolocation){
+  if(
+    !navigator.geolocation
+  ){
 
-    alert("GPS is not supported on this device.");
+    alert(
+      "GPS is not supported."
+    );
 
     return;
+
   }
 
-  document.getElementById("dataStatus").innerText =
+
+  document.getElementById(
+    "dataStatus"
+  ).innerText =
     "Getting GPS...";
+
 
   navigator.geolocation.getCurrentPosition(
 
-    async function(position){
+    async position => {
 
       const lat =
         position.coords.latitude;
@@ -988,7 +1408,8 @@ function useGPS(){
         position.coords.longitude;
 
 
-      let place = "GPS Location";
+      let place =
+        "GPS Location";
 
 
       try{
@@ -1003,24 +1424,26 @@ function useGPS(){
             }
           );
 
+
         const data =
           await response.json();
+
 
         place =
           data.display_name ||
           "GPS Location";
 
+
       }catch(error){
 
         console.log(
-          "Reverse geocoding failed",
           error
         );
 
       }
 
 
-      setLocation(
+      await setLocation(
         lat,
         lon,
         place
@@ -1028,17 +1451,22 @@ function useGPS(){
 
     },
 
-    function(error){
+
+    error => {
 
       alert(
-        "GPS permission/location failed: " +
+        "GPS error: " +
         error.message
       );
 
-      document.getElementById("dataStatus").innerText =
+
+      document.getElementById(
+        "dataStatus"
+      ).innerText =
         "GPS Error";
 
     },
+
 
     {
       enableHighAccuracy:true,
@@ -1052,28 +1480,36 @@ function useGPS(){
 
 
 /* =========================================================
-   SEARCH LOCATION
+   SEARCH
 ========================================================= */
 
 async function searchLocation(){
 
   const query =
     document
-      .getElementById("locationSearch")
-      .value
-      .trim();
+    .getElementById(
+      "locationSearch"
+    )
+    .value
+    .trim();
+
 
   if(!query){
 
-    alert("Enter a location.");
+    alert(
+      "Enter a location."
+    );
 
     return;
+
   }
 
 
   try{
 
-    document.getElementById("dataStatus").innerText =
+    document.getElementById(
+      "dataStatus"
+    ).innerText =
       "Searching...";
 
 
@@ -1087,11 +1523,16 @@ async function searchLocation(){
       await response.json();
 
 
-    if(!results.length){
+    if(
+      !results.length
+    ){
 
-      alert("Location not found.");
+      alert(
+        "Location not found."
+      );
 
       return;
+
     }
 
 
@@ -1107,7 +1548,7 @@ async function searchLocation(){
     console.error(error);
 
     alert(
-      "Location search failed."
+      "Search failed."
     );
 
   }
@@ -1116,13 +1557,15 @@ async function searchLocation(){
 
 
 /* =========================================================
-   LOAD ALL DATA
+   LOAD ALL
 ========================================================= */
 
 async function loadAllData(){
 
-  document.getElementById("dataStatus").innerText =
-    "Loading live data...";
+  document.getElementById(
+    "dataStatus"
+  ).innerText =
+    "Loading...";
 
 
   try{
@@ -1130,25 +1573,41 @@ async function loadAllData(){
     await Promise.all([
       loadAirQuality(),
       loadWeather(),
-      loadTraffic(),
-      loadFireSignal()
+      loadTraffic()
     ]);
 
 
-    updateCombinedAnalysis();
+    /*
+      Fire monitoring is handled separately because
+      Bhuvan's agricultural-fire page is not treated
+      as a fake JSON API.
+    */
+
+    updateFireSeasonStatus();
+
+    updatePollutionIntelligence();
 
     updateForecast();
 
-    document.getElementById("dataStatus").innerHTML =
-      '<span class="ok">LIVE DATA LOADED</span>';
+    updateWarning();
+
+    document.getElementById(
+      "dataStatus"
+    ).innerHTML =
+      '<span class="ok">LIVE AQ + WEATHER LOADED</span>';
 
 
   }catch(error){
 
-    console.error(error);
+    console.error(
+      error
+    );
 
-    document.getElementById("dataStatus").innerHTML =
-      '<span class="error">Some data unavailable</span>';
+
+    document.getElementById(
+      "dataStatus"
+    ).innerHTML =
+      '<span class="error">DATA ERROR</span>';
 
   }
 
@@ -1169,10 +1628,12 @@ async function loadAirQuality(){
     await fetch(url);
 
 
-  if(!response.ok){
+  if(
+    !response.ok
+  ){
 
     throw new Error(
-      "Air quality API error"
+      "AQ API error"
     );
 
   }
@@ -1186,40 +1647,67 @@ async function loadAirQuality(){
     aqData.hourly;
 
 
-  const index =
-    0;
+  const i = 0;
 
 
-  document.getElementById("aqi").innerText =
-    value(h.european_aqi[index]);
+  document.getElementById(
+    "aqi"
+  ).innerText =
+    num(
+      h.european_aqi[i]
+    );
 
 
-  document.getElementById("pm25").innerText =
-    value(h.pm2_5[index]);
+  document.getElementById(
+    "pm25"
+  ).innerText =
+    fixed(
+      h.pm2_5[i]
+    );
 
 
-  document.getElementById("pm10").innerText =
-    value(h.pm10[index]);
+  document.getElementById(
+    "pm10"
+  ).innerText =
+    fixed(
+      h.pm10[i]
+    );
 
 
-  document.getElementById("no2").innerText =
-    value(h.nitrogen_dioxide[index]);
+  document.getElementById(
+    "no2"
+  ).innerText =
+    fixed(
+      h.nitrogen_dioxide[i]
+    );
 
 
-  document.getElementById("so2").innerText =
-    value(h.sulphur_dioxide[index]);
+  document.getElementById(
+    "so2"
+  ).innerText =
+    fixed(
+      h.sulphur_dioxide[i]
+    );
 
 
-  document.getElementById("o3").innerText =
-    value(h.ozone[index]);
+  document.getElementById(
+    "o3"
+  ).innerText =
+    fixed(
+      h.ozone[i]
+    );
 
 
-  document.getElementById("co").innerText =
-    value(h.carbon_monoxide[index]);
+  document.getElementById(
+    "co"
+  ).innerText =
+    fixed(
+      h.carbon_monoxide[i]
+    );
 
 
   updateAQIStyle(
-    h.european_aqi[index]
+    h.european_aqi[i]
   );
 
 }
@@ -1232,14 +1720,16 @@ async function loadAirQuality(){
 async function loadWeather(){
 
   const url =
-    `https://api.open-meteo.com/v1/forecast?latitude=${currentLat}&longitude=${currentLon}&current=temperature_2m,relative_humidity_2m,wind_speed_10m,surface_pressure&hourly=temperature_2m,wind_speed_10m&forecast_hours=72&timezone=auto`;
+    `https://api.open-meteo.com/v1/forecast?latitude=${currentLat}&longitude=${currentLon}&current=temperature_2m,relative_humidity_2m,wind_speed_10m,wind_direction_10m,surface_pressure&hourly=temperature_2m,wind_speed_10m&forecast_hours=72&timezone=auto`;
 
 
   const response =
     await fetch(url);
 
 
-  if(!response.ok){
+  if(
+    !response.ok
+  ){
 
     throw new Error(
       "Weather API error"
@@ -1256,20 +1746,44 @@ async function loadWeather(){
     weatherData.current;
 
 
-  document.getElementById("temperature").innerText =
-    value(c.temperature_2m);
+  document.getElementById(
+    "temperature"
+  ).innerText =
+    fixed(
+      c.temperature_2m
+    );
 
 
-  document.getElementById("humidity").innerText =
-    value(c.relative_humidity_2m);
+  document.getElementById(
+    "humidity"
+  ).innerText =
+    fixed(
+      c.relative_humidity_2m
+    );
 
 
-  document.getElementById("wind").innerText =
-    value(c.wind_speed_10m);
+  document.getElementById(
+    "wind"
+  ).innerText =
+    fixed(
+      c.wind_speed_10m
+    );
 
 
-  document.getElementById("pressure").innerText =
-    value(c.surface_pressure);
+  document.getElementById(
+    "pressure"
+  ).innerText =
+    fixed(
+      c.surface_pressure
+    );
+
+
+  document.getElementById(
+    "windDirection"
+  ).innerText =
+    fixed(
+      c.wind_direction_10m
+    );
 
 }
 
@@ -1280,26 +1794,25 @@ async function loadWeather(){
 
 async function loadTraffic(){
 
-  /*
-    No API key = no fake traffic.
+  if(
+    !TRAFFIC_API_KEY
+  ){
 
-    The dashboard clearly shows that live traffic
-    is not connected.
-  */
+    trafficCongestion = 0;
 
-  if(!TRAFFIC_API_KEY){
 
-    document.getElementById("trafficStatus")
-      .innerText =
-      "Not connected";
+    document.getElementById(
+      "trafficStatus"
+    ).innerText =
+      "Unavailable";
 
-    document.getElementById("trafficPressure")
-      .innerText =
-      "--";
 
-    document.getElementById("trafficDetails")
-      .innerText =
-      "Add a live traffic API key.";
+    document.getElementById(
+      "trafficNotice"
+    ).innerHTML =
+      "🚦 Live traffic API key not configured. " +
+      "No fake traffic value is being shown.";
+
 
     return;
 
@@ -1307,13 +1820,6 @@ async function loadTraffic(){
 
 
   try{
-
-    /*
-      Example traffic API endpoint.
-
-      Replace this section with the endpoint
-      of your selected traffic provider.
-    */
 
     const url =
       `https://api.tomtom.com/traffic/services/4/flowSegmentData/absolute/10/json?point=${currentLat},${currentLon}&unit=KMPH&key=${TRAFFIC_API_KEY}`;
@@ -1323,7 +1829,9 @@ async function loadTraffic(){
       await fetch(url);
 
 
-    if(!response.ok){
+    if(
+      !response.ok
+    ){
 
       throw new Error(
         "Traffic API error"
@@ -1341,227 +1849,257 @@ async function loadTraffic(){
 
 
     const currentSpeed =
-      Number(flow.currentSpeed || 0);
-
-    const freeFlowSpeed =
-      Number(flow.freeFlowSpeed || 1);
-
-
-    let congestion =
-      1 -
-      currentSpeed /
-      freeFlowSpeed;
+      Number(
+        flow.currentSpeed || 0
+      );
 
 
-    congestion =
+    const freeSpeed =
+      Number(
+        flow.freeFlowSpeed || 1
+      );
+
+
+    trafficCongestion =
       Math.max(
         0,
         Math.min(
           1,
-          congestion
+          1 -
+          currentSpeed /
+          freeSpeed
         )
       );
 
 
     const percentage =
       Math.round(
-        congestion * 100
+        trafficCongestion * 100
       );
 
 
-    document.getElementById("trafficPressure")
-      .innerText =
+    document.getElementById(
+      "trafficSpeed"
+    ).innerText =
+      currentSpeed;
+
+
+    document.getElementById(
+      "freeSpeed"
+    ).innerText =
+      freeSpeed;
+
+
+    document.getElementById(
+      "congestion"
+    ).innerText =
       percentage + "%";
 
 
-    document.getElementById("trafficDetails")
-      .innerText =
-      `Speed ${currentSpeed} km/h • Free flow ${freeFlowSpeed} km/h`;
+    if(
+      percentage < 20
+    ){
+
+      document.getElementById(
+        "trafficStatus"
+      ).innerText =
+        "LOW";
+
+    }
+    else if(
+      percentage < 50
+    ){
+
+      document.getElementById(
+        "trafficStatus"
+      ).innerText =
+        "MODERATE";
+
+    }
+    else if(
+      percentage < 75
+    ){
+
+      document.getElementById(
+        "trafficStatus"
+      ).innerText =
+        "HIGH";
+
+    }
+    else{
+
+      document.getElementById(
+        "trafficStatus"
+      ).innerText =
+        "SEVERE";
+
+    }
 
 
-    if(percentage < 20){
+    document.getElementById(
+      "trafficNotice"
+    ).innerText =
+      "Live traffic data received successfully.";
 
-      document.getElementById("trafficStatus")
-        .innerText =
-        "Low";
+  }
+  catch(error){
 
-    }else if(percentage < 50){
+    console.error(
+      error
+    );
 
-      document.getElementById("trafficStatus")
-        .innerText =
-        "Moderate";
 
-    }else if(percentage < 75){
+    trafficCongestion = 0;
 
-      document.getElementById("trafficStatus")
-        .innerText =
-        "High";
+
+    document.getElementById(
+      "trafficStatus"
+    ).innerText =
+      "API Error";
+
+
+    document.getElementById(
+      "trafficNotice"
+    ).innerText =
+      "Traffic API request failed.";
+
+  }
+
+}
+
+
+/* =========================================================
+   CPCB / ISRO FIRE MONITORING
+========================================================= */
+
+function updateFireSeasonStatus(){
+
+  const now =
+    new Date();
+
+
+  const month =
+    now.getMonth() + 1;
+
+
+  const day =
+    now.getDate();
+
+
+  let season =
+    "OFF-SEASON";
+
+
+  if(
+    (
+      month === 4 ||
+      month === 5
+    )
+  ){
+
+    if(
+      month === 4 ||
+      (
+        month === 5 &&
+        day <= 30
+      )
+    ){
+
+      season =
+        "RABI";
+
+    }
+
+  }
+
+
+  if(
+    month === 9 &&
+    day >= 15
+  ){
+
+    season =
+      "KHARIF";
+
+  }
+
+
+  if(
+    month === 10 ||
+    month === 11
+  ){
+
+    if(
+      month === 11 &&
+      day > 30
+    ){
+
+      season =
+        "OFF-SEASON";
 
     }else{
 
-      document.getElementById("trafficStatus")
-        .innerText =
-        "Severe";
+      season =
+        "KHARIF";
 
     }
 
-
-    window.trafficCongestion =
-      congestion;
-
-
-  }catch(error){
-
-    console.error(
-      "Traffic error:",
-      error
-    );
-
-
-    document.getElementById("trafficStatus")
-      .innerText =
-      "API Error";
-
-
-    document.getElementById("trafficPressure")
-      .innerText =
-      "--";
-
-
-    window.trafficCongestion =
-      0;
-
   }
 
-}
+
+  document.getElementById(
+    "fireSeason"
+  ).innerText =
+    season;
 
 
-/* =========================================================
-   FIRE / BIOMASS BURNING SIGNAL
-========================================================= */
+  document.getElementById(
+    "fireStatus"
+  ).innerHTML =
+    `<span class="ok">ISRO/NRSC SOURCE</span>`;
 
-async function loadFireSignal(){
+
+  document.getElementById(
+    "fireNotice"
+  ).innerHTML =
+
+    `🔥 <b>Active Agricultural Fire monitoring</b><br>
+     Use the official ISRO/NRSC Bhuvan fire layer for current
+     event counts and locations.<br><br>
+     <a
+       href="${BHUVAN_FIRE_PAGE}"
+       target="_blank"
+       style="font-weight:bold"
+     >
+       Open ISRO/NRSC Active Agricultural Fire →
+     </a>
+     <br><br>
+     Current monitoring season: <b>${season}</b>.<br>
+     The dashboard does not invent fire counts when the
+     official service is unavailable.`;
+
 
   /*
-    NASA FIRMS is intentionally NOT used.
-
-    If you have another fire / biomass-burning API,
-    you can connect it here.
-
-    No fake values are generated.
+     We intentionally keep the numerical values as "--"
+     until a permitted machine-readable source is connected.
   */
-
-  if(!FIRE_API_URL){
-
-    document.getElementById("burningStatus")
-      .innerText =
-      "Not connected";
-
-    document.getElementById("burningDetails")
-      .innerText =
-      "No live fire/biomass-burning API configured.";
-
-    window.firePressure = 0;
-
-    return;
-
-  }
-
-
-  try{
-
-    const url =
-      FIRE_API_URL +
-      `?lat=${currentLat}&lon=${currentLon}`;
-
-
-    const response =
-      await fetch(url);
-
-
-    if(!response.ok){
-
-      throw new Error(
-        "Fire API error"
-      );
-
-    }
-
-
-    const data =
-      await response.json();
-
-
-    /*
-      Expected example:
-
-      {
-        hotspots: 10
-      }
-
-      Adjust according to the actual API.
-    */
-
-    const hotspots =
-      Number(
-        data.hotspots || 0
-      );
-
-
-    let pressure =
-      Math.min(
-        1,
-        hotspots / 20
-      );
-
-
-    window.firePressure =
-      pressure;
-
-
-    document.getElementById("burningStatus")
-      .innerText =
-      hotspots > 10
-        ? "High"
-        : hotspots > 3
-        ? "Moderate"
-        : "Low";
-
-
-    document.getElementById("burningDetails")
-      .innerText =
-      `${hotspots} reported hotspot(s)`;
-
-
-  }catch(error){
-
-    console.error(
-      "Fire API error:",
-      error
-    );
-
-
-    window.firePressure = 0;
-
-
-    document.getElementById("burningStatus")
-      .innerText =
-      "API Error";
-
-  }
 
 }
 
 
 /* =========================================================
-   COMBINED POLLUTION ANALYSIS
+   POLLUTION INTELLIGENCE
 ========================================================= */
 
-function updateCombinedAnalysis(){
+function updatePollutionIntelligence(){
 
-  if(!aqData){
+  if(
+    !aqData ||
+    !weatherData
+  ){
 
     return;
+
   }
 
 
@@ -1571,101 +2109,92 @@ function updateCombinedAnalysis(){
     );
 
 
-  const aqi =
+  const baseAQI =
     Number(
       aqData.hourly.european_aqi[0] || 0
     );
 
 
-  const traffic =
-    Number(
-      window.trafficCongestion || 0
-    );
-
-
-  const fire =
-    Number(
-      window.firePressure || 0
-    );
-
-
   const wind =
     Number(
-      weatherData?.current?.wind_speed_10m || 0
+      weatherData.current.wind_speed_10m || 0
     );
 
 
   const humidity =
     Number(
-      weatherData?.current?.relative_humidity_2m || 0
+      weatherData.current.relative_humidity_2m || 0
     );
 
 
   /*
-    Dispersion factor.
-
-    Higher wind = better pollutant dispersion.
+     Wind dispersion.
   */
 
   let dispersionFactor = 1;
 
 
-  if(wind >= 20){
+  if(
+    wind >= 20
+  ){
 
-    dispersionFactor = 0.72;
+    dispersionFactor =
+      .72;
 
-  }else if(wind >= 12){
+  }
+  else if(
+    wind >= 12
+  ){
 
-    dispersionFactor = 0.82;
+    dispersionFactor =
+      .82;
 
-  }else if(wind >= 7){
+  }
+  else if(
+    wind >= 7
+  ){
 
-    dispersionFactor = 0.92;
+    dispersionFactor =
+      .92;
 
-  }else if(wind >= 3){
+  }
+  else if(
+    wind >= 3
+  ){
 
-    dispersionFactor = 1.05;
+    dispersionFactor =
+      1.05;
 
-  }else{
+  }
+  else{
 
-    dispersionFactor = 1.18;
+    dispersionFactor =
+      1.18;
 
   }
 
 
-  /*
-    Humidity has a smaller influence
-    in this simplified scenario model.
-  */
+  if(
+    humidity >= 85
+  ){
 
-  if(humidity >= 85){
-
-    dispersionFactor *= 1.05;
+    dispersionFactor *=
+      1.05;
 
   }
 
-
-  /*
-    Heuristic influence.
-
-    Traffic:
-    maximum ~35% pressure
-
-    Fire:
-    maximum ~60% pressure
-
-    These are NOT source-apportionment percentages.
-  */
 
   const trafficEffect =
-    traffic * 0.35;
+    trafficCongestion *
+    .35;
 
 
   const fireEffect =
-    fire * 0.60;
+    firePressure *
+    .60;
 
 
-  const adjustedPM =
+  const scenarioPM =
     pm25 *
     (
       1 +
@@ -1676,95 +2205,97 @@ function updateCombinedAnalysis(){
 
 
   let scenarioAQI =
-    aqi;
+    baseAQI;
 
 
-  if(pm25 > 0){
+  if(
+    pm25 > 0
+  ){
 
     scenarioAQI =
-      aqi *
-      (
-        adjustedPM /
-        pm25
+      Math.round(
+        baseAQI *
+        (
+          scenarioPM /
+          pm25
+        )
       );
 
   }
 
 
-  scenarioAQI =
-    Math.round(
-      scenarioAQI
-    );
-
-
-  document.getElementById("observedPM")
-    .innerText =
+  document.getElementById(
+    "observedPM"
+  ).innerText =
     pm25.toFixed(1);
 
 
-  document.getElementById("adjustedPM")
-    .innerText =
-    adjustedPM.toFixed(1);
+  document.getElementById(
+    "trafficInfluence"
+  ).innerText =
+    Math.round(
+      trafficEffect * 100
+    ) + "%";
 
 
-  document.getElementById("scenarioAQI")
-    .innerText =
+  document.getElementById(
+    "fireInfluence"
+  ).innerText =
+    Math.round(
+      fireEffect * 100
+    ) + "%";
+
+
+  document.getElementById(
+    "scenarioPM"
+  ).innerText =
+    scenarioPM.toFixed(1);
+
+
+  document.getElementById(
+    "scenarioAQI"
+  ).innerText =
     scenarioAQI;
 
 
-  document.getElementById("dispersion")
-    .innerText =
-    wind >= 10
-      ? "Good"
-      : wind >= 5
-      ? "Moderate"
-      : "Poor";
+  document.getElementById(
+    "dispersion"
+  ).innerText =
+
+    wind < 3
+    ? "POOR"
+    : wind < 7
+    ? "MODERATE"
+    : "GOOD";
 
 
-  let pressure =
+  const totalPressure =
     trafficEffect +
     fireEffect;
 
 
-  if(pressure < .20){
+  document.getElementById(
+    "overallPressure"
+  ).innerText =
 
-    document.getElementById("pollutionPressure")
-      .innerText =
-      "Low";
-
-  }else if(pressure < .50){
-
-    document.getElementById("pollutionPressure")
-      .innerText =
-      "Moderate";
-
-  }else{
-
-    document.getElementById("pollutionPressure")
-      .innerText =
-      "High";
-
-  }
+    totalPressure < .2
+    ? "LOW"
+    : totalPressure < .5
+    ? "MODERATE"
+    : "HIGH";
 
 
   generateExplanation(
     pm25,
-    traffic,
-    fire,
     wind,
+    trafficCongestion,
+    firePressure,
     humidity,
     scenarioAQI
   );
 
 
-  updateWarning(
-    aqi,
-    scenarioAQI,
-    wind
-  );
-
-
-  runSimulation();
+  updateWarning();
 
 }
 
@@ -1775,93 +2306,114 @@ function updateCombinedAnalysis(){
 
 function generateExplanation(
   pm25,
+  wind,
   traffic,
   fire,
-  wind,
   humidity,
   scenarioAQI
 ){
 
-  let messages = [];
+  let text = [];
 
 
-  if(pm25 > 60){
+  if(
+    pm25 > 60
+  ){
 
-    messages.push(
+    text.push(
       "PM2.5 is currently high."
     );
 
-  }else if(pm25 > 35){
+  }
+  else if(
+    pm25 > 35
+  ){
 
-    messages.push(
-      "PM2.5 is at a moderate-to-high level."
+    text.push(
+      "PM2.5 is moderately elevated."
     );
 
-  }else{
+  }
+  else{
 
-    messages.push(
+    text.push(
       "PM2.5 is currently relatively low."
     );
 
   }
 
 
-  if(traffic > .50){
+  if(
+    traffic > .5
+  ){
 
-    messages.push(
-      "Heavy traffic pressure may increase local pollution."
+    text.push(
+      "High traffic congestion may increase local emission pressure."
     );
 
-  }else if(traffic > .20){
+  }
+  else if(
+    traffic > .2
+  ){
 
-    messages.push(
+    text.push(
       "Moderate traffic pressure is present."
     );
 
   }
 
 
-  if(fire > .30){
+  if(
+    fire > .3
+  ){
 
-    messages.push(
-      "Nearby fire/biomass-burning signals may increase particulate pollution."
+    text.push(
+      "Satellite fire activity indicates a stronger possible biomass-burning signal."
     );
 
   }
 
 
-  if(wind < 5){
+  if(
+    wind < 5
+  ){
 
-    messages.push(
-      "Low wind can reduce pollutant dispersion."
+    text.push(
+      "Low wind may reduce pollutant dispersion."
     );
 
-  }else if(wind > 15){
+  }
+  else if(
+    wind > 15
+  ){
 
-    messages.push(
-      "Stronger wind can help disperse pollutants."
+    text.push(
+      "Stronger winds may improve dispersion."
     );
 
   }
 
 
-  if(humidity > 80){
+  if(
+    humidity > 80
+  ){
 
-    messages.push(
-      "High humidity may affect particulate behaviour and visibility."
+    text.push(
+      "High humidity may affect particulate behaviour."
     );
 
   }
 
 
-  messages.push(
-    `Scenario AQI estimate: ${scenarioAQI}.`
+  text.push(
+    `Scenario AQI indicator: ${scenarioAQI}.`
   );
 
 
-  document.getElementById("explanation")
-    .innerText =
-    messages.join(" ");
+  document.getElementById(
+    "explanation"
+  ).innerText =
+    text.join(" ");
 
 }
 
@@ -1872,58 +2424,75 @@ function generateExplanation(
 
 function updateAQIStyle(aqi){
 
-  const box =
-    document.getElementById("aqi");
+  const element =
+    document.getElementById(
+      "aqi"
+    );
+
 
   const text =
-    document.getElementById("aqiText");
+    document.getElementById(
+      "aqiText"
+    );
 
 
-  box.className =
-    "aqiNumber";
+  element.className =
+    "big";
 
 
-  if(aqi === null || aqi === undefined){
+  if(
+    aqi <= 20
+  ){
 
-    text.innerText =
-      "No data";
-
-    return;
-
-  }
-
-
-  if(aqi <= 20){
-
-    box.classList.add("good");
+    element.classList.add(
+      "good"
+    );
 
     text.innerText =
       "Good";
 
-  }else if(aqi <= 40){
+  }
+  else if(
+    aqi <= 40
+  ){
 
-    box.classList.add("moderate");
+    element.classList.add(
+      "moderate"
+    );
 
     text.innerText =
       "Fair";
 
-  }else if(aqi <= 60){
+  }
+  else if(
+    aqi <= 60
+  ){
 
-    box.classList.add("bad");
+    element.classList.add(
+      "bad"
+    );
 
     text.innerText =
       "Moderate";
 
-  }else if(aqi <= 80){
+  }
+  else if(
+    aqi <= 80
+  ){
 
-    box.classList.add("verybad");
+    element.classList.add(
+      "verybad"
+    );
 
     text.innerText =
       "Poor";
 
-  }else{
+  }
+  else{
 
-    box.classList.add("danger");
+    element.classList.add(
+      "danger"
+    );
 
     text.innerText =
       "Very Poor";
@@ -1939,33 +2508,44 @@ function updateAQIStyle(aqi){
 
 function updateForecast(){
 
-  if(!aqData){
+  if(
+    !aqData
+  ){
 
     return;
+
   }
 
 
   const times =
     aqData.hourly.time;
 
+
   const aqi =
     aqData.hourly.european_aqi;
 
+
   const pm25 =
     aqData.hourly.pm2_5;
+
 
   const pm10 =
     aqData.hourly.pm10;
 
 
   const weatherTimes =
-    weatherData?.hourly?.time || [];
+    weatherData?.hourly?.time ||
+    [];
+
 
   const temperature =
-    weatherData?.hourly?.temperature_2m || [];
+    weatherData?.hourly?.temperature_2m ||
+    [];
+
 
   const wind =
-    weatherData?.hourly?.wind_speed_10m || [];
+    weatherData?.hourly?.wind_speed_10m ||
+    [];
 
 
   const table =
@@ -1974,63 +2554,72 @@ function updateForecast(){
     );
 
 
-  table.innerHTML = "";
+  table.innerHTML =
+    "";
 
 
-  for(let i=0;i<Math.min(72,times.length);i++){
+  for(
+    let i=0;
+    i<Math.min(72,times.length);
+    i++
+  ){
 
-    const tr =
-      document.createElement("tr");
-
-
-    const weatherIndex =
+    const wi =
       weatherTimes.indexOf(
         times[i]
       );
 
 
     const temp =
-      weatherIndex >= 0
-        ? temperature[weatherIndex]
-        : null;
+      wi >= 0
+      ? temperature[wi]
+      : null;
 
 
     const windValue =
-      weatherIndex >= 0
-        ? wind[weatherIndex]
-        : null;
+      wi >= 0
+      ? wind[wi]
+      : null;
 
 
-    tr.innerHTML = `
+    const row =
+      document.createElement(
+        "tr"
+      );
+
+
+    row.innerHTML = `
 
       <td>
         ${formatTime(times[i])}
       </td>
 
       <td>
-        ${value(aqi[i])}
+        ${num(aqi[i])}
       </td>
 
       <td>
-        ${value(pm25[i])}
+        ${fixed(pm25[i])}
       </td>
 
       <td>
-        ${value(pm10[i])}
+        ${fixed(pm10[i])}
       </td>
 
       <td>
-        ${value(windValue)}
+        ${fixed(temp)}
       </td>
 
       <td>
-        ${value(temp)}
+        ${fixed(windValue)}
       </td>
 
     `;
 
 
-    table.appendChild(tr);
+    table.appendChild(
+      row
+    );
 
   }
 
@@ -2061,8 +2650,12 @@ function drawChart(
 
   const ctx =
     document
-      .getElementById("aqChart")
-      .getContext("2d");
+    .getElementById(
+      "aqChart"
+    )
+    .getContext(
+      "2d"
+    );
 
 
   if(chart){
@@ -2076,33 +2669,29 @@ function drawChart(
     new Chart(
       ctx,
       {
+
         type:"line",
 
         data:{
+
           labels:
             times.map(
-              t => formatTime(t)
+              formatTime
             ),
 
           datasets:[
 
             {
               label:"European AQI",
-
               data:aqi,
-
               tension:.3,
-
               borderWidth:2
             },
 
             {
               label:"PM2.5",
-
               data:pm25,
-
               tension:.3,
-
               borderWidth:2
             }
 
@@ -2120,11 +2709,9 @@ function drawChart(
           },
 
           scales:{
-
             y:{
               beginAtZero:true
             }
-
           }
 
         }
@@ -2141,16 +2728,24 @@ function drawChart(
 
 function riskLabel(aqi){
 
-  if(aqi <= 20)
+  if(
+    aqi <= 20
+  )
     return "LOW";
 
-  if(aqi <= 40)
+  if(
+    aqi <= 40
+  )
     return "MODERATE";
 
-  if(aqi <= 60)
+  if(
+    aqi <= 60
+  )
     return "ELEVATED";
 
-  if(aqi <= 80)
+  if(
+    aqi <= 80
+  )
     return "HIGH";
 
   return "VERY HIGH";
@@ -2160,17 +2755,27 @@ function riskLabel(aqi){
 
 function updateRisk(aqi){
 
-  if(!aqi || !aqi.length)
+  if(
+    !aqi ||
+    !aqi.length
+  ){
+
     return;
 
-
-  document.getElementById("riskNow")
-    .innerText =
-    riskLabel(aqi[0]);
+  }
 
 
-  document.getElementById("risk24")
-    .innerText =
+  document.getElementById(
+    "riskNow"
+  ).innerText =
+    riskLabel(
+      aqi[0]
+    );
+
+
+  document.getElementById(
+    "risk24"
+  ).innerText =
     riskLabel(
       aqi[
         Math.min(
@@ -2181,8 +2786,9 @@ function updateRisk(aqi){
     );
 
 
-  document.getElementById("risk48")
-    .innerText =
+  document.getElementById(
+    "risk48"
+  ).innerText =
     riskLabel(
       aqi[
         Math.min(
@@ -2193,8 +2799,9 @@ function updateRisk(aqi){
     );
 
 
-  document.getElementById("risk72")
-    .innerText =
+  document.getElementById(
+    "risk72"
+  ).innerText =
     riskLabel(
       aqi[
         Math.min(
@@ -2208,14 +2815,34 @@ function updateRisk(aqi){
 
 
 /* =========================================================
-   EARLY WARNING
+   WARNING
 ========================================================= */
 
-function updateWarning(
-  observedAQI,
-  scenarioAQI,
-  wind
-){
+function updateWarning(){
+
+  if(
+    !aqData
+  ){
+
+    return;
+
+  }
+
+
+  const observed =
+    Number(
+      aqData.hourly.european_aqi[0] ||
+      0
+    );
+
+
+  const scenario =
+    Number(
+      document.getElementById(
+        "scenarioAQI"
+      ).innerText
+    ) || observed;
+
 
   const box =
     document.getElementById(
@@ -2224,46 +2851,37 @@ function updateWarning(
 
 
   if(
-    scenarioAQI >= 80 ||
-    observedAQI >= 80
+    scenario >= 80
   ){
 
     box.innerHTML =
       "🚨 <b>HIGH POLLUTION WARNING</b><br>" +
-      "Air quality may become unhealthy. " +
-      "Reduce prolonged outdoor exposure.";
+      "Pollution conditions may become unhealthy.";
 
     box.style.background =
       "#ffe1e1";
 
-  }else if(
-    scenarioAQI >= 60
+  }
+  else if(
+    scenario >= 60
   ){
 
     box.innerHTML =
       "⚠️ <b>ELEVATED POLLUTION</b><br>" +
-      "Pollution pressure is elevated. " +
-      "Sensitive people should limit long outdoor activity.";
+      "Sensitive groups should consider reducing prolonged outdoor exposure.";
 
     box.style.background =
       "#fff1d6";
 
-  }else{
+  }
+  else{
 
     box.innerHTML =
-      "✅ <b>No major immediate warning</b><br>" +
-      "Continue monitoring the 72-hour forecast.";
+      "✅ <b>LOWER IMMEDIATE RISK</b><br>" +
+      "Continue monitoring AQI and forecast conditions.";
 
     box.style.background =
       "#e4f7eb";
-
-  }
-
-
-  if(wind < 3){
-
-    box.innerHTML +=
-      "<br><br>🌬️ Very low wind detected — pollutant dispersion may be poor.";
 
   }
 
@@ -2271,20 +2889,24 @@ function updateWarning(
 
 
 /* =========================================================
-   WHAT-IF SIMULATION
+   WHAT IF
 ========================================================= */
 
 function runSimulation(){
 
-  if(!aqData){
+  if(
+    !aqData
+  ){
 
     return;
+
   }
 
 
-  const baseAQI =
+  const base =
     Number(
-      aqData.hourly.european_aqi[0] || 0
+      aqData.hourly.european_aqi[0] ||
+      0
     );
 
 
@@ -2316,27 +2938,21 @@ function runSimulation(){
     emission + "%";
 
 
-  /*
-    Combined scenario.
-
-    Example:
-    +50% traffic
-    +30% emissions
-
-    -> higher simulated AQI
-  */
-
   const multiplier =
     1 +
-    traffic / 100 * .35 +
-    emission / 100 * .65;
+    (
+      traffic / 100
+    ) * .35 +
+    (
+      emission / 100
+    ) * .65;
 
 
-  const simulated =
+  const result =
     Math.max(
       0,
       Math.round(
-        baseAQI *
+        base *
         multiplier
       )
     );
@@ -2345,13 +2961,13 @@ function runSimulation(){
   document.getElementById(
     "simBase"
   ).innerText =
-    Math.round(baseAQI);
+    Math.round(base);
 
 
   document.getElementById(
     "simAQI"
   ).innerText =
-    simulated;
+    result;
 
 }
 
@@ -2360,30 +2976,55 @@ function runSimulation(){
    HELPERS
 ========================================================= */
 
-function value(v){
+function fixed(value){
 
   if(
-    v === null ||
-    v === undefined ||
-    Number.isNaN(Number(v))
+    value === null ||
+    value === undefined ||
+    Number.isNaN(
+      Number(value)
+    )
   ){
 
     return "--";
 
   }
 
-  return Number(v).toFixed(1);
+
+  return Number(
+    value
+  ).toFixed(1);
+
+}
+
+
+function num(value){
+
+  if(
+    value === null ||
+    value === undefined ||
+    Number.isNaN(
+      Number(value)
+    )
+  ){
+
+    return "--";
+
+  }
+
+
+  return Math.round(
+    Number(value)
+  );
 
 }
 
 
 function formatTime(time){
 
-  const date =
-    new Date(time);
-
-
-  return date.toLocaleString(
+  return new Date(
+    time
+  ).toLocaleString(
     [],
     {
       day:"2-digit",
@@ -2397,7 +3038,7 @@ function formatTime(time){
 
 
 /* =========================================================
-   INITIALIZATION
+   START
 ========================================================= */
 
 async function start(){
@@ -2418,8 +3059,7 @@ async function start(){
 ========================================================= */
 
 /*
-   Air quality + weather:
-   every 15 minutes
+   AQ + Weather every 15 minutes
 */
 
 setInterval(
@@ -2433,8 +3073,7 @@ setInterval(
 
 
 /*
-   Traffic:
-   every 5 minutes
+   Traffic every 5 minutes
 */
 
 setInterval(
@@ -2442,7 +3081,7 @@ setInterval(
 
     loadTraffic();
 
-    updateCombinedAnalysis();
+    updatePollutionIntelligence();
 
   },
   5 * 60 * 1000
@@ -2450,27 +3089,24 @@ setInterval(
 
 
 /*
-   Fire/biomass-burning source:
-   every 30 minutes
+   Fire monitoring status every 30 minutes
 */
 
 setInterval(
   () => {
 
-    loadFireSignal();
-
-    updateCombinedAnalysis();
+    updateFireSeasonStatus();
 
   },
   30 * 60 * 1000
 );
 
 
-/* START */
+/* START APP */
 
 start();
 
 </script>
 
 </body>
-</html>
+          </html>
