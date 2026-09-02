@@ -20,9 +20,9 @@ body{
 }
 
 header{
-    background:#063b3b;
+    background:linear-gradient(135deg,#073b3a,#0b6862);
     color:white;
-    padding:25px 15px;
+    padding:28px 20px;
     text-align:center;
 }
 
@@ -33,188 +33,352 @@ header h1{
 
 header p{
     margin:8px 0 0;
-    opacity:.85;
+    opacity:.9;
 }
 
 .container{
-    padding:20px;
-    max-width:1100px;
+    max-width:1200px;
     margin:auto;
+    padding:20px;
+}
+
+.status-bar{
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-bottom:20px;
 }
 
 .status{
     background:white;
-    padding:18px;
-    border-radius:15px;
-    margin-bottom:20px;
-    box-shadow:0 3px 12px rgba(0,0,0,.08);
-}
-
-.status span{
-    color:#0a9b63;
-    font-weight:bold;
-}
-
-button{
-    border:none;
-    background:#063b3b;
-    color:white;
-    padding:10px 15px;
-    border-radius:8px;
-    margin-top:8px;
-    cursor:pointer;
-}
-
-.ncr-summary{
-    background:#063b3b;
-    color:white;
-    padding:22px;
-    border-radius:18px;
-    margin-bottom:25px;
-    box-shadow:0 3px 12px rgba(0,0,0,.12);
-}
-
-.ncr-summary h2{
-    margin-top:0;
-}
-
-.ncr-clock{
-    font-size:24px;
-    font-weight:bold;
-    margin:15px 0;
-}
-
-.ncr-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-    gap:12px;
-    margin-top:18px;
-}
-
-.ncr-region{
-    background:rgba(255,255,255,.12);
-    padding:15px;
+    padding:12px 16px;
     border-radius:12px;
+    box-shadow:0 4px 14px rgba(0,0,0,.07);
 }
 
-.ncr-region h3{
-    margin:0 0 6px;
+.live{
+    color:#16a085;
+    font-weight:bold;
 }
 
-.locations{
+.offline{
+    color:#e74c3c;
+    font-weight:bold;
+}
+
+.section-title{
+    margin-top:25px;
+    margin-bottom:12px;
+}
+
+.cards{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
-    gap:15px;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:16px;
 }
 
 .card{
     background:white;
-    padding:20px;
     border-radius:18px;
-    box-shadow:0 3px 12px rgba(0,0,0,.08);
+    padding:20px;
+    box-shadow:0 7px 22px rgba(0,0,0,.08);
+    transition:.2s;
 }
 
-.card h2{
+.card:hover{
+    transform:translateY(-3px);
+}
+
+.card h3{
     margin-top:0;
 }
 
 .aqi{
     font-size:38px;
     font-weight:bold;
-    margin:8px 0;
-}
-
-.live{
-    color:#0a9b63;
-    font-weight:bold;
+    margin:12px 0;
 }
 
 .good{
-    color:#0a9b63;
+    color:#16a085;
 }
 
-.warning{
+.fair{
+    color:#d4ac0d;
+}
+
+.moderate{
     color:#e67e22;
 }
 
-.danger{
-    color:#d63031;
+.poor{
+    color:#e74c3c;
 }
 
-.data{
+.very-poor{
+    color:#8e44ad;
+}
+
+.extreme{
+    color:#5b2c6f;
+}
+
+.details{
+    line-height:1.8;
     font-size:14px;
-    line-height:1.7;
+    color:#526967;
 }
 
-.alertBox{
-    background:#fff3cd;
-    color:#856404;
-    padding:15px;
-    border-radius:12px;
-    margin-top:20px;
-    display:none;
-}
-
-.forecast-section{
-    background:white;
-    padding:20px;
-    border-radius:18px;
+.map-section{
     margin-top:25px;
-    box-shadow:0 3px 12px rgba(0,0,0,.08);
+    padding:22px;
+    background:white;
+    border-radius:18px;
+    box-shadow:0 8px 25px rgba(0,0,0,.08);
 }
 
-.forecast-section h2{
+.map-section h2{
     margin-top:0;
 }
 
-.forecast-buttons{
+.ncr-map{
+    position:relative;
+    width:100%;
+    height:430px;
+    margin-top:18px;
+    overflow:hidden;
+    border-radius:18px;
+    border:1px solid #b8d8d1;
+
+    background:
+        radial-gradient(
+            circle at 50% 45%,
+            #e6f5f1 0%,
+            #cce9e2 45%,
+            #b6d9d1 100%
+        );
+}
+
+/* Decorative NCR boundaries */
+
+.ncr-map::before{
+    content:"";
+    position:absolute;
+    left:16%;
+    top:15%;
+    width:68%;
+    height:65%;
+    border:3px dashed rgba(23,59,58,.18);
+    border-radius:48% 42% 55% 38%;
+    transform:rotate(-8deg);
+}
+
+.ncr-map::after{
+    content:"NATIONAL CAPITAL REGION";
+    position:absolute;
+    bottom:18px;
+    left:50%;
+    transform:translateX(-50%);
+    font-size:12px;
+    letter-spacing:2px;
+    color:rgba(23,59,58,.45);
+    font-weight:bold;
+}
+
+.map-title{
+    position:absolute;
+    top:15px;
+    left:18px;
+    background:rgba(255,255,255,.92);
+    padding:9px 14px;
+    border-radius:10px;
+    font-weight:bold;
+    z-index:5;
+    box-shadow:0 3px 10px rgba(0,0,0,.08);
+}
+
+.map-marker{
+    position:absolute;
+    transform:translate(-50%,-50%);
+    cursor:pointer;
+    z-index:6;
+    text-align:center;
+}
+
+.marker-dot{
+    width:24px;
+    height:24px;
+    border-radius:50%;
+    border:4px solid white;
+    margin:auto;
+    background:#95a5a6;
+    box-shadow:
+        0 0 0 4px rgba(255,255,255,.35),
+        0 4px 12px rgba(0,0,0,.25);
+    animation:pulse 2s infinite;
+}
+
+@keyframes pulse{
+    0%{
+        box-shadow:
+        0 0 0 0 rgba(22,160,133,.35),
+        0 4px 12px rgba(0,0,0,.25);
+    }
+
+    70%{
+        box-shadow:
+        0 0 0 10px rgba(22,160,133,0),
+        0 4px 12px rgba(0,0,0,.25);
+    }
+
+    100%{
+        box-shadow:
+        0 0 0 0 rgba(22,160,133,0),
+        0 4px 12px rgba(0,0,0,.25);
+    }
+}
+
+.marker-label{
+    margin-top:7px;
+    background:white;
+    padding:6px 10px;
+    border-radius:8px;
+    font-size:12px;
+    font-weight:bold;
+    white-space:nowrap;
+    box-shadow:0 3px 10px rgba(0,0,0,.15);
+}
+
+.marker-aqi{
+    font-size:11px;
+    margin-top:3px;
+    background:rgba(255,255,255,.9);
+    padding:3px 6px;
+    border-radius:5px;
+}
+
+.map-legend{
+    display:flex;
+    flex-wrap:wrap;
+    gap:12px;
+    margin-top:15px;
+    font-size:13px;
+}
+
+.legend-item{
+    display:flex;
+    align-items:center;
+    gap:6px;
+}
+
+.legend-dot{
+    width:12px;
+    height:12px;
+    border-radius:50%;
+    display:inline-block;
+}
+
+.map-footer{
+    margin-top:12px;
+    font-size:12px;
+    color:#647b78;
+}
+
+.prediction{
+    margin-top:25px;
+    background:white;
+    border-radius:18px;
+    padding:22px;
+    box-shadow:0 8px 25px rgba(0,0,0,.08);
+}
+
+.location-buttons{
     display:flex;
     flex-wrap:wrap;
     gap:8px;
-    margin-bottom:15px;
+    margin:15px 0;
 }
 
-.forecast-buttons button{
-    margin:0;
-    background:#e6f1ef;
-    color:#063b3b;
+.location-buttons button{
+    border:0;
+    padding:10px 15px;
+    border-radius:10px;
+    background:#d9ece8;
+    color:#173b3a;
+    font-weight:bold;
+    cursor:pointer;
 }
 
-.forecast-buttons button.active{
-    background:#063b3b;
+.location-buttons button.active{
+    background:#0b6862;
     color:white;
 }
 
 canvas{
-    display:block;
     width:100%;
-    height:320px;
-    border:1px solid #dce9e6;
-    border-radius:12px;
-    background:#fbfefd;
+    height:300px;
+    border-radius:14px;
+    background:#f7fbfa;
+    border:1px solid #dcece8;
 }
 
-.forecast-info{
-    margin-top:12px;
-    font-size:13px;
-    color:#607d7b;
+.ncr-summary{
+    margin-top:25px;
+    background:linear-gradient(135deg,#ffffff,#e9f6f2);
+    border-radius:18px;
+    padding:22px;
+    box-shadow:0 8px 25px rgba(0,0,0,.07);
+}
+
+.ncr-summary-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:12px;
+    margin-top:15px;
+}
+
+.summary-box{
+    background:white;
+    padding:15px;
+    border-radius:12px;
+}
+
+.summary-box strong{
+    display:block;
+    font-size:22px;
+    margin-top:5px;
 }
 
 footer{
-    text-align:center;
+    margin-top:30px;
     padding:25px;
-    color:#607d7b;
-    font-size:13px;
-}
-
-.small{
+    text-align:center;
+    color:#617572;
     font-size:12px;
-    color:#718381;
 }
 
-.errorText{
-    color:#d63031;
-    font-weight:bold;
+@media(max-width:600px){
+
+    header h1{
+        font-size:25px;
+    }
+
+    .container{
+        padding:12px;
+    }
+
+    .ncr-map{
+        height:360px;
+    }
+
+    .marker-label{
+        font-size:10px;
+    }
+
+    .marker-aqi{
+        font-size:10px;
+    }
 }
 
 </style>
@@ -224,11 +388,11 @@ footer{
 
 <header>
 
-<h1>🌍 NCR AIR WATCH</h1>
+    <h1>🌍 NCR AIR WATCH</h1>
 
-<p>
-Live Air Quality & Atmospheric Monitoring
-</p>
+    <p>
+        Live Air Quality & Atmospheric Monitoring System
+    </p>
 
 </header>
 
@@ -236,224 +400,422 @@ Live Air Quality & Atmospheric Monitoring
 <div class="container">
 
 
-<div class="status">
+    <!-- STATUS -->
 
-<h2>System Status</h2>
+    <div class="status-bar">
 
-<p>
-Monitoring:
-<span id="systemStatus">● STARTING...</span>
-</p>
+        <div class="status">
+            System Status:
+            <span id="systemStatus" class="live">
+                CONNECTING...
+            </span>
+        </div>
 
-<p>
-Forecast Window:
-<b>72 Hours</b>
-</p>
+        <div class="status">
+            Last Updated:
+            <strong id="lastUpdated">--</strong>
+        </div>
 
-<p>
-Last Updated:
-<b id="lastUpdated">--</b>
-</p>
+        <div class="status">
+            NCR Time:
+            <strong id="ncrClock">--:--:--</strong>
+        </div>
 
-<button onclick="enableNotifications()">
-🔔 Enable Alerts
-</button>
+    </div>
 
-<div id="alertBox" class="alertBox"></div>
+
+    <!-- LOCATION CARDS -->
+
+    <h2 class="section-title">
+        📍 Live Monitoring
+    </h2>
+
+    <div class="cards">
+
+
+        <div class="card">
+
+            <h3>Delhi</h3>
+
+            <div
+                class="aqi"
+                id="aqi-delhi">
+                --
+            </div>
+
+            <div
+                class="details"
+                id="details-delhi">
+                Loading...
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>Gurugram</h3>
+
+            <div
+                class="aqi"
+                id="aqi-gurugram">
+                --
+            </div>
+
+            <div
+                class="details"
+                id="details-gurugram">
+                Loading...
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>Noida</h3>
+
+            <div
+                class="aqi"
+                id="aqi-noida">
+                --
+            </div>
+
+            <div
+                class="details"
+                id="details-noida">
+                Loading...
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>Ghaziabad</h3>
+
+            <div
+                class="aqi"
+                id="aqi-ghaziabad">
+                --
+            </div>
+
+            <div
+                class="details"
+                id="details-ghaziabad">
+                Loading...
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- NCR MAP -->
+
+    <section class="map-section">
+
+        <h2>🗺️ NCR Air Quality Map</h2>
+
+        <p>
+            Live air-quality monitoring across major NCR locations.
+        </p>
+
+
+        <div class="ncr-map">
+
+            <div class="map-title">
+                NCR AIR WATCH • LIVE
+            </div>
+
+
+            <div
+                class="map-marker"
+                style="left:48%;top:47%;">
+
+                <div
+                    class="marker-dot"
+                    id="dot-delhi">
+                </div>
+
+                <div class="marker-label">
+                    Delhi
+                </div>
+
+                <div
+                    class="marker-aqi"
+                    id="map-aqi-delhi">
+                    AQI: --
+                </div>
+
+            </div>
+
+
+            <div
+                class="map-marker"
+                style="left:37%;top:64%;">
+
+                <div
+                    class="marker-dot"
+                    id="dot-gurugram">
+                </div>
+
+                <div class="marker-label">
+                    Gurugram
+                </div>
+
+                <div
+                    class="marker-aqi"
+                    id="map-aqi-gurugram">
+                    AQI: --
+                </div>
+
+            </div>
+
+
+            <div
+                class="map-marker"
+                style="left:63%;top:56%;">
+
+                <div
+                    class="marker-dot"
+                    id="dot-noida">
+                </div>
+
+                <div class="marker-label">
+                    Noida
+                </div>
+
+                <div
+                    class="marker-aqi"
+                    id="map-aqi-noida">
+                    AQI: --
+                </div>
+
+            </div>
+
+
+            <div
+                class="map-marker"
+                style="left:69%;top:43%;">
+
+                <div
+                    class="marker-dot"
+                    id="dot-ghaziabad">
+                </div>
+
+                <div class="marker-label">
+                    Ghaziabad
+                </div>
+
+                <div
+                    class="marker-aqi"
+                    id="map-aqi-ghaziabad">
+                    AQI: --
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="map-legend">
+
+            <div class="legend-item">
+                <span
+                    class="legend-dot"
+                    style="background:#2ecc71">
+                </span>
+                Good
+            </div>
+
+            <div class="legend-item">
+                <span
+                    class="legend-dot"
+                    style="background:#f1c40f">
+                </span>
+                Fair
+            </div>
+
+            <div class="legend-item">
+                <span
+                    class="legend-dot"
+                    style="background:#e67e22">
+                </span>
+                Moderate
+            </div>
+
+            <div class="legend-item">
+                <span
+                    class="legend-dot"
+                    style="background:#e74c3c">
+                </span>
+                Poor
+            </div>
+
+            <div class="legend-item">
+                <span
+                    class="legend-dot"
+                    style="background:#8e44ad">
+                </span>
+                Very Poor
+            </div>
+
+            <div class="legend-item">
+                <span
+                    class="legend-dot"
+                    style="background:#5b2c6f">
+                </span>
+                Extreme
+            </div>
+
+        </div>
+
+
+        <div class="map-footer">
+
+            Data source:
+            Open-Meteo / CAMS.
+            AQI bands follow the European AQI scale.
+
+        </div>
+
+    </section>
+
+
+
+    <!-- NCR SUMMARY -->
+
+    <section class="ncr-summary">
+
+        <h2>🌐 NCR Regional Overview</h2>
+
+        <p>
+            Combined monitoring view of the selected NCR locations.
+        </p>
+
+
+        <div class="ncr-summary-grid">
+
+            <div class="summary-box">
+
+                Average AQI
+
+                <strong id="avgAQI">
+                    --
+                </strong>
+
+            </div>
+
+
+            <div class="summary-box">
+
+                Highest AQI
+
+                <strong id="maxAQI">
+                    --
+                </strong>
+
+            </div>
+
+
+            <div class="summary-box">
+
+                Lowest AQI
+
+                <strong id="minAQI">
+                    --
+                </strong>
+
+            </div>
+
+
+            <div class="summary-box">
+
+                Locations Online
+
+                <strong id="onlineCount">
+                    0/4
+                </strong>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- 72 HOUR PREDICTION -->
+
+    <section class="prediction">
+
+        <h2>
+            📈 72-Hour Prediction
+        </h2>
+
+        <p>
+            Future air-quality prediction based on hourly
+            atmospheric and pollution forecast data.
+        </p>
+
+
+        <div class="location-buttons">
+
+            <button
+                id="btn-delhi"
+                class="active"
+                onclick="showPrediction('delhi')">
+                Delhi
+            </button>
+
+            <button
+                id="btn-gurugram"
+                onclick="showPrediction('gurugram')">
+                Gurugram
+            </button>
+
+            <button
+                id="btn-noida"
+                onclick="showPrediction('noida')">
+                Noida
+            </button>
+
+            <button
+                id="btn-ghaziabad"
+                onclick="showPrediction('ghaziabad')">
+                Ghaziabad
+            </button>
+
+        </div>
+
+
+        <canvas
+            id="predictionCanvas"
+            width="1100"
+            height="300">
+        </canvas>
+
+
+        <p
+            id="predictionText"
+            style="margin-top:12px;color:#607572;">
+            Loading 72-hour prediction...
+        </p>
+
+    </section>
+
 
 </div>
-
-
-
-<div class="ncr-summary">
-
-<h2>🌍 NCR-Level Monitoring</h2>
-
-<p>
-Monitoring the National Capital Region across Delhi,
-Haryana, Uttar Pradesh and Rajasthan.
-</p>
-
-<div class="ncr-clock" id="ncrClock">
-Loading NCR time...
-</div>
-
-<p>
-<b>IST • Live Monitoring</b>
-</p>
-
-<div class="ncr-grid">
-
-<div class="ncr-region">
-<h3>🇮🇳 Delhi</h3>
-<p>Whole NCT Delhi</p>
-</div>
-
-<div class="ncr-region">
-<h3>Haryana</h3>
-<p>14 NCR districts</p>
-</div>
-
-<div class="ncr-region">
-<h3>Uttar Pradesh</h3>
-<p>8 NCR districts</p>
-</div>
-
-<div class="ncr-region">
-<h3>Rajasthan</h3>
-<p>2 NCR districts</p>
-</div>
-
-</div>
-
-</div>
-
-
-
-<h2>NCR Monitoring Locations</h2>
-
-
-<div class="locations">
-
-
-<div class="card" id="delhi">
-
-<h2>Delhi</h2>
-
-<p class="live">● LIVE</p>
-
-<p>AQI</p>
-
-<div class="aqi">--</div>
-
-<div class="data">
-Loading live data...
-</div>
-
-</div>
-
-
-
-<div class="card" id="gurugram">
-
-<h2>Gurugram</h2>
-
-<p class="live">● LIVE</p>
-
-<p>AQI</p>
-
-<div class="aqi">--</div>
-
-<div class="data">
-Loading live data...
-</div>
-
-</div>
-
-
-
-<div class="card" id="noida">
-
-<h2>Noida</h2>
-
-<p class="live">● LIVE</p>
-
-<p>AQI</p>
-
-<div class="aqi">--</div>
-
-<div class="data">
-Loading live data...
-</div>
-
-</div>
-
-
-
-<div class="card" id="ghaziabad">
-
-<h2>Ghaziabad</h2>
-
-<p class="live">● LIVE</p>
-
-<p>AQI</p>
-
-<div class="aqi">--</div>
-
-<div class="data">
-Loading live data...
-</div>
-
-</div>
-
-
-</div>
-
-
-
-<div class="forecast-section">
-
-<h2>📈 72-Hour Prediction</h2>
-
-<p>
-Future air-quality prediction based on hourly atmospheric
-and pollution forecast data.
-</p>
-
-
-<div class="forecast-buttons">
-
-<button
-id="btn-delhi"
-class="active"
-onclick="showForecast('delhi')">
-Delhi
-</button>
-
-<button
-id="btn-gurugram"
-onclick="showForecast('gurugram')">
-Gurugram
-</button>
-
-<button
-id="btn-noida"
-onclick="showForecast('noida')">
-Noida
-</button>
-
-<button
-id="btn-ghaziabad"
-onclick="showForecast('ghaziabad')">
-Ghaziabad
-</button>
-
-</div>
-
-
-<canvas id="forecastCanvas"></canvas>
-
-
-<div class="forecast-info" id="forecastInfo">
-Loading 72-hour prediction...
-</div>
-
-</div>
-
-
-</div>
-
 
 
 <footer>
 
-NCR AIR WATCH • AI-powered environmental monitoring
+    NCR AIR WATCH<br>
 
-<br>
-
-<span class="small">
-Data: Open-Meteo / CAMS
-</span>
+    Live atmospheric and air-quality monitoring
+    powered by Open-Meteo / CAMS.
 
 </footer>
 
@@ -461,115 +823,12 @@ Data: Open-Meteo / CAMS
 
 <script>
 
-/* =====================================================
-   NCR AIR WATCH
-   LIVE MONITORING + 72 HOUR PREDICTION
-===================================================== */
 
+// ==========================================
+// NCR AIR WATCH
+// LIVE DATA + MAP + 72 HOUR PREDICTION
+// ==========================================
 
-/* =====================================================
-   GLOBAL ERROR HANDLER
-===================================================== */
-
-window.addEventListener("error", function(event){
-
-    console.error("JavaScript error:", event.error);
-
-    const status =
-        document.getElementById("systemStatus");
-
-    if(status){
-
-        status.textContent =
-            "● ERROR";
-
-        status.style.color =
-            "#d63031";
-
-    }
-
-    const box =
-        document.getElementById("alertBox");
-
-    if(box){
-
-        box.style.display =
-            "block";
-
-        box.innerHTML =
-            "<b>⚠️ System Error</b><br>" +
-            event.message;
-
-    }
-
-});
-
-
-/* =====================================================
-   LIVE NCR CLOCK
-===================================================== */
-
-function updateNCRClock(){
-
-    const clock =
-        document.getElementById("ncrClock");
-
-    if(!clock){
-        return;
-    }
-
-    const now =
-        new Date();
-
-    try{
-
-        const time =
-            now.toLocaleTimeString(
-                "en-IN",
-                {
-                    timeZone:"Asia/Kolkata",
-                    hour:"2-digit",
-                    minute:"2-digit",
-                    second:"2-digit",
-                    hour12:true
-                }
-            );
-
-        const date =
-            now.toLocaleDateString(
-                "en-IN",
-                {
-                    timeZone:"Asia/Kolkata",
-                    day:"2-digit",
-                    month:"short",
-                    year:"numeric"
-                }
-            );
-
-        clock.textContent =
-            date + " • " + time + " IST";
-
-    }catch(error){
-
-        clock.textContent =
-            now.toLocaleString();
-
-    }
-
-}
-
-
-updateNCRClock();
-
-setInterval(
-    updateNCRClock,
-    1000
-);
-
-
-/* =====================================================
-   LOCATIONS
-===================================================== */
 
 const locations = {
 
@@ -600,44 +859,182 @@ const locations = {
 };
 
 
-let previousData = {};
+const forecastData = {};
 
-let forecastData = {};
-
-let selectedForecast =
-    "delhi";
+let selectedLocation = "delhi";
 
 
-/* =====================================================
-   GET DATA
-===================================================== */
+
+// ==========================================
+// CLOCK
+// ==========================================
+
+function updateNCRClock(){
+
+    const now = new Date();
+
+    const time = now.toLocaleTimeString(
+        "en-IN",
+        {
+            timeZone:"Asia/Kolkata",
+            hour:"2-digit",
+            minute:"2-digit",
+            second:"2-digit",
+            hour12:false
+        }
+    );
+
+    document.getElementById("ncrClock").textContent = time;
+
+}
+
+setInterval(updateNCRClock,1000);
+
+updateNCRClock();
+
+
+
+// ==========================================
+// AQI CLASS
+// ==========================================
+
+function getAQIClass(aqi){
+
+    if(aqi <= 20){
+        return "good";
+    }
+
+    if(aqi <= 40){
+        return "fair";
+    }
+
+    if(aqi <= 60){
+        return "moderate";
+    }
+
+    if(aqi <= 80){
+        return "poor";
+    }
+
+    if(aqi <= 100){
+        return "very-poor";
+    }
+
+    return "extreme";
+
+}
+
+
+
+// ==========================================
+// AQI COLOR
+// ==========================================
+
+function getAQIColor(aqi){
+
+    if(aqi <= 20){
+        return "#2ecc71";
+    }
+
+    if(aqi <= 40){
+        return "#f1c40f";
+    }
+
+    if(aqi <= 60){
+        return "#e67e22";
+    }
+
+    if(aqi <= 80){
+        return "#e74c3c";
+    }
+
+    if(aqi <= 100){
+        return "#8e44ad";
+    }
+
+    return "#5b2c6f";
+
+}
+
+
+
+// ==========================================
+// UPDATE MAP
+// ==========================================
+
+function updateMapMarker(key,aqi){
+
+    const dot =
+        document.getElementById("dot-"+key);
+
+    const value =
+        document.getElementById("map-aqi-"+key);
+
+    if(!dot || !value){
+        return;
+    }
+
+
+    if(
+        aqi === null ||
+        aqi === undefined ||
+        isNaN(aqi)
+    ){
+
+        value.textContent="AQI: --";
+
+        dot.style.background="#95a5a6";
+
+        return;
+
+    }
+
+
+    const roundedAQI =
+        Math.round(aqi);
+
+
+    value.textContent =
+        "AQI: " + roundedAQI;
+
+
+    dot.style.background =
+        getAQIColor(roundedAQI);
+
+}
+
+
+
+// ==========================================
+// GET DATA
+// ==========================================
 
 async function getData(key){
 
-    const loc =
-        locations[key];
+    const loc = locations[key];
+
 
     const airURL =
-        "https://air-quality-api.open-meteo.com/v1/air-quality" +
-        "?latitude=" + loc.lat +
-        "&longitude=" + loc.lon +
-        "&hourly=pm2_5,pm10,nitrogen_dioxide,ozone,european_aqi" +
-        "&forecast_hours=72" +
-        "&timezone=Asia%2FKolkata";
+        "https://air-quality-api.open-meteo.com/v1/air-quality"
+        + "?latitude="+loc.lat
+        + "&longitude="+loc.lon
+        + "&hourly=pm2_5,pm10,nitrogen_dioxide,ozone,european_aqi"
+        + "&forecast_hours=72"
+        + "&timezone=Asia%2FKolkata";
 
 
     const weatherURL =
-        "https://api.open-meteo.com/v1/forecast" +
-        "?latitude=" + loc.lat +
-        "&longitude=" + loc.lon +
-        "&current=temperature_2m,relative_humidity_2m,wind_speed_10m,pressure_msl" +
-        "&forecast_hours=72" +
-        "&timezone=Asia%2FKolkata";
+        "https://api.open-meteo.com/v1/forecast"
+        + "?latitude="+loc.lat
+        + "&longitude="+loc.lon
+        + "&current=temperature_2m,relative_humidity_2m,wind_speed_10m,pressure_msl"
+        + "&forecast_hours=72"
+        + "&timezone=Asia%2FKolkata";
 
 
     try{
 
-        const results =
+        const responses =
             await Promise.all([
                 fetch(airURL),
                 fetch(weatherURL)
@@ -645,29 +1042,17 @@ async function getData(key){
 
 
         const airResponse =
-            results[0];
+            responses[0];
 
         const weatherResponse =
-            results[1];
+            responses[1];
 
 
-        if(!airResponse.ok){
-
-            throw new Error(
-                "Air Quality API error: " +
-                airResponse.status
-            );
-
-        }
-
-
-        if(!weatherResponse.ok){
-
-            throw new Error(
-                "Weather API error: " +
-                weatherResponse.status
-            );
-
+        if(
+            !airResponse.ok ||
+            !weatherResponse.ok
+        ){
+            throw new Error("API request failed");
         }
 
 
@@ -680,87 +1065,107 @@ async function getData(key){
 
         if(
             !air.hourly ||
-            !air.hourly.time ||
-            !air.hourly.european_aqi
+            !weather.current
         ){
-
-            throw new Error(
-                "Invalid air-quality response"
-            );
-
+            throw new Error("Invalid API data");
         }
 
 
-        forecastData[key] = {
+        const aqi =
+            air.hourly.european_aqi[0];
 
-            time:
-                air.hourly.time,
 
-            aqi:
-                air.hourly.european_aqi,
+        const pm25 =
+            air.hourly.pm2_5[0];
 
-            pm25:
-                air.hourly.pm2_5,
 
-            pm10:
-                air.hourly.pm10,
+        const pm10 =
+            air.hourly.pm10[0];
 
-            no2:
-                air.hourly.nitrogen_dioxide,
 
-            ozone:
-                air.hourly.ozone
+        const no2 =
+            air.hourly.nitrogen_dioxide[0];
+
+
+        const ozone =
+            air.hourly.ozone[0];
+
+
+        forecastData[key]={
+
+            air:air,
+
+            weather:weather,
+
+            aqi:aqi,
+
+            pm25:pm25,
+
+            pm10:pm10,
+
+            no2:no2,
+
+            ozone:ozone
 
         };
 
 
         updateCard(
             key,
-            loc,
-            air,
-            weather
+            forecastData[key]
         );
 
 
-        if(
-            key === selectedForecast
-        ){
-
-            drawForecast(key);
-
-        }
+        updateMapMarker(
+            key,
+            aqi
+        );
 
 
         return true;
 
+    }
 
-    }catch(error){
+    catch(error){
 
         console.error(
+            "Error loading",
             key,
             error
         );
 
 
-        const card =
-            document.getElementById(key);
+        const aqiElement =
+            document.getElementById(
+                "aqi-"+key
+            );
 
 
-        if(card){
+        const detailsElement =
+            document.getElementById(
+                "details-"+key
+            );
 
-            const data =
-                card.querySelector(".data");
 
-            if(data){
+        if(aqiElement){
 
-                data.innerHTML =
-                    "<span class='errorText'>" +
-                    "⚠️ Live data unavailable" +
-                    "</span>";
-
-            }
+            aqiElement.textContent="--";
 
         }
+
+
+        if(detailsElement){
+
+            detailsElement.textContent =
+                "Live data unavailable";
+
+        }
+
+
+        updateMapMarker(
+            key,
+            null
+        );
 
 
         return false;
@@ -770,885 +1175,107 @@ async function getData(key){
 }
 
 
-/* =====================================================
-   UPDATE CARD
-===================================================== */
 
-function updateCard(
-    key,
-    loc,
-    air,
-    weather
-){
+// ==========================================
+// UPDATE CARD
+// ==========================================
 
-    const card =
-        document.getElementById(key);
+function updateCard(key,data){
+
+    const aqiElement =
+        document.getElementById(
+            "aqi-"+key
+        );
 
 
-    if(!card){
-        return;
-    }
+    const detailsElement =
+        document.getElementById(
+            "details-"+key
+        );
 
 
     const aqi =
-        air.hourly.european_aqi[0];
-
-    const pm25 =
-        air.hourly.pm2_5[0];
-
-    const pm10 =
-        air.hourly.pm10[0];
-
-    const no2 =
-        air.hourly.nitrogen_dioxide[0];
-
-    const ozone =
-        air.hourly.ozone[0];
+        Number(data.aqi);
 
 
-    const current =
-        weather.current || {};
+    if(
+        isNaN(aqi)
+    ){
 
+        aqiElement.textContent="--";
 
-    const temp =
-        current.temperature_2m;
+        return;
 
-    const humidity =
-        current.relative_humidity_2m;
-
-    const wind =
-        current.wind_speed_10m;
-
-    const pressure =
-        current.pressure_msl;
-
-
-    const aqiElement =
-        card.querySelector(".aqi");
+    }
 
 
     aqiElement.textContent =
-        aqi == null
-        ? "--"
-        : Math.round(aqi);
+        Math.round(aqi);
 
 
     aqiElement.className =
-        "aqi " +
-        getAQIClass(aqi);
+        "aqi " + getAQIClass(aqi);
 
 
-    card.querySelector(".data").innerHTML =
-
-        "<b>PM2.5:</b> " +
-        format(pm25) +
-        " μg/m³<br>" +
-
-        "<b>PM10:</b> " +
-        format(pm10) +
-        " μg/m³<br>" +
-
-        "<b>NO₂:</b> " +
-        format(no2) +
-        " μg/m³<br>" +
-
-        "<b>O₃:</b> " +
-        format(ozone) +
-        " μg/m³<br>" +
-
-        "<b>Temperature:</b> " +
-        format(temp) +
-        " °C<br>" +
-
-        "<b>Humidity:</b> " +
-        format(humidity) +
-        " %<br>" +
-
-        "<b>Wind:</b> " +
-        format(wind) +
-        " km/h<br>" +
-
-        "<b>Pressure:</b> " +
-        format(pressure) +
-        " hPa<br><br>" +
-
-        "<b>72-hour forecast:</b> Available";
+    const weather =
+        data.weather.current;
 
 
-    detectChange(
-        key,
-        loc,
-        {
-            aqi,
-            pm25,
-            pm10,
-            temp,
-            humidity,
-            wind,
-            pressure
-        }
-    );
+    detailsElement.innerHTML =
 
+        "PM2.5: "
+        + Number(data.pm25).toFixed(1)
+        + " μg/m³<br>"
 
-    previousData[key] = {
+        +
 
-        aqi,
-        pm25,
-        pm10,
-        temp,
-        humidity,
-        wind,
-        pressure
+        "PM10: "
+        + Number(data.pm10).toFixed(1)
+        + " μg/m³<br>"
 
-    };
+        +
+
+        "NO₂: "
+        + Number(data.no2).toFixed(1)
+        + " μg/m³<br>"
+
+        +
+
+        "O₃: "
+        + Number(data.ozone).toFixed(1)
+        + " μg/m³<br>"
+
+        +
+
+        "Temperature: "
+        + Number(weather.temperature_2m).toFixed(1)
+        + " °C<br>"
+
+        +
+
+        "Humidity: "
+        + Number(weather.relative_humidity_2m).toFixed(0)
+        + "%<br>"
+
+        +
+
+        "Wind: "
+        + Number(weather.wind_speed_10m).toFixed(1)
+        + " km/h<br>"
+
+        +
+
+        "Pressure: "
+        + Number(weather.pressure_msl).toFixed(0)
+        + " hPa";
 
 }
 
 
-/* =====================================================
-   CHANGE DETECTION
-===================================================== */
 
-function detectChange(
-    key,
-    loc,
-    current
-){
-
-    const old =
-        previousData[key];
-
-
-    if(!old){
-        return;
-    }
-
-
-    const changes = [];
-
-
-    if(
-        validNumber(current.pm25) &&
-        validNumber(old.pm25) &&
-        Math.abs(
-            current.pm25 -
-            old.pm25
-        ) >= 10
-    ){
-
-        changes.push(
-            "PM2.5 changed significantly"
-        );
-
-    }
-
-
-    if(
-        validNumber(current.pm10) &&
-        validNumber(old.pm10) &&
-        Math.abs(
-            current.pm10 -
-            old.pm10
-        ) >= 15
-    ){
-
-        changes.push(
-            "PM10 changed significantly"
-        );
-
-    }
-
-
-    if(
-        validNumber(current.temp) &&
-        validNumber(old.temp) &&
-        Math.abs(
-            current.temp -
-            old.temp
-        ) >= 3
-    ){
-
-        changes.push(
-            "Temperature changed"
-        );
-
-    }
-
-
-    if(
-        validNumber(current.wind) &&
-        validNumber(old.wind) &&
-        Math.abs(
-            current.wind -
-            old.wind
-        ) >= 10
-    ){
-
-        changes.push(
-            "Wind speed changed"
-        );
-
-    }
-
-
-    if(
-        validNumber(current.pressure) &&
-        validNumber(old.pressure) &&
-        Math.abs(
-            current.pressure -
-            old.pressure
-        ) >= 5
-    ){
-
-        changes.push(
-            "Atmospheric pressure changed"
-        );
-
-    }
-
-
-    if(
-        validNumber(current.aqi) &&
-        validNumber(old.aqi) &&
-        current.aqi >
-        old.aqi + 10
-    ){
-
-        changes.push(
-            "AQI increased"
-        );
-
-    }
-
-
-    if(changes.length > 0){
-
-        const message =
-            "⚠️ " +
-            loc.name +
-            ": " +
-            changes.join(", ");
-
-
-        showAlert(message);
-
-
-        sendNotification(
-            "NCR AIR WATCH Alert",
-            message
-        );
-
-    }
-
-}
-
-
-/* =====================================================
-   ALERT
-===================================================== */
-
-function showAlert(message){
-
-    const box =
-        document.getElementById(
-            "alertBox"
-        );
-
-
-    if(!box){
-        return;
-    }
-
-
-    box.style.display =
-        "block";
-
-
-    box.innerHTML =
-        "<b>⚠️ Atmospheric Change Detected</b>" +
-        "<br>" +
-        message;
-
-}
-
-
-/* =====================================================
-   NOTIFICATIONS
-===================================================== */
-
-function sendNotification(
-    title,
-    message
-){
-
-    if(
-        "Notification" in window &&
-        Notification.permission ===
-        "granted"
-    ){
-
-        try{
-
-            new Notification(
-                title,
-                {
-                    body:message
-                }
-            );
-
-        }catch(error){
-
-            console.log(
-                "Notification error",
-                error
-            );
-
-        }
-
-    }
-
-}
-
-
-function enableNotifications(){
-
-    if(
-        !("Notification" in window)
-    ){
-
-        alert(
-            "Browser notifications are not supported."
-        );
-
-        return;
-
-    }
-
-
-    Notification.requestPermission()
-    .then(function(permission){
-
-        if(
-            permission ===
-            "granted"
-        ){
-
-            alert(
-                "🔔 Alerts enabled!"
-            );
-
-        }else{
-
-            alert(
-                "Notification permission was not granted."
-            );
-
-        }
-
-    });
-
-}
-
-
-/* =====================================================
-   AQI CLASS
-===================================================== */
-
-function getAQIClass(aqi){
-
-    if(
-        !validNumber(aqi)
-    ){
-
-        return "";
-
-    }
-
-
-    if(aqi <= 40){
-
-        return "good";
-
-    }
-
-
-    if(aqi <= 80){
-
-        return "warning";
-
-    }
-
-
-    return "danger";
-
-}
-
-
-/* =====================================================
-   FORMAT
-===================================================== */
-
-function format(value){
-
-    if(
-        value === null ||
-        value === undefined ||
-        Number.isNaN(
-            Number(value)
-        )
-    ){
-
-        return "--";
-
-    }
-
-
-    return Number(value)
-        .toFixed(1);
-
-}
-
-
-function validNumber(value){
-
-    return (
-        value !== null &&
-        value !== undefined &&
-        Number.isFinite(
-            Number(value)
-        )
-    );
-
-}
-
-
-/* =====================================================
-   FORECAST BUTTON
-===================================================== */
-
-function showForecast(key){
-
-    selectedForecast =
-        key;
-
-
-    document
-        .querySelectorAll(
-            ".forecast-buttons button"
-        )
-        .forEach(function(button){
-
-            button.classList.remove(
-                "active"
-            );
-
-        });
-
-
-    const button =
-        document.getElementById(
-            "btn-" + key
-        );
-
-
-    if(button){
-
-        button.classList.add(
-            "active"
-        );
-
-    }
-
-
-    drawForecast(key);
-
-}
-
-
-/* =====================================================
-   DRAW 72-HOUR GRAPH
-===================================================== */
-
-function drawForecast(key){
-
-    const data =
-        forecastData[key];
-
-
-    const canvas =
-        document.getElementById(
-            "forecastCanvas"
-        );
-
-
-    const info =
-        document.getElementById(
-            "forecastInfo"
-        );
-
-
-    if(
-        !data ||
-        !data.aqi ||
-        data.aqi.length === 0
-    ){
-
-        info.textContent =
-            "Loading 72-hour prediction...";
-
-        return;
-
-    }
-
-
-    const width =
-        canvas.clientWidth;
-
-
-    const height =
-        canvas.clientHeight;
-
-
-    if(
-        width <= 0 ||
-        height <= 0
-    ){
-
-        return;
-
-    }
-
-
-    const dpr =
-        window.devicePixelRatio || 1;
-
-
-    canvas.width =
-        width * dpr;
-
-
-    canvas.height =
-        height * dpr;
-
-
-    const ctx =
-        canvas.getContext("2d");
-
-
-    ctx.setTransform(
-        dpr,
-        0,
-        0,
-        dpr,
-        0,
-        0
-    );
-
-
-    ctx.clearRect(
-        0,
-        0,
-        width,
-        height
-    );
-
-
-    const values =
-        data.aqi
-        .slice(0,72)
-        .map(function(value){
-
-            return Number(value) || 0;
-
-        });
-
-
-    if(values.length === 0){
-
-        info.textContent =
-            "No prediction data available.";
-
-        return;
-
-    }
-
-
-    const maxValue =
-        Math.max(
-            100,
-            ...values
-        );
-
-
-    const left = 45;
-    const right = 15;
-    const top = 25;
-    const bottom = 45;
-
-
-    const graphWidth =
-        width -
-        left -
-        right;
-
-
-    const graphHeight =
-        height -
-        top -
-        bottom;
-
-
-    /* GRID */
-
-    ctx.strokeStyle =
-        "#dce9e6";
-
-    ctx.lineWidth = 1;
-
-
-    for(
-        let i = 0;
-        i <= 5;
-        i++
-    ){
-
-        const y =
-            top +
-            graphHeight *
-            i / 5;
-
-
-        ctx.beginPath();
-
-        ctx.moveTo(
-            left,
-            y
-        );
-
-        ctx.lineTo(
-            width - right,
-            y
-        );
-
-        ctx.stroke();
-
-
-        const label =
-            Math.round(
-                maxValue -
-                (
-                    maxValue *
-                    i / 5
-                )
-            );
-
-
-        ctx.fillStyle =
-            "#607d7b";
-
-        ctx.font =
-            "11px Arial";
-
-
-        ctx.fillText(
-            label,
-            8,
-            y + 4
-        );
-
-    }
-
-
-    /* LINE */
-
-    ctx.strokeStyle =
-        "#063b3b";
-
-    ctx.lineWidth =
-        3;
-
-    ctx.beginPath();
-
-
-    values.forEach(
-        function(value,index){
-
-            const x =
-                left +
-                graphWidth *
-                index /
-                Math.max(
-                    1,
-                    values.length - 1
-                );
-
-
-            const y =
-                top +
-                graphHeight *
-                (
-                    1 -
-                    (
-                        value /
-                        maxValue
-                    )
-                );
-
-
-            if(index === 0){
-
-                ctx.moveTo(
-                    x,
-                    y
-                );
-
-            }else{
-
-                ctx.lineTo(
-                    x,
-                    y
-                );
-
-            }
-
-        }
-    );
-
-
-    ctx.stroke();
-
-
-    /* POINTS */
-
-    ctx.fillStyle =
-        "#0a9b63";
-
-
-    values.forEach(
-        function(value,index){
-
-            if(
-                index % 6 !== 0
-            ){
-
-                return;
-
-            }
-
-
-            const x =
-                left +
-                graphWidth *
-                index /
-                Math.max(
-                    1,
-                    values.length - 1
-                );
-
-
-            const y =
-                top +
-                graphHeight *
-                (
-                    1 -
-                    (
-                        value /
-                        maxValue
-                    )
-                );
-
-
-            ctx.beginPath();
-
-            ctx.arc(
-                x,
-                y,
-                3,
-                0,
-                Math.PI * 2
-            );
-
-            ctx.fill();
-
-        }
-    );
-
-
-    /* TIME LABELS */
-
-    ctx.fillStyle =
-        "#607d7b";
-
-    ctx.font =
-        "11px Arial";
-
-
-    data.time
-        .slice(0,72)
-        .forEach(
-            function(time,index){
-
-                if(
-                    index % 12 !== 0
-                ){
-
-                    return;
-
-                }
-
-
-                const x =
-                    left +
-                    graphWidth *
-                    index /
-                    Math.max(
-                        1,
-                        values.length - 1
-                    );
-
-
-                let label =
-                    time;
-
-
-                if(
-                    typeof time ===
-                    "string" &&
-                    time.length >= 16
-                ){
-
-                    label =
-                        time.substring(
-                            11,
-                            16
-                        );
-
-                }
-
-
-                ctx.fillText(
-                    label,
-                    x - 12,
-                    height - 15
-                );
-
-            }
-        );
-
-
-    info.innerHTML =
-        "<b>" +
-        locations[key].name +
-        "</b> • 72 hourly AQI predictions displayed." +
-        "<br>" +
-        "Forecast source: Open-Meteo / CAMS";
-
-}
-
-
-/* =====================================================
-   LOAD ALL
-===================================================== */
+// ==========================================
+// LOAD ALL LOCATIONS
+// ==========================================
 
 async function loadAll(){
 
@@ -1659,52 +1286,99 @@ async function loadAll(){
 
 
     status.textContent =
-        "● UPDATING...";
+        "UPDATING...";
 
 
-    status.style.color =
-        "#e67e22";
+    status.className="live";
 
 
     const keys =
-        Object.keys(
-            locations
-        );
+        Object.keys(locations);
 
 
     const results =
         await Promise.all(
-            keys.map(function(key){
-
-                return getData(key);
-
-            })
+            keys.map(
+                key => getData(key)
+            )
         );
 
 
-    const successful =
+    const online =
         results.filter(
-            Boolean
+            x => x === true
         ).length;
 
 
-    if(
-        successful > 0
-    ){
+    document.getElementById(
+        "onlineCount"
+    ).textContent =
+        online + "/4";
+
+
+    const validAQI =
+        keys
+            .map(
+                key =>
+                    forecastData[key]
+                    ? Number(forecastData[key].aqi)
+                    : NaN
+            )
+            .filter(
+                x => !isNaN(x)
+            );
+
+
+    if(validAQI.length){
+
+        const average =
+            validAQI.reduce(
+                (a,b)=>a+b,
+                0
+            ) / validAQI.length;
+
+
+        document.getElementById(
+            "avgAQI"
+        ).textContent =
+            Math.round(average);
+
+
+        document.getElementById(
+            "maxAQI"
+        ).textContent =
+            Math.round(
+                Math.max(...validAQI)
+            );
+
+
+        document.getElementById(
+            "minAQI"
+        ).textContent =
+            Math.round(
+                Math.min(...validAQI)
+            );
+
+    }
+
+
+    if(online === 4){
+
+        status.textContent="LIVE";
+
+    }
+    else if(online > 0){
 
         status.textContent =
-            "● LIVE";
+            "PARTIAL";
 
-        status.style.color =
-            "#0a9b63";
-
-    }else{
+    }
+    else{
 
         status.textContent =
-            "● OFFLINE";
+            "OFFLINE";
 
-        status.style.color =
-            "#d63031";
+        status.className="offline";
 
     }
 
@@ -1712,40 +1386,365 @@ async function loadAll(){
     document.getElementById(
         "lastUpdated"
     ).textContent =
-        new Date().toLocaleString(
+        new Date().toLocaleTimeString(
             "en-IN",
             {
-                dateStyle:"medium",
-                timeStyle:"short"
+                hour:"2-digit",
+                minute:"2-digit",
+                second:"2-digit"
             }
         );
 
 
-    drawForecast(
-        selectedForecast
+    showPrediction(
+        selectedLocation
     );
 
 }
 
 
-/* =====================================================
-   START
-===================================================== */
 
-try{
+// ==========================================
+// 72 HOUR GRAPH
+// ==========================================
 
-    loadAll();
+function showPrediction(key){
 
-}catch(error){
+    selectedLocation=key;
 
-    console.error(error);
+
+    document
+        .querySelectorAll(
+            ".location-buttons button"
+        )
+        .forEach(
+            button =>
+                button.classList.remove(
+                    "active"
+                )
+        );
+
+
+    const selectedButton =
+        document.getElementById(
+            "btn-"+key
+        );
+
+
+    if(selectedButton){
+
+        selectedButton.classList.add(
+            "active"
+        );
+
+    }
+
+
+    const data =
+        forecastData[key];
+
+
+    const canvas =
+        document.getElementById(
+            "predictionCanvas"
+        );
+
+
+    const ctx =
+        canvas.getContext("2d");
+
+
+    ctx.clearRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+
+    if(
+        !data ||
+        !data.air ||
+        !data.air.hourly
+    ){
+
+        document.getElementById(
+            "predictionText"
+        ).textContent =
+            "Loading 72-hour prediction...";
+
+        return;
+
+    }
+
+
+    const values =
+        data.air.hourly.european_aqi
+            .slice(0,72)
+            .map(Number)
+            .filter(
+                x => !isNaN(x)
+            );
+
+
+    if(!values.length){
+
+        return;
+
+    }
+
+
+    const width =
+        canvas.width;
+
+
+    const height =
+        canvas.height;
+
+
+    const padding=35;
+
+
+    const maxValue =
+        Math.max(
+            100,
+            ...values
+        );
+
+
+    const minValue=0;
+
+
+    // background
+
+    ctx.fillStyle="#f7fbfa";
+
+    ctx.fillRect(
+        0,
+        0,
+        width,
+        height
+    );
+
+
+    // grid
+
+    ctx.strokeStyle="#d9e8e4";
+
+    ctx.lineWidth=1;
+
+
+    for(
+        let i=0;
+        i<=5;
+        i++
+    ){
+
+        const y =
+            padding +
+            ((height-padding*2)/5)*i;
+
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+            padding,
+            y
+        );
+
+        ctx.lineTo(
+            width-padding,
+            y
+        );
+
+        ctx.stroke();
+
+    }
+
+
+    // line
+
+    ctx.beginPath();
+
+
+    values.forEach(
+        (value,index)=>{
+
+            const x =
+                padding +
+                index *
+                (
+                    (width-padding*2)
+                    /
+                    Math.max(
+                        1,
+                        values.length-1
+                    )
+                );
+
+
+            const y =
+                height-padding -
+                (
+                    (value-minValue)
+                    /
+                    (maxValue-minValue)
+                )
+                *
+                (height-padding*2);
+
+
+            if(index===0){
+
+                ctx.moveTo(x,y);
+
+            }
+            else{
+
+                ctx.lineTo(x,y);
+
+            }
+
+        }
+    );
+
+
+    ctx.strokeStyle="#0b6862";
+
+    ctx.lineWidth=3;
+
+    ctx.stroke();
+
+
+    // points
+
+    values.forEach(
+        (value,index)=>{
+
+            const x =
+                padding +
+                index *
+                (
+                    (width-padding*2)
+                    /
+                    Math.max(
+                        1,
+                        values.length-1
+                    )
+                );
+
+
+            const y =
+                height-padding -
+                (
+                    (value-minValue)
+                    /
+                    (maxValue-minValue)
+                )
+                *
+                (height-padding*2);
+
+
+            ctx.beginPath();
+
+            ctx.arc(
+                x,
+                y,
+                2.5,
+                0,
+                Math.PI*2
+            );
+
+
+            ctx.fillStyle =
+                getAQIColor(value);
+
+
+            ctx.fill();
+
+        }
+    );
+
+
+    ctx.fillStyle="#526967";
+
+    ctx.font="12px Arial";
+
+
+    ctx.fillText(
+        "AQI",
+        8,
+        20
+    );
+
+
+    ctx.fillText(
+        "Now",
+        padding,
+        height-10
+    );
+
+
+    ctx.fillText(
+        "72 hours",
+        width-85,
+        height-10
+    );
+
+
+    const first =
+        Math.round(values[0]);
+
+
+    const last =
+        Math.round(
+            values[values.length-1]
+        );
+
+
+    let trend="stable";
+
+
+    if(last > first + 10){
+
+        trend="increasing";
+
+    }
+    else if(last < first - 10){
+
+        trend="decreasing";
+
+    }
+
+
+    document.getElementById(
+        "predictionText"
+    ).textContent =
+
+        locations[key].name
+        +
+        " • Current AQI: "
+        +
+        first
+        +
+        " • 72-hour trend: "
+        +
+        trend
+        +
+        " • Forecast points: "
+        +
+        values.length;
 
 }
 
 
-/* =====================================================
-   AUTO REFRESH
-===================================================== */
+
+// ==========================================
+// AUTO REFRESH
+// ==========================================
+
+loadAll();
+
 
 setInterval(
     loadAll,
@@ -1753,16 +1752,18 @@ setInterval(
 );
 
 
-/* =====================================================
-   RESIZE
-===================================================== */
+
+// ==========================================
+// ERROR HANDLER
+// ==========================================
 
 window.addEventListener(
-    "resize",
-    function(){
+    "error",
+    function(event){
 
-        drawForecast(
-            selectedForecast
+        console.error(
+            "NCR AIR WATCH error:",
+            event.error || event.message
         );
 
     }
@@ -1771,4 +1772,4 @@ window.addEventListener(
 </script>
 
 </body>
-    </html>
+</html>
