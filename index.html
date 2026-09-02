@@ -1,21 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>NCR AIR WATCH</title>
-
-<link
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>NCR AIR WATCH</title><link
 rel="stylesheet"
 href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-/>
-
-<style>
-
-*{
-    box-sizing:border-box;
-}
+/><style>
+*{box-sizing:border-box}
 
 body{
     margin:0;
@@ -31,15 +21,8 @@ header{
     text-align:center;
 }
 
-header h1{
-    margin:0;
-    font-size:30px;
-}
-
-header p{
-    margin:7px 0 0;
-    opacity:.9;
-}
+header h1{margin:0;font-size:30px}
+header p{margin:7px 0 0;opacity:.9}
 
 .statusbar{
     display:grid;
@@ -64,9 +47,7 @@ header p{
     margin-bottom:5px;
 }
 
-.statusbox strong{
-    font-size:16px;
-}
+.statusbox strong{font-size:16px}
 
 .container{
     max-width:1200px;
@@ -74,14 +55,8 @@ header p{
     padding:0 15px 30px;
 }
 
-.section{
-    margin-top:20px;
-}
-
-.section-title{
-    font-size:22px;
-    margin-bottom:12px;
-}
+.section{margin-top:20px}
+.section-title{font-size:22px;margin-bottom:12px}
 
 .cards{
     display:grid;
@@ -97,9 +72,7 @@ header p{
     border-left:6px solid #35a853;
 }
 
-.card h3{
-    margin:0 0 10px;
-}
+.card h3{margin:0 0 10px}
 
 .aqi{
     font-size:38px;
@@ -162,9 +135,7 @@ header p{
     color:white;
 }
 
-.alert-button:hover{
-    opacity:.9;
-}
+.alert-button:hover{opacity:.9}
 
 .alert-status{
     padding:9px 13px;
@@ -278,1726 +249,1162 @@ footer{
 }
 
 @media(max-width:900px){
-
-    .cards{
-        grid-template-columns:repeat(2,1fr);
-    }
-
-    .summary{
-        grid-template-columns:repeat(2,1fr);
-    }
-
+    .cards{grid-template-columns:repeat(2,1fr)}
+    .summary{grid-template-columns:repeat(2,1fr)}
 }
 
 @media(max-width:600px){
-
-    header h1{
-        font-size:25px;
-    }
-
-    .statusbar{
-        grid-template-columns:1fr;
-    }
-
-    .cards{
-        grid-template-columns:1fr;
-    }
-
-    .summary{
-        grid-template-columns:1fr 1fr;
-    }
-
-    #ncrMap{
-        height:380px;
-    }
-
-    #predictionCanvas{
-        height:260px;
-    }
-
+    header h1{font-size:25px}
+    .statusbar{grid-template-columns:1fr}
+    .cards{grid-template-columns:1fr}
+    .summary{grid-template-columns:1fr 1fr}
+    #ncrMap{height:380px}
+    #predictionCanvas{height:260px}
 }
-
-</style>
-</head>
-
-<body>
-
-<header>
+</style></head><body><header>
     <h1>🌍 NCR AIR WATCH</h1>
     <p>Live Air Quality • Atmospheric Monitoring • 72-Hour Prediction</p>
-</header>
-
-<div class="statusbar">
-
-    <div class="statusbox">
-        <span>System Status</span>
-        <strong id="systemStatus">CONNECTING...</strong>
-    </div>
-
-    <div class="statusbox">
-        <span>Last Updated</span>
-        <strong id="lastUpdated">--</strong>
-    </div>
-
-    <div class="statusbox">
-        <span>NCR Time</span>
-        <strong id="ncrClock">--</strong>
-    </div>
-
+</header><div class="statusbar"><div class="statusbox">
+    <span>System Status</span>
+    <strong id="systemStatus">CONNECTING...</strong>
 </div>
 
-<div class="container">
-
-    <!-- LIVE LOCATIONS -->
-
-    <section class="section">
-
-        <div class="section-title">
-            📍 Live NCR Air Quality
-        </div>
-
-        <div class="cards">
-
-            <div class="card" id="card-delhi">
-                <h3>Delhi</h3>
-                <div class="aqi">--</div>
-                <div class="aqi-status">Loading...</div>
-
-                <div class="metrics">
-                    <div class="metric">PM2.5: --</div>
-                    <div class="metric">PM10: --</div>
-                    <div class="metric">NO₂: --</div>
-                    <div class="metric">O₃: --</div>
-                    <div class="metric">Temp: --</div>
-                    <div class="metric">Humidity: --</div>
-                    <div class="metric">Wind: --</div>
-                    <div class="metric">Pressure: --</div>
-                </div>
-            </div>
-
-            <div class="card" id="card-gurugram">
-                <h3>Gurugram</h3>
-                <div class="aqi">--</div>
-                <div class="aqi-status">Loading...</div>
-
-                <div class="metrics">
-                    <div class="metric">PM2.5: --</div>
-                    <div class="metric">PM10: --</div>
-                    <div class="metric">NO₂: --</div>
-                    <div class="metric">O₃: --</div>
-                    <div class="metric">Temp: --</div>
-                    <div class="metric">Humidity: --</div>
-                    <div class="metric">Wind: --</div>
-                    <div class="metric">Pressure: --</div>
-                </div>
-            </div>
-
-            <div class="card" id="card-noida">
-                <h3>Noida</h3>
-                <div class="aqi">--</div>
-                <div class="aqi-status">Loading...</div>
-
-                <div class="metrics">
-                    <div class="metric">PM2.5: --</div>
-                    <div class="metric">PM10: --</div>
-                    <div class="metric">NO₂: --</div>
-                    <div class="metric">O₃: --</div>
-                    <div class="metric">Temp: --</div>
-                    <div class="metric">Humidity: --</div>
-                    <div class="metric">Wind: --</div>
-                    <div class="metric">Pressure: --</div>
-                </div>
-            </div>
-
-            <div class="card" id="card-ghaziabad">
-                <h3>Ghaziabad</h3>
-                <div class="aqi">--</div>
-                <div class="aqi-status">Loading...</div>
-
-                <div class="metrics">
-                    <div class="metric">PM2.5: --</div>
-                    <div class="metric">PM10: --</div>
-                    <div class="metric">NO₂: --</div>
-                    <div class="metric">O₃: --</div>
-                    <div class="metric">Temp: --</div>
-                    <div class="metric">Humidity: --</div>
-                    <div class="metric">Wind: --</div>
-                    <div class="metric">Pressure: --</div>
-                </div>
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- SMART ALERT -->
-
-    <section class="section">
-
-        <div class="section-title">
-            🚨 Smart Air Quality Alerts
-        </div>
-
-        <div class="alert-section">
-
-            <div class="alert-controls">
-
-                <button
-                    class="alert-button"
-                    id="enableAlertsBtn"
-                    onclick="enableAlerts()">
-                    🔔 Enable Browser Alerts
-                </button>
-
-                <div
-                    class="alert-status"
-                    id="alertPermission">
-                    Alerts: Checking...
-                </div>
-
-            </div>
-
-            <div class="alert-list" id="alertList">
-
-                <div class="alert-empty">
-                    No significant air-quality changes detected.
-                </div>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- MAP -->
-
-    <section class="section">
-
-        <div class="section-title">
-            🗺️ Interactive NCR Air Quality Map
-        </div>
-
-        <div class="map-box">
-
-            <div id="ncrMap"></div>
-
-        </div>
-
-    </section>
-
-
-    <!-- REGIONAL SUMMARY -->
-
-    <section class="section">
-
-        <div class="section-title">
-            🌐 NCR Regional Overview
-        </div>
-
-        <div class="summary">
-
-            <div class="summary-box">
-                <span>Average AQI</span>
-                <strong id="avgAQI">--</strong>
-            </div>
-
-            <div class="summary-box">
-                <span>Highest AQI</span>
-                <strong id="highAQI">--</strong>
-            </div>
-
-            <div class="summary-box">
-                <span>Lowest AQI</span>
-                <strong id="lowAQI">--</strong>
-            </div>
-
-            <div class="summary-box">
-                <span>Locations Online</span>
-                <strong id="onlineLocations">0 / 4</strong>
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- PREDICTION -->
-
-    <section class="section">
-
-        <div class="section-title">
-            📈 72-Hour Prediction
-        </div>
-
-        <div class="prediction">
-
-            <p>
-                Future air-quality prediction based on hourly
-                atmospheric and pollution forecast data.
-            </p>
-
-            <div class="location-buttons">
-
-                <button
-                    id="btn-delhi"
-                    class="active"
-                    onclick="showPrediction('delhi')">
-                    Delhi
-                </button>
-
-                <button
-                    id="btn-gurugram"
-                    onclick="showPrediction('gurugram')">
-                    Gurugram
-                </button>
-
-                <button
-                    id="btn-noida"
-                    onclick="showPrediction('noida')">
-                    Noida
-                </button>
-
-                <button
-                    id="btn-ghaziabad"
-                    onclick="showPrediction('ghaziabad')">
-                    Ghaziabad
-                </button>
-
-            </div>
-
-            <canvas id="predictionCanvas"></canvas>
-
-        </div>
-
-    </section>
-
+<div class="statusbox">
+    <span>Last Updated</span>
+    <strong id="lastUpdated">--</strong>
 </div>
 
+<div class="statusbox">
+    <span>NCR Time</span>
+    <strong id="ncrClock">--</strong>
+</div>
 
-<footer>
+</div><div class="container"><section class="section"><div class="section-title">📍 Live NCR Air Quality</div><div class="cards"><div class="card" id="card-delhi">
+<h3>Delhi</h3>
+<div class="aqi">--</div>
+<div class="aqi-status">Loading...</div>
+<div class="metrics">
+<div class="metric">PM2.5: --</div>
+<div class="metric">PM10: --</div>
+<div class="metric">NO₂: --</div>
+<div class="metric">O₃: --</div>
+<div class="metric">Temp: --</div>
+<div class="metric">Humidity: --</div>
+<div class="metric">Wind: --</div>
+<div class="metric">Pressure: --</div>
+</div>
+</div><div class="card" id="card-gurugram">
+<h3>Gurugram</h3>
+<div class="aqi">--</div>
+<div class="aqi-status">Loading...</div>
+<div class="metrics">
+<div class="metric">PM2.5: --</div>
+<div class="metric">PM10: --</div>
+<div class="metric">NO₂: --</div>
+<div class="metric">O₃: --</div>
+<div class="metric">Temp: --</div>
+<div class="metric">Humidity: --</div>
+<div class="metric">Wind: --</div>
+<div class="metric">Pressure: --</div>
+</div>
+</div><div class="card" id="card-noida">
+<h3>Noida</h3>
+<div class="aqi">--</div>
+<div class="aqi-status">Loading...</div>
+<div class="metrics">
+<div class="metric">PM2.5: --</div>
+<div class="metric">PM10: --</div>
+<div class="metric">NO₂: --</div>
+<div class="metric">O₃: --</div>
+<div class="metric">Temp: --</div>
+<div class="metric">Humidity: --</div>
+<div class="metric">Wind: --</div>
+<div class="metric">Pressure: --</div>
+</div>
+</div><div class="card" id="card-ghaziabad">
+<h3>Ghaziabad</h3>
+<div class="aqi">--</div>
+<div class="aqi-status">Loading...</div>
+<div class="metrics">
+<div class="metric">PM2.5: --</div>
+<div class="metric">PM10: --</div>
+<div class="metric">NO₂: --</div>
+<div class="metric">O₃: --</div>
+<div class="metric">Temp: --</div>
+<div class="metric">Humidity: --</div>
+<div class="metric">Wind: --</div>
+<div class="metric">Pressure: --</div>
+</div>
+</div></div>
+</section><section class="section"><div class="section-title">🚨 Smart Air Quality Alerts</div><div class="alert-section"><div class="alert-controls"><button
+class="alert-button"
+id="enableAlertsBtn"
+onclick="enableAlerts()">
+🔔 Enable Browser Alerts
+</button>
 
-    NCR AIR WATCH • Smart Air Quality Monitoring System
+<button
+class="alert-button"
+onclick="testNotification()">
+🧪 Test Notification
+</button>
 
-    <br><br>
+<div
+class="alert-status"
+id="alertPermission">
+Alerts: Checking...
+</div></div><div class="alert-list" id="alertList"><div class="alert-empty">
+No significant air-quality changes detected.
+</div></div></div>
+</section><section class="section"><div class="section-title">🗺️ Interactive NCR Air Quality Map</div><div class="map-box">
+<div id="ncrMap"></div>
+</div></section><section class="section"><div class="section-title">🌐 NCR Regional Overview</div><div class="summary"><div class="summary-box">
+<span>Average AQI</span>
+<strong id="avgAQI">--</strong>
+</div><div class="summary-box">
+<span>Highest AQI</span>
+<strong id="highAQI">--</strong>
+</div><div class="summary-box">
+<span>Lowest AQI</span>
+<strong id="lowAQI">--</strong>
+</div><div class="summary-box">
+<span>Locations Online</span>
+<strong id="onlineLocations">0 / 4</strong>
+</div></div>
+</section><section class="section"><div class="section-title">📈 72-Hour Prediction</div><div class="prediction"><p>
+Future air-quality prediction based on hourly
+atmospheric and pollution forecast data.
+</p><div class="location-buttons"><button id="btn-delhi"
+class="active"
+onclick="showPrediction('delhi')">
+Delhi
+</button>
 
-    Air-quality forecast data:
-    Open-Meteo / CAMS
+<button id="btn-gurugram"
+onclick="showPrediction('gurugram')">
+Gurugram
+</button>
 
-    <br>
+<button id="btn-noida"
+onclick="showPrediction('noida')">
+Noida
+</button>
 
-    Map data:
-    © OpenStreetMap contributors • Leaflet
+<button id="btn-ghaziabad"
+onclick="showPrediction('ghaziabad')">
+Ghaziabad
+</button>
 
-</footer>
+</div><canvas id="predictionCanvas"></canvas>
 
+</div>
+</section></div><footer>NCR AIR WATCH • Smart Air Quality Monitoring System
 
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<br><br>
 
-<script>
+Air-quality forecast data:
+Open-Meteo / CAMS
 
-/* =========================================
-   NCR LOCATIONS
-========================================= */
+<br>Map data:
+© OpenStreetMap contributors • Leaflet
+
+</footer><script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script><script>
 
 const locations = {
 
-    delhi:{
-        name:"Delhi",
-        lat:28.6139,
-        lon:77.2090
-    },
+delhi:{
+name:"Delhi",
+lat:28.6139,
+lon:77.2090
+},
 
-    gurugram:{
-        name:"Gurugram",
-        lat:28.4595,
-        lon:77.0266
-    },
+gurugram:{
+name:"Gurugram",
+lat:28.4595,
+lon:77.0266
+},
 
-    noida:{
-        name:"Noida",
-        lat:28.5355,
-        lon:77.3910
-    },
+noida:{
+name:"Noida",
+lat:28.5355,
+lon:77.3910
+},
 
-    ghaziabad:{
-        name:"Ghaziabad",
-        lat:28.6692,
-        lon:77.4538
-    }
+ghaziabad:{
+name:"Ghaziabad",
+lat:28.6692,
+lon:77.4538
+}
 
 };
 
-
-/* =========================================
-   GLOBAL VARIABLES
-========================================= */
-
 let map;
-
 let mapMarkers = {};
-
 let forecastData = {};
-
 let selectedLocation = "delhi";
 
 let previousAQI =
-    JSON.parse(localStorage.getItem("ncrPreviousAQI") || "{}");
+JSON.parse(localStorage.getItem("ncrPreviousAQI") || "{}");
 
 let alertsHistory =
-    JSON.parse(localStorage.getItem("ncrAlertsHistory") || "[]");
+JSON.parse(localStorage.getItem("ncrAlertsHistory") || "[]");
 
-
-/* =========================================
-   CLOCK
-========================================= */
 
 function updateClock(){
 
-    const now = new Date();
+const now = new Date();
 
-    const time =
-        now.toLocaleTimeString("en-IN",{
-            hour:"2-digit",
-            minute:"2-digit",
-            second:"2-digit",
-            hour12:true,
-            timeZone:"Asia/Kolkata"
-        });
+const time =
+now.toLocaleTimeString("en-IN",{
+hour:"2-digit",
+minute:"2-digit",
+second:"2-digit",
+hour12:true,
+timeZone:"Asia/Kolkata"
+});
 
-    document.getElementById("ncrClock").textContent = time;
+document.getElementById("ncrClock").textContent = time;
+
 }
 
 setInterval(updateClock,1000);
-
 updateClock();
 
 
-/* =========================================
-   AQI HELPERS
-========================================= */
-
 function getAQIStatus(aqi){
 
-    if(aqi === null || isNaN(aqi))
-        return "Unavailable";
+if(aqi === null || isNaN(aqi))
+return "Unavailable";
 
-    if(aqi <= 20)
-        return "Good";
+if(aqi <= 20) return "Good";
+if(aqi <= 40) return "Fair";
+if(aqi <= 60) return "Moderate";
+if(aqi <= 80) return "Poor";
+if(aqi <= 100) return "Very Poor";
 
-    if(aqi <= 40)
-        return "Fair";
+return "Extremely Poor";
 
-    if(aqi <= 60)
-        return "Moderate";
-
-    if(aqi <= 80)
-        return "Poor";
-
-    if(aqi <= 100)
-        return "Very Poor";
-
-    return "Extremely Poor";
 }
 
 
 function getAQIColor(aqi){
 
-    if(aqi === null || isNaN(aqi))
-        return "#777";
+if(aqi === null || isNaN(aqi))
+return "#777";
 
-    if(aqi <= 20)
-        return "#2e9d55";
+if(aqi <= 20) return "#2e9d55";
+if(aqi <= 40) return "#8bbd3f";
+if(aqi <= 60) return "#e4ad2f";
+if(aqi <= 80) return "#e17b32";
+if(aqi <= 100) return "#d84a38";
 
-    if(aqi <= 40)
-        return "#8bbd3f";
+return "#8e2020";
 
-    if(aqi <= 60)
-        return "#e4ad2f";
-
-    if(aqi <= 80)
-        return "#e17b32";
-
-    if(aqi <= 100)
-        return "#d84a38";
-
-    return "#8e2020";
 }
 
 
-/* =========================================
-   MAP
-========================================= */
-
 function createMap(){
 
-    map = L.map("ncrMap").setView(
-        [28.55,77.25],
-        9
-    );
+map = L.map("ncrMap").setView(
+[28.55,77.25],
+9
+);
 
-    L.tileLayer(
-        "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-        {
-            maxZoom:19,
-            attribution:
-            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-            referrerPolicy:
-            "strict-origin-when-cross-origin"
-        }
-    ).addTo(map);
+L.tileLayer(
+"https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+{
+maxZoom:19,
+attribution:
+'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+}
+).addTo(map);
 
+Object.keys(locations).forEach(key => {
 
-    Object.keys(locations).forEach(key => {
+const loc = locations[key];
 
-        const loc = locations[key];
+const icon =
+L.divIcon({
 
-        const icon =
-            L.divIcon({
+className:"custom-map-icon",
 
-                className:"custom-map-icon",
+html:
+`<div
+class="map-marker"
+style="
+width:22px;
+height:22px;
+background:#777;
+">
+</div>`,
 
-                html:
-                `<div
-                    class="map-marker"
-                    style="
-                    width:22px;
-                    height:22px;
-                    background:#777;
-                    ">
-                </div>`,
+iconSize:[22,22],
+iconAnchor:[11,11]
 
-                iconSize:[22,22],
+});
 
-                iconAnchor:[11,11]
+const marker =
+L.marker(
+[loc.lat,loc.lon],
+{icon}
+).addTo(map);
 
-            });
+marker.bindPopup(
+`<b>${loc.name}</b><br>AQI: Loading...`
+);
 
+mapMarkers[key] = marker;
 
-        const marker =
-            L.marker(
-                [loc.lat,loc.lon],
-                {icon}
-            ).addTo(map);
-
-
-        marker.bindPopup(
-            `<b>${loc.name}</b><br>
-             AQI: Loading...`
-        );
-
-
-        mapMarkers[key] = marker;
-
-    });
+});
 
 }
 
 
 function updateMapMarker(key,data){
 
-    if(!mapMarkers[key])
-        return;
+if(!mapMarkers[key]) return;
 
+const marker = mapMarkers[key];
 
-    const marker =
-        mapMarkers[key];
+const aqi = data.aqi;
+const color = getAQIColor(aqi);
 
-    const aqi =
-        data.aqi;
+const icon =
+L.divIcon({
 
-    const color =
-        getAQIColor(aqi);
+className:"custom-map-icon",
 
+html:
+`<div
+class="map-marker"
+style="
+width:22px;
+height:22px;
+background:${color};
+">
+</div>`,
 
-    const icon =
-        L.divIcon({
+iconSize:[22,22],
+iconAnchor:[11,11]
 
-            className:"custom-map-icon",
+});
 
-            html:
-            `<div
-                class="map-marker"
-                style="
-                width:22px;
-                height:22px;
-                background:${color};
-                ">
-            </div>`,
+marker.setIcon(icon);
 
-            iconSize:[22,22],
+marker.setPopupContent(
 
-            iconAnchor:[11,11]
+`<div style="min-width:180px">
 
-        });
+<h3 style="margin:0 0 8px">
+${locations[key].name}
+</h3>
 
+<b>AQI: ${aqi ?? "--"}</b>
 
-    marker.setIcon(icon);
+<br>
 
+Status: ${getAQIStatus(aqi)}
 
-    marker.setPopupContent(
+<hr>
 
-        `<div style="min-width:180px">
+PM2.5: ${data.pm25 ?? "--"} µg/m³
+<br>
+PM10: ${data.pm10 ?? "--"} µg/m³
+<br>
+NO₂: ${data.no2 ?? "--"} µg/m³
+<br>
+O₃: ${data.o3 ?? "--"} µg/m³
+<br>
+Temperature: ${data.temp ?? "--"} °C
+<br>
+Humidity: ${data.humidity ?? "--"}%
+<br>
+Wind: ${data.wind ?? "--"} km/h
 
-            <h3 style="margin:0 0 8px">
-                ${locations[key].name}
-            </h3>
+</div>`
 
-            <b>AQI:
-                ${aqi ?? "--"}
-            </b>
-
-            <br>
-
-            Status:
-            ${getAQIStatus(aqi)}
-
-            <hr>
-
-            PM2.5:
-            ${data.pm25 ?? "--"} µg/m³
-
-            <br>
-
-            PM10:
-            ${data.pm10 ?? "--"} µg/m³
-
-            <br>
-
-            NO₂:
-            ${data.no2 ?? "--"} µg/m³
-
-            <br>
-
-            O₃:
-            ${data.o3 ?? "--"} µg/m³
-
-            <br>
-
-            Temperature:
-            ${data.temp ?? "--"} °C
-
-            <br>
-
-            Humidity:
-            ${data.humidity ?? "--"}%
-
-            <br>
-
-            Wind:
-            ${data.wind ?? "--"} km/h
-
-        </div>`
-
-    );
+);
 
 }
 
-
-/* =========================================
-   FETCH DATA
-========================================= */
 
 async function getData(key){
 
-    const loc =
-        locations[key];
+const loc = locations[key];
 
+const airURL =
+`https://air-quality-api.open-meteo.com/v1/air-quality`
++ `?latitude=${loc.lat}`
++ `&longitude=${loc.lon}`
++ `&hourly=pm2_5,pm10,nitrogen_dioxide,ozone,european_aqi`
++ `&forecast_hours=72`
++ `&timezone=Asia%2FKolkata`;
 
-    const airURL =
-        `https://air-quality-api.open-meteo.com/v1/air-quality`
-        + `?latitude=${loc.lat}`
-        + `&longitude=${loc.lon}`
-        + `&hourly=pm2_5,pm10,nitrogen_dioxide,ozone,european_aqi`
-        + `&forecast_hours=72`
-        + `&timezone=Asia%2FKolkata`;
+const weatherURL =
+`https://api.open-meteo.com/v1/forecast`
++ `?latitude=${loc.lat}`
++ `&longitude=${loc.lon}`
++ `&current=temperature_2m,relative_humidity_2m,wind_speed_10m,pressure_msl`
++ `&forecast_hours=72`
++ `&timezone=Asia%2FKolkata`;
 
+const [airResponse,weatherResponse] =
+await Promise.all([
+fetch(airURL),
+fetch(weatherURL)
+]);
 
-    const weatherURL =
-        `https://api.open-meteo.com/v1/forecast`
-        + `?latitude=${loc.lat}`
-        + `&longitude=${loc.lon}`
-        + `&current=temperature_2m,relative_humidity_2m,wind_speed_10m,pressure_msl`
-        + `&forecast_hours=72`
-        + `&timezone=Asia%2FKolkata`;
+if(!airResponse.ok || !weatherResponse.ok)
+throw new Error("API request failed");
 
+const air = await airResponse.json();
+const weather = await weatherResponse.json();
 
-    const [airResponse,weatherResponse] =
-        await Promise.all([
+return {
 
-            fetch(airURL),
+aqi:
+air.hourly?.european_aqi?.[0] ?? null,
 
-            fetch(weatherURL)
+pm25:
+air.hourly?.pm2_5?.[0] ?? null,
 
-        ]);
+pm10:
+air.hourly?.pm10?.[0] ?? null,
 
+no2:
+air.hourly?.nitrogen_dioxide?.[0] ?? null,
 
-    if(!airResponse.ok || !weatherResponse.ok){
+o3:
+air.hourly?.ozone?.[0] ?? null,
 
-        throw new Error(
-            "API request failed"
-        );
+temp:
+weather.current?.temperature_2m ?? null,
 
-    }
+humidity:
+weather.current?.relative_humidity_2m ?? null,
 
+wind:
+weather.current?.wind_speed_10m ?? null,
 
-    const air =
-        await airResponse.json();
+pressure:
+weather.current?.pressure_msl ?? null,
 
-    const weather =
-        await weatherResponse.json();
+times:
+air.hourly?.time || [],
 
+aqiForecast:
+air.hourly?.european_aqi || []
 
-    return {
-
-        aqi:
-            air.hourly?.european_aqi?.[0] ?? null,
-
-        pm25:
-            air.hourly?.pm2_5?.[0] ?? null,
-
-        pm10:
-            air.hourly?.pm10?.[0] ?? null,
-
-        no2:
-            air.hourly?.nitrogen_dioxide?.[0] ?? null,
-
-        o3:
-            air.hourly?.ozone?.[0] ?? null,
-
-        temp:
-            weather.current?.temperature_2m ?? null,
-
-        humidity:
-            weather.current?.relative_humidity_2m ?? null,
-
-        wind:
-            weather.current?.wind_speed_10m ?? null,
-
-        pressure:
-            weather.current?.pressure_msl ?? null,
-
-        times:
-            air.hourly?.time || [],
-
-        aqiForecast:
-            air.hourly?.european_aqi || []
-
-    };
+};
 
 }
 
-
-/* =========================================
-   UPDATE CARD
-========================================= */
 
 function updateCard(key,data){
 
-    const card =
-        document.getElementById(
-            "card-" + key
-        );
+const card =
+document.getElementById("card-" + key);
 
+const aqiElement =
+card.querySelector(".aqi");
 
-    const aqiElement =
-        card.querySelector(".aqi");
+const statusElement =
+card.querySelector(".aqi-status");
 
-    const statusElement =
-        card.querySelector(".aqi-status");
+const metrics =
+card.querySelectorAll(".metric");
 
-    const metrics =
-        card.querySelectorAll(".metric");
+const aqi = data.aqi;
 
+aqiElement.textContent =
+aqi !== null ? Math.round(aqi) : "--";
 
-    const aqi =
-        data.aqi;
+statusElement.textContent =
+getAQIStatus(aqi);
 
+card.style.borderLeftColor =
+getAQIColor(aqi);
 
-    aqiElement.textContent =
-        aqi !== null
-        ? Math.round(aqi)
-        : "--";
+metrics[0].textContent =
+`PM2.5: ${data.pm25 ?? "--"} µg/m³`;
 
+metrics[1].textContent =
+`PM10: ${data.pm10 ?? "--"} µg/m³`;
 
-    statusElement.textContent =
-        getAQIStatus(aqi);
+metrics[2].textContent =
+`NO₂: ${data.no2 ?? "--"} µg/m³`;
 
+metrics[3].textContent =
+`O₃: ${data.o3 ?? "--"} µg/m³`;
 
-    const color =
-        getAQIColor(aqi);
+metrics[4].textContent =
+`Temp: ${data.temp ?? "--"} °C`;
 
+metrics[5].textContent =
+`Humidity: ${data.humidity ?? "--"}%`;
 
-    card.style.borderLeftColor =
-        color;
+metrics[6].textContent =
+`Wind: ${data.wind ?? "--"} km/h`;
 
-
-    metrics[0].textContent =
-        `PM2.5: ${data.pm25 ?? "--"} µg/m³`;
-
-    metrics[1].textContent =
-        `PM10: ${data.pm10 ?? "--"} µg/m³`;
-
-    metrics[2].textContent =
-        `NO₂: ${data.no2 ?? "--"} µg/m³`;
-
-    metrics[3].textContent =
-        `O₃: ${data.o3 ?? "--"} µg/m³`;
-
-    metrics[4].textContent =
-        `Temp: ${data.temp ?? "--"} °C`;
-
-    metrics[5].textContent =
-        `Humidity: ${data.humidity ?? "--"}%`;
-
-    metrics[6].textContent =
-        `Wind: ${data.wind ?? "--"} km/h`;
-
-    metrics[7].textContent =
-        `Pressure: ${data.pressure ?? "--"} hPa`;
+metrics[7].textContent =
+`Pressure: ${data.pressure ?? "--"} hPa`;
 
 }
 
 
-/* =========================================
-   SMART ALERT SYSTEM
-========================================= */
+function addAlert(key,message,type="info"){
 
-function addAlert(
-    key,
-    message,
-    type="info"
-){
+const list =
+document.getElementById("alertList");
 
-    const list =
-        document.getElementById(
-            "alertList"
-        );
+const empty =
+list.querySelector(".alert-empty");
 
+if(empty) empty.remove();
 
-    const empty =
-        list.querySelector(
-            ".alert-empty"
-        );
+const item =
+document.createElement("div");
 
-    if(empty)
-        empty.remove();
+item.className =
+"alert-item " + type;
 
+item.innerHTML =
+`<b>${locations[key].name}</b> — ${message}`;
 
-    const item =
-        document.createElement("div");
+list.prepend(item);
 
-    item.className =
-        "alert-item " + type;
+while(list.children.length > 6)
+list.removeChild(list.lastChild);
 
+const record = {
+location:locations[key].name,
+message,
+time:new Date().toISOString()
+};
 
-    item.innerHTML =
-        `<b>${locations[key].name}</b>
-         — ${message}`;
+alertsHistory.unshift(record);
 
+alertsHistory =
+alertsHistory.slice(0,20);
 
-    list.prepend(item);
-
-
-    while(list.children.length > 6){
-
-        list.removeChild(
-            list.lastChild
-        );
-
-    }
-
-
-    const record = {
-
-        location:
-            locations[key].name,
-
-        message,
-
-        time:
-            new Date().toISOString()
-
-    };
-
-
-    alertsHistory.unshift(record);
-
-    alertsHistory =
-        alertsHistory.slice(0,20);
-
-
-    localStorage.setItem(
-        "ncrAlertsHistory",
-        JSON.stringify(alertsHistory)
-    );
+localStorage.setItem(
+"ncrAlertsHistory",
+JSON.stringify(alertsHistory)
+);
 
 }
 
 
-/* =========================================
-   BROWSER NOTIFICATION
-========================================= */
+/* MOBILE-SAFE BROWSER NOTIFICATION */
 
-function sendBrowserNotification(
-    title,
-    body
-){
+async function sendBrowserNotification(title,body){
 
-    if(
-        !("Notification" in window)
-    )
-        return;
+if(!("Notification" in window))
+return;
 
+if(Notification.permission !== "granted")
+return;
 
-    if(
-        Notification.permission !==
-        "granted"
-    )
-        return;
+try{
 
+if("serviceWorker" in navigator){
 
-    try{
+const registration =
+await navigator.serviceWorker.ready;
 
-        new Notification(
-            title,
-            {
-                body:body,
-                icon:""
-            }
-        );
-
-    }catch(error){
-
-        console.log(
-            "Notification unavailable",
-            error
-        );
-
-    }
+await registration.showNotification(
+title,
+{
+body:body,
+tag:"ncr-air-alert",
+renotify:true
+}
+);
 
 }
 
+}catch(error){
 
-/* =========================================
-   ENABLE ALERTS
-========================================= */
+console.log(
+"Notification unavailable",
+error
+);
+
+}
+
+}
+
 
 async function enableAlerts(){
 
-    const status =
-        document.getElementById(
-            "alertPermission"
-        );
+const status =
+document.getElementById("alertPermission");
 
+if(!("Notification" in window)){
 
-    if(!("Notification" in window)){
+status.textContent =
+"Alerts: Browser not supported";
 
-        status.textContent =
-            "Alerts: Browser not supported";
+return;
 
-        return;
+}
 
-    }
+try{
 
+const permission =
+await Notification.requestPermission();
 
-    try{
+updateNotificationStatus(permission);
 
-        const permission =
-            await Notification.requestPermission();
+if(permission === "granted"){
 
+addAlert(
+"delhi",
+"Browser alerts enabled successfully.",
+"info"
+);
 
-        updateNotificationStatus(
-            permission
-        );
+await sendBrowserNotification(
+"NCR AIR WATCH",
+"Smart air-quality alerts are now enabled."
+);
 
+}
 
-        if(permission === "granted"){
+}catch(error){
 
-            addAlert(
-                "delhi",
-                "Browser alerts enabled successfully.",
-                "info"
-            );
+status.textContent =
+"Alerts: Permission unavailable";
 
-
-            sendBrowserNotification(
-                "NCR AIR WATCH",
-                "Smart air-quality alerts are now enabled."
-            );
-
-        }
-
-    }catch(error){
-
-        status.textContent =
-            "Alerts: Permission unavailable";
-
-    }
+}
 
 }
 
 
-function updateNotificationStatus(
-    permission
-){
+function updateNotificationStatus(permission){
 
-    const status =
-        document.getElementById(
-            "alertPermission"
-        );
+const status =
+document.getElementById("alertPermission");
 
+if(permission === "granted")
+status.textContent = "🔔 Alerts: Enabled";
 
-    if(permission === "granted"){
+else if(permission === "denied")
+status.textContent = "🔕 Alerts: Blocked";
 
-        status.textContent =
-            "🔔 Alerts: Enabled";
-
-    }
-    else if(permission === "denied"){
-
-        status.textContent =
-            "🔕 Alerts: Blocked";
-
-    }
-    else{
-
-        status.textContent =
-            "🔔 Alerts: Not enabled";
-
-    }
+else
+status.textContent = "🔔 Alerts: Not enabled";
 
 }
 
 
 function checkNotificationStatus(){
 
-    if(!("Notification" in window)){
+if(!("Notification" in window)){
 
-        document.getElementById(
-            "alertPermission"
-        ).textContent =
-            "Alerts: Not supported";
+document.getElementById(
+"alertPermission"
+).textContent =
+"Alerts: Not supported";
 
-        return;
+return;
 
-    }
+}
 
-
-    updateNotificationStatus(
-        Notification.permission
-    );
+updateNotificationStatus(
+Notification.permission
+);
 
 }
 
 
-/* =========================================
-   DETECT SIGNIFICANT CHANGE
-========================================= */
+/* TEST NOTIFICATION */
 
-function checkForChanges(
-    key,
-    data
+async function testNotification(){
+
+if(!("Notification" in window)){
+
+alert("Browser notifications are not supported.");
+
+return;
+
+}
+
+if(Notification.permission !== "granted"){
+
+alert("Please enable Browser Alerts first.");
+
+return;
+
+}
+
+try{
+
+if("serviceWorker" in navigator){
+
+const registration =
+await navigator.serviceWorker.ready;
+
+await registration.showNotification(
+"NCR AIR WATCH 🚨",
+{
+body:"Test notification successful! 📱",
+tag:"ncr-test-notification",
+renotify:true
+}
+);
+
+}
+
+}catch(error){
+
+console.error(
+"Test notification failed:",
+error
+);
+
+alert("Notification test failed.");
+
+}
+
+}
+
+
+function checkForChanges(key,data){
+
+if(
+data.aqi === null ||
+isNaN(data.aqi)
+)
+return;
+
+const currentAQI =
+Math.round(data.aqi);
+
+const oldAQI =
+previousAQI[key];
+
+if(oldAQI !== undefined){
+
+const difference =
+currentAQI - oldAQI;
+
+if(difference >= 15){
+
+const message =
+`AQI increased sharply from ${oldAQI} to ${currentAQI}.`;
+
+addAlert(
+key,
+"🚨 " + message,
+"danger"
+);
+
+sendBrowserNotification(
+`🚨 ${locations[key].name} AQI Alert`,
+message
+);
+
+}
+
+else if(
+oldAQI < 80 &&
+currentAQI >= 80
 ){
 
-    if(
-        data.aqi === null ||
-        isNaN(data.aqi)
-    )
-        return;
+const message =
+`AQI crossed 80 and is now ${currentAQI}. Air quality is poor.`;
 
+addAlert(
+key,
+"⚠️ " + message,
+"danger"
+);
 
-    const currentAQI =
-        Math.round(data.aqi);
-
-
-    const oldAQI =
-        previousAQI[key];
-
-
-    if(oldAQI !== undefined){
-
-        const difference =
-            currentAQI - oldAQI;
-
-
-        /* Sudden AQI increase */
-
-        if(difference >= 15){
-
-            const message =
-                `AQI increased sharply from ${oldAQI} to ${currentAQI}.`;
-
-
-            addAlert(
-                key,
-                "🚨 " + message,
-                "danger"
-            );
-
-
-            sendBrowserNotification(
-                `🚨 ${locations[key].name} AQI Alert`,
-                message
-            );
-
-        }
-
-
-        /* AQI crosses 80 */
-
-        else if(
-            oldAQI < 80 &&
-            currentAQI >= 80
-        ){
-
-            const message =
-                `AQI crossed 80 and is now ${currentAQI}. Air quality is poor.`;
-
-
-            addAlert(
-                key,
-                "⚠️ " + message,
-                "danger"
-            );
-
-
-            sendBrowserNotification(
-                `⚠️ ${locations[key].name} Air Quality`,
-                message
-            );
-
-        }
-
-
-        /* AQI crosses 100 */
-
-        else if(
-            oldAQI < 100 &&
-            currentAQI >= 100
-        ){
-
-            const message =
-                `AQI crossed 100 and is now ${currentAQI}.`;
-
-
-            addAlert(
-                key,
-                "🚨 " + message,
-                "danger"
-            );
-
-
-            sendBrowserNotification(
-                `🚨 ${locations[key].name} Critical AQI`,
-                message
-            );
-
-        }
-
-    }
-
-
-    previousAQI[key] =
-        currentAQI;
-
-
-    localStorage.setItem(
-        "ncrPreviousAQI",
-        JSON.stringify(previousAQI)
-    );
+sendBrowserNotification(
+`⚠️ ${locations[key].name} Air Quality`,
+message
+);
 
 }
 
+else if(
+oldAQI < 100 &&
+currentAQI >= 100
+){
 
-/* =========================================
-   REGIONAL SUMMARY
-========================================= */
+const message =
+`AQI crossed 100 and is now ${currentAQI}.`;
+
+addAlert(
+key,
+"🚨 " + message,
+"danger"
+);
+
+sendBrowserNotification(
+`🚨 ${locations[key].name} Critical AQI`,
+message
+);
+
+}
+
+}
+
+previousAQI[key] = currentAQI;
+
+localStorage.setItem(
+"ncrPreviousAQI",
+JSON.stringify(previousAQI)
+);
+
+}
+
 
 function updateSummary(){
 
-    const values =
-        Object.values(forecastData)
-        .map(item => item.aqi)
-        .filter(
-            value =>
-                value !== null &&
-                !isNaN(value)
-        );
+const values =
+Object.values(forecastData)
+.map(item => item.aqi)
+.filter(
+value =>
+value !== null &&
+!isNaN(value)
+);
 
+if(!values.length){
 
-    if(!values.length){
+document.getElementById("avgAQI").textContent="--";
+document.getElementById("highAQI").textContent="--";
+document.getElementById("lowAQI").textContent="--";
+document.getElementById("onlineLocations").textContent="0 / 4";
 
-        document.getElementById(
-            "avgAQI"
-        ).textContent = "--";
+return;
 
-        document.getElementById(
-            "highAQI"
-        ).textContent = "--";
+}
 
-        document.getElementById(
-            "lowAQI"
-        ).textContent = "--";
+const average =
+values.reduce((a,b)=>a+b,0)/values.length;
 
-        document.getElementById(
-            "onlineLocations"
-        ).textContent = "0 / 4";
+document.getElementById("avgAQI").textContent =
+Math.round(average);
 
-        return;
+document.getElementById("highAQI").textContent =
+Math.round(Math.max(...values));
 
-    }
+document.getElementById("lowAQI").textContent =
+Math.round(Math.min(...values));
 
-
-    const average =
-        values.reduce(
-            (a,b) => a+b,
-            0
-        ) / values.length;
-
-
-    document.getElementById(
-        "avgAQI"
-    ).textContent =
-        Math.round(average);
-
-
-    document.getElementById(
-        "highAQI"
-    ).textContent =
-        Math.round(
-            Math.max(...values)
-        );
-
-
-    document.getElementById(
-        "lowAQI"
-    ).textContent =
-        Math.round(
-            Math.min(...values)
-        );
-
-
-    document.getElementById(
-        "onlineLocations"
-    ).textContent =
-        `${values.length} / 4`;
+document.getElementById("onlineLocations").textContent =
+`${values.length} / 4`;
 
 }
 
 
-/* =========================================
-   72-HOUR GRAPH
-========================================= */
-
 function showPrediction(key){
 
-    selectedLocation =
-        key;
+selectedLocation = key;
 
+document
+.querySelectorAll(".location-buttons button")
+.forEach(button =>
+button.classList.remove("active")
+);
 
-    document
-        .querySelectorAll(
-            ".location-buttons button"
-        )
-        .forEach(button => {
+document
+.getElementById("btn-" + key)
+.classList.add("active");
 
-            button.classList.remove(
-                "active"
-            );
-
-        });
-
-
-    document
-        .getElementById(
-            "btn-" + key
-        )
-        .classList.add(
-            "active"
-        );
-
-
-    drawGraph();
+drawGraph();
 
 }
 
 
 function drawGraph(){
 
-    const canvas =
-        document.getElementById(
-            "predictionCanvas"
-        );
+const canvas =
+document.getElementById("predictionCanvas");
 
+const ctx =
+canvas.getContext("2d");
 
-    const ctx =
-        canvas.getContext("2d");
+const data =
+forecastData[selectedLocation];
 
+const values =
+data?.aqiForecast || [];
 
-    const data =
-        forecastData[
-            selectedLocation
-        ];
+const width =
+canvas.clientWidth;
 
+const height =
+canvas.clientHeight;
 
-    const values =
-        data?.aqiForecast || [];
+const ratio =
+window.devicePixelRatio || 1;
 
+canvas.width = width * ratio;
+canvas.height = height * ratio;
 
-    const times =
-        data?.times || [];
+ctx.setTransform(
+ratio,0,0,ratio,0,0
+);
 
+ctx.clearRect(0,0,width,height);
 
-    const width =
-        canvas.clientWidth;
+if(!values.length){
 
+ctx.fillStyle="#607270";
+ctx.font="16px Arial";
 
-    const height =
-        canvas.clientHeight;
+ctx.fillText(
+"Loading 72-hour prediction...",
+25,40
+);
 
-
-    const ratio =
-        window.devicePixelRatio || 1;
-
-
-    canvas.width =
-        width * ratio;
-
-    canvas.height =
-        height * ratio;
-
-
-    ctx.setTransform(
-        ratio,
-        0,
-        0,
-        ratio,
-        0,
-        0
-    );
-
-
-    ctx.clearRect(
-        0,
-        0,
-        width,
-        height
-    );
-
-
-    if(!values.length){
-
-        ctx.fillStyle =
-            "#607270";
-
-        ctx.font =
-            "16px Arial";
-
-        ctx.fillText(
-            "Loading 72-hour prediction...",
-            25,
-            40
-        );
-
-        return;
-
-    }
-
-
-    const clean =
-        values.map(
-            value =>
-                Number(value)
-        )
-        .filter(
-            value =>
-                !isNaN(value)
-        );
-
-
-    if(!clean.length)
-        return;
-
-
-    const min =
-        Math.min(...clean);
-
-    const max =
-        Math.max(...clean);
-
-
-    const padding =
-        40;
-
-
-    const graphWidth =
-        width - padding*2;
-
-    const graphHeight =
-        height - padding*2;
-
-
-    /* Grid */
-
-    ctx.strokeStyle =
-        "#dbe7e4";
-
-    ctx.lineWidth =
-        1;
-
-
-    for(let i=0;i<5;i++){
-
-        const y =
-            padding +
-            graphHeight *
-            i / 4;
-
-
-        ctx.beginPath();
-
-        ctx.moveTo(
-            padding,
-            y
-        );
-
-        ctx.lineTo(
-            width-padding,
-            y
-        );
-
-        ctx.stroke();
-
-    }
-
-
-    /* Line */
-
-    ctx.beginPath();
-
-
-    clean.forEach(
-        (value,index) => {
-
-            const x =
-                padding +
-                graphWidth *
-                index /
-                Math.max(
-                    clean.length-1,
-                    1
-                );
-
-
-            const normalized =
-                (value-min) /
-                Math.max(
-                    max-min,
-                    1
-                );
-
-
-            const y =
-                height-padding -
-                normalized *
-                graphHeight;
-
-
-            if(index === 0){
-
-                ctx.moveTo(
-                    x,
-                    y
-                );
-
-            }
-            else{
-
-                ctx.lineTo(
-                    x,
-                    y
-                );
-
-            }
-
-        }
-    );
-
-
-    ctx.strokeStyle =
-        "#087f70";
-
-    ctx.lineWidth =
-        3;
-
-    ctx.stroke();
-
-
-    /* Labels */
-
-    ctx.fillStyle =
-        "#536866";
-
-    ctx.font =
-        "12px Arial";
-
-
-    ctx.fillText(
-        `${Math.round(max)}`,
-        5,
-        padding+5
-    );
-
-
-    ctx.fillText(
-        `${Math.round(min)}`,
-        5,
-        height-padding
-    );
-
-
-    ctx.fillText(
-        "Now",
-        padding,
-        height-10
-    );
-
-
-    ctx.fillText(
-        "72 hours",
-        width-65,
-        height-10
-    );
+return;
 
 }
 
+const clean =
+values
+.map(value=>Number(value))
+.filter(value=>!isNaN(value));
 
-/* =========================================
-   LOAD EVERYTHING
-========================================= */
+if(!clean.length) return;
+
+const min=Math.min(...clean);
+const max=Math.max(...clean);
+
+const padding=40;
+
+const graphWidth=width-padding*2;
+const graphHeight=height-padding*2;
+
+ctx.strokeStyle="#dbe7e4";
+ctx.lineWidth=1;
+
+for(let i=0;i<5;i++){
+
+const y =
+padding +
+graphHeight*i/4;
+
+ctx.beginPath();
+ctx.moveTo(padding,y);
+ctx.lineTo(width-padding,y);
+ctx.stroke();
+
+}
+
+ctx.beginPath();
+
+clean.forEach((value,index)=>{
+
+const x =
+padding +
+graphWidth*index/
+Math.max(clean.length-1,1);
+
+const normalized =
+(value-min)/
+Math.max(max-min,1);
+
+const y =
+height-padding-
+normalized*graphHeight;
+
+if(index===0)
+ctx.moveTo(x,y);
+else
+ctx.lineTo(x,y);
+
+});
+
+ctx.strokeStyle="#087f70";
+ctx.lineWidth=3;
+ctx.stroke();
+
+ctx.fillStyle="#536866";
+ctx.font="12px Arial";
+
+ctx.fillText(
+`${Math.round(max)}`,
+5,
+padding+5
+);
+
+ctx.fillText(
+`${Math.round(min)}`,
+5,
+height-padding
+);
+
+ctx.fillText(
+"Now",
+padding,
+height-10
+);
+
+ctx.fillText(
+"72 hours",
+width-65,
+height-10
+);
+
+}
+
 
 async function loadAll(){
 
-    const system =
-        document.getElementById(
-            "systemStatus"
-        );
+const system =
+document.getElementById("systemStatus");
 
+system.textContent="UPDATING...";
 
-    system.textContent =
-        "UPDATING...";
+let online=0;
 
+for(
+const key of Object.keys(locations)
+){
 
-    let online = 0;
+try{
 
+const data =
+await getData(key);
 
-    for(
-        const key of Object.keys(locations)
-    ){
+forecastData[key]=data;
 
-        try{
+updateCard(key,data);
+updateMapMarker(key,data);
+checkForChanges(key,data);
 
-            const data =
-                await getData(key);
+online++;
 
+}catch(error){
 
-            forecastData[key] =
-                data;
+console.error(key,error);
 
+}
 
-            updateCard(
-                key,
-                data
-            );
+}
 
+updateSummary();
 
-            updateMapMarker(
-                key,
-                data
-            );
+document.getElementById(
+"onlineLocations"
+).textContent =
+`${online} / 4`;
 
+document.getElementById(
+"lastUpdated"
+).textContent =
+new Date().toLocaleTimeString(
+"en-IN",
+{
+hour:"2-digit",
+minute:"2-digit",
+second:"2-digit"
+}
+);
 
-            checkForChanges(
-                key,
-                data
-            );
+if(online===4)
+system.textContent="🟢 LIVE";
 
+else if(online>0)
+system.textContent="🟡 PARTIAL";
 
-            online++;
+else
+system.textContent="🔴 OFFLINE";
 
-        }
-        catch(error){
-
-            console.error(
-                key,
-                error
-            );
-
-        }
-
-    }
-
-
-    updateSummary();
-
-
-    document.getElementById(
-        "onlineLocations"
-    ).textContent =
-        `${online} / 4`;
-
-
-    document.getElementById(
-        "lastUpdated"
-    ).textContent =
-        new Date().toLocaleTimeString(
-            "en-IN",
-            {
-                hour:"2-digit",
-                minute:"2-digit",
-                second:"2-digit"
-            }
-        );
-
-
-    if(online === 4){
-
-        system.textContent =
-            "🟢 LIVE";
-
-    }
-    else if(online > 0){
-
-        system.textContent =
-            "🟡 PARTIAL";
-
-    }
-    else{
-
-        system.textContent =
-            "🔴 OFFLINE";
-
-    }
-
-
-    drawGraph();
+drawGraph();
 
 }
 
 
-/* =========================================
-   START
-========================================= */
-
 document.addEventListener(
-    "DOMContentLoaded",
-    () => {
+"DOMContentLoaded",
+()=>{
 
-        createMap();
+createMap();
 
-        checkNotificationStatus();
+checkNotificationStatus();
 
-        loadAll();
+loadAll();
 
-        setTimeout(
-            () => {
+setTimeout(
+()=>{
 
-                if(map){
+if(map)
+map.invalidateSize();
 
-                    map.invalidateSize();
-
-                }
-
-            },
-            500
-        );
-
-    }
+},
+500
 );
 
+});
 
-/* =========================================
-   AUTO REFRESH
-========================================= */
 
 setInterval(
-    loadAll,
-    15 * 60 * 1000
+loadAll,
+15*60*1000
 );
 
-
-/* =========================================
-   RESIZE
-========================================= */
 
 window.addEventListener(
-    "resize",
-    () => {
+"resize",
+()=>{
 
-        if(map){
+if(map)
+map.invalidateSize();
 
-            map.invalidateSize();
+drawGraph();
 
-        }
+});
 
-        drawGraph();
-
-    }
-);
-
-
-/* =========================================
-   GLOBAL ERROR HANDLER
-========================================= */
 
 window.addEventListener(
-    "error",
-    event => {
+"error",
+event=>{
 
-        console.error(
-            "Application error:",
-            event.error
-        );
-
-    }
+console.error(
+"Application error:",
+event.error
 );
-if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => {
-        navigator.serviceWorker.register("./service-worker.js")
-            .then(registration => {
-                console.log(
-                    "NCR AIR WATCH Service Worker registered:",
-                    registration.scope
-                );
-            })
-            .catch(error => {
-                console.error(
-                    "Service Worker registration failed:",
-                    error
-                );
-            });
-    });
-    }
-    async function testNotification() {
-    if (Notification.permission !== "granted") {
-        alert("Please enable Browser Alerts first.");
-        return;
-    }
 
-    const registration = await navigator.serviceWorker.ready;
+});
 
-    await registration.showNotification("NCR AIR WATCH 🚨", {
-        body: "Test notification successful! 📱",
-        tag: "ncr-test-notification",
-        renotify: true
-    });
-    }
-    <button onclick="testNotification()">
-    🧪 Test Notification
-</button>
-</script>
 
-</body>
-  </html>
+/* SERVICE WORKER */
+
+if("serviceWorker" in navigator){
+
+window.addEventListener(
+"load",
+()=>{
+
+navigator.serviceWorker
+.register("./service-worker.js")
+.then(registration=>{
+
+console.log(
+"NCR AIR WATCH Service Worker registered:",
+registration.scope
+);
+
+})
+.catch(error=>{
+
+console.error(
+"Service Worker registration failed:",
+error
+);
+
+});
+
+});
+
+}
+
+</script></body>
+    </html>
