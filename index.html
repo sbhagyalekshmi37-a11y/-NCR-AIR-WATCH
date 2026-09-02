@@ -6,260 +6,206 @@
 
 <title>NCR AIR WATCH</title>
 
-<link
-  rel="stylesheet"
-  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-/>
+<link rel="stylesheet"
+href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
-*{
-  box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
 body{
-  margin:0;
-  font-family:Arial,Helvetica,sans-serif;
-  background:#f4f7fb;
-  color:#172033;
+margin:0;
+font-family:Arial,sans-serif;
+background:#f4f7fb;
+color:#172033
 }
 
 header{
-  background:linear-gradient(135deg,#071c35,#0d4770);
-  color:white;
-  padding:24px 18px;
+background:linear-gradient(135deg,#071c35,#0d4770);
+color:white;
+padding:24px 18px
 }
 
-header h1{
-  margin:0;
-  font-size:30px;
-}
-
-header p{
-  margin:8px 0 0;
-  opacity:.85;
-}
+header h1{margin:0;font-size:30px}
+header p{margin:8px 0 0;opacity:.85}
 
 .container{
-  max-width:1250px;
-  margin:auto;
-  padding:18px;
+max-width:1250px;
+margin:auto;
+padding:18px
 }
 
 .card{
-  background:white;
-  border-radius:16px;
-  padding:18px;
-  margin-bottom:18px;
-  box-shadow:0 5px 20px rgba(0,0,0,.07);
+background:white;
+border-radius:16px;
+padding:18px;
+margin-bottom:18px;
+box-shadow:0 5px 20px rgba(0,0,0,.07)
 }
 
-.section-title{
-  font-size:20px;
-  font-weight:700;
-  margin-bottom:14px;
+.title{
+font-size:20px;
+font-weight:bold;
+margin-bottom:14px
 }
 
-.search-box{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
+.search{
+display:flex;
+gap:10px;
+flex-wrap:wrap
 }
 
 input{
-  flex:1;
-  min-width:220px;
-  padding:13px;
-  border:1px solid #ccd5df;
-  border-radius:10px;
-  font-size:15px;
+padding:13px;
+border:1px solid #ccd5df;
+border-radius:10px;
+font-size:15px
+}
+
+.search input{
+flex:1;
+min-width:220px
 }
 
 button{
-  border:none;
-  padding:12px 16px;
-  border-radius:10px;
-  cursor:pointer;
-  background:#087f5b;
-  color:white;
-  font-weight:700;
+border:0;
+padding:12px 16px;
+border-radius:10px;
+background:#087f5b;
+color:white;
+font-weight:bold;
+cursor:pointer
 }
 
-button:hover{
-  opacity:.9;
-}
-
-.gps-btn{
-  background:#1769aa;
+.gps{
+background:#1769aa
 }
 
 .status{
-  margin-top:12px;
-  padding:10px;
-  border-radius:10px;
-  background:#eef4f8;
-  font-size:14px;
-}
-
-.results{
-  margin-top:10px;
-}
-
-.result-item{
-  padding:12px;
-  border-bottom:1px solid #eee;
-  cursor:pointer;
-}
-
-.result-item:hover{
-  background:#f2f7fb;
-}
-
-.location-info{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-  gap:12px;
-}
-
-.info-box{
-  background:#f6f9fc;
-  padding:14px;
-  border-radius:12px;
-}
-
-.info-box small{
-  display:block;
-  color:#657080;
-  margin-bottom:5px;
-}
-
-.info-box strong{
-  font-size:21px;
+margin-top:12px;
+padding:11px;
+border-radius:10px;
+background:#eef4f8;
+font-size:14px
 }
 
 .grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
-  gap:12px;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+gap:12px
 }
 
-.pollutant{
-  padding:15px;
-  border-radius:13px;
-  background:#f6f8fb;
+.box{
+background:#f6f8fb;
+padding:15px;
+border-radius:13px
 }
 
-.pollutant small{
-  color:#657080;
+.box small{
+display:block;
+color:#657080;
+margin-bottom:5px
 }
 
-.pollutant strong{
-  display:block;
-  font-size:23px;
-  margin-top:5px;
-}
-
-.live{
-  color:#087f5b;
-  font-weight:bold;
-}
-
-.unavailable{
-  color:#d9480f;
-  font-weight:bold;
-}
-
-#map{
-  height:430px;
-  border-radius:14px;
-}
-
-.chart-container{
-  height:360px;
-}
-
-table{
-  width:100%;
-  border-collapse:collapse;
-  font-size:14px;
-}
-
-th,td{
-  padding:10px;
-  border-bottom:1px solid #e5e9ef;
-  text-align:left;
-}
-
-th{
-  background:#f0f4f8;
-}
-
-.alert{
-  padding:14px;
-  border-radius:12px;
-  background:#fff4e6;
-  margin-bottom:10px;
+.box strong{
+font-size:22px
 }
 
 .good{
-  background:#e6fcf5;
+background:#e6fcf5
 }
 
 .warning{
-  background:#fff3bf;
+background:#fff3bf
 }
 
 .danger{
-  background:#ffe3e3;
+background:#ffe3e3
 }
 
-.simulator{
-  display:grid;
-  gap:12px;
+.live{
+color:#087f5b
 }
 
-.range-row{
-  display:flex;
-  align-items:center;
-  gap:10px;
+.unavailable{
+color:#d9480f
 }
 
-.range-row input{
-  min-width:0;
+#map{
+height:430px;
+border-radius:14px
+}
+
+.results{
+margin-top:10px
+}
+
+.result{
+padding:12px;
+border-bottom:1px solid #eee;
+cursor:pointer
+}
+
+.result:hover{
+background:#f3f7fa
+}
+
+.chart{
+height:350px
+}
+
+.table-wrap{
+overflow-x:auto
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+font-size:13px
+}
+
+th,td{
+padding:9px;
+border-bottom:1px solid #e5e9ef;
+text-align:left;
+white-space:nowrap
+}
+
+th{
+background:#eef3f7
+}
+
+.range{
+width:100%
 }
 
 footer{
-  text-align:center;
-  padding:25px;
-  color:#687386;
-  font-size:13px;
+text-align:center;
+padding:25px;
+font-size:13px;
+color:#687386
 }
 
 @media(max-width:600px){
-  header h1{
-    font-size:24px;
-  }
 
-  .container{
-    padding:10px;
-  }
+.container{padding:10px}
 
-  .card{
-    padding:14px;
-  }
+.card{padding:14px}
 
-  #map{
-    height:350px;
-  }
+header h1{font-size:24px}
 
-  .chart-container{
-    height:280px;
-  }
+button{
+width:100%
+}
 
-  button{
-    width:100%;
-  }
+#map{
+height:350px
+}
+
+.chart{
+height:280px
+}
 }
 </style>
 </head>
@@ -267,1668 +213,1594 @@ footer{
 <body>
 
 <header>
-  <div class="container">
-    <h1>🌍 NCR AIR WATCH</h1>
-    <p>
-      Live Air Quality • GPS Location • Weather • Pollution Forecast • Early Warning
-    </p>
-  </div>
+<div class="container">
+
+<h1>🌍 NCR AIR WATCH</h1>
+
+<p>
+Live Air Quality • GPS Location • Weather • Pollution Forecast • Early Warning
+</p>
+
+</div>
 </header>
+
 
 <main class="container">
 
+
 <!-- LOCATION -->
+
 <section class="card">
 
-  <div class="section-title">📍 Location</div>
+<div class="title">📍 Location</div>
 
-  <div class="search-box">
+<div class="search">
 
-    <input
-      id="locationSearch"
-      type="text"
-      placeholder="Search any place..."
-    >
+<input
+id="searchInput"
+placeholder="Search any place..."
+>
 
-    <button onclick="searchLocation()">
-      🔎 Search
-    </button>
+<button onclick="searchPlace()">
+🔎 Search
+</button>
 
-    <button class="gps-btn" onclick="useMyLocation()">
-      📱 Use My GPS
-    </button>
+<button class="gps" onclick="getGPS()">
+📱 Use My GPS
+</button>
 
-  </div>
+</div>
 
-  <div id="gpsStatus" class="status">
-    GPS: Waiting for location permission...
-  </div>
+<div id="gpsStatus" class="status">
+GPS: Waiting...
+</div>
 
-  <div id="searchResults" class="results"></div>
+<div id="results" class="results"></div>
 
 </section>
 
 
 <!-- SELECTED LOCATION -->
+
 <section class="card">
 
-  <div class="section-title">📌 Selected Location</div>
+<div class="title">📌 Selected Location</div>
 
-  <div class="location-info">
+<div class="grid">
 
-    <div class="info-box">
-      <small>Place</small>
-      <strong id="placeName">Not selected</strong>
-    </div>
+<div class="box">
+<small>Place</small>
+<strong id="place">Not selected</strong>
+</div>
 
-    <div class="info-box">
-      <small>Latitude</small>
-      <strong id="latitude">--</strong>
-    </div>
+<div class="box">
+<small>Latitude</small>
+<strong id="lat">--</strong>
+</div>
 
-    <div class="info-box">
-      <small>Longitude</small>
-      <strong id="longitude">--</strong>
-    </div>
+<div class="box">
+<small>Longitude</small>
+<strong id="lon">--</strong>
+</div>
 
-    <div class="info-box">
-      <small>Data Status</small>
-      <strong class="live" id="dataStatus">WAITING</strong>
-    </div>
+<div class="box">
+<small>Data Status</small>
+<strong id="dataStatus" class="live">
+WAITING
+</strong>
+</div>
 
-  </div>
+</div>
 
 </section>
 
 
 <!-- MAP -->
+
 <section class="card">
 
-  <div class="section-title">
-    🗺️ OpenStreetMap + Phone GPS
-  </div>
+<div class="title">
+🗺️ OpenStreetMap + Phone GPS
+</div>
 
-  <div id="map"></div>
+<div id="map"></div>
 
-  <div class="status">
-    📱 GPS gives your phone's coordinates.
-    🗺️ OpenStreetMap displays the location.
-    🌫️ Air-quality data comes from Open-Meteo.
-  </div>
+<div class="status">
+📱 GPS → coordinates |
+🗺️ OpenStreetMap → map |
+🌫️ Open-Meteo → air quality |
+🌦️ Open-Meteo → weather
+</div>
 
 </section>
 
 
 <!-- AIR QUALITY -->
+
 <section class="card">
 
-  <div class="section-title">
-    🌫️ Air Quality
-  </div>
+<div class="title">
+🌫️ Air Quality
+</div>
 
-  <div id="aqiStatus" class="alert">
-    Waiting for air-quality data...
-  </div>
+<div id="aqStatus" class="status">
+Waiting for AQ data...
+</div>
 
-  <div class="grid">
+<br>
 
-    <div class="pollutant">
-      <small>European AQI</small>
-      <strong id="aqi">--</strong>
-    </div>
+<div class="grid">
 
-    <div class="pollutant">
-      <small>PM2.5</small>
-      <strong id="pm25">--</strong>
-    </div>
+<div class="box">
+<small>European AQI</small>
+<strong id="aqi">--</strong>
+</div>
 
-    <div class="pollutant">
-      <small>PM10</small>
-      <strong id="pm10">--</strong>
-    </div>
+<div class="box">
+<small>PM2.5 µg/m³</small>
+<strong id="pm25">--</strong>
+</div>
 
-    <div class="pollutant">
-      <small>NO₂</small>
-      <strong id="no2">--</strong>
-    </div>
+<div class="box">
+<small>PM10 µg/m³</small>
+<strong id="pm10">--</strong>
+</div>
 
-    <div class="pollutant">
-      <small>O₃</small>
-      <strong id="o3">--</strong>
-    </div>
+<div class="box">
+<small>NO₂ µg/m³</small>
+<strong id="no2">--</strong>
+</div>
 
-    <div class="pollutant">
-      <small>CO</small>
-      <strong id="co">--</strong>
-    </div>
+<div class="box">
+<small>O₃ µg/m³</small>
+<strong id="o3">--</strong>
+</div>
 
-    <div class="pollutant">
-      <small>SO₂</small>
-      <strong id="so2">--</strong>
-    </div>
+<div class="box">
+<small>CO µg/m³</small>
+<strong id="co">--</strong>
+</div>
 
-    <div class="pollutant">
-      <small>Dust</small>
-      <strong id="dust">--</strong>
-    </div>
+<div class="box">
+<small>SO₂ µg/m³</small>
+<strong id="so2">--</strong>
+</div>
 
-    <div class="pollutant">
-      <small>Aerosol Optical Depth</small>
-      <strong id="aod">--</strong>
-    </div>
+<div class="box">
+<small>Dust µg/m³</small>
+<strong id="dust">--</strong>
+</div>
 
-    <div class="pollutant">
-      <small>Ammonia</small>
-      <strong id="nh3">--</strong>
-    </div>
+<div class="box">
+<small>Aerosol Optical Depth</small>
+<strong id="aod">--</strong>
+</div>
 
-  </div>
+<div class="box">
+<small>Ammonia µg/m³</small>
+<strong id="nh3">--</strong>
+</div>
+
+</div>
 
 </section>
 
 
 <!-- WEATHER -->
+
 <section class="card">
 
-  <div class="section-title">
-    🌦️ Live Weather
-  </div>
+<div class="title">
+🌦️ Current Weather
+</div>
 
-  <div class="grid">
+<div id="weatherStatus" class="status">
+Waiting for weather data...
+</div>
 
-    <div class="pollutant">
-      <small>Temperature</small>
-      <strong id="temperature">--</strong>
-    </div>
+<br>
 
-    <div class="pollutant">
-      <small>Humidity</small>
-      <strong id="humidity">--</strong>
-    </div>
+<div class="grid">
 
-    <div class="pollutant">
-      <small>Wind Speed</small>
-      <strong id="wind">--</strong>
-    </div>
+<div class="box">
+<small>Temperature</small>
+<strong id="temp">--</strong>
+</div>
 
-    <div class="pollutant">
-      <small>Pressure</small>
-      <strong id="pressure">--</strong>
-    </div>
+<div class="box">
+<small>Humidity</small>
+<strong id="humidity">--</strong>
+</div>
 
-  </div>
+<div class="box">
+<small>Wind</small>
+<strong id="wind">--</strong>
+</div>
+
+<div class="box">
+<small>Pressure</small>
+<strong id="pressure">--</strong>
+</div>
+
+</div>
 
 </section>
 
 
 <!-- EXPLANATION -->
+
 <section class="card">
 
-  <div class="section-title">
-    🧠 Pollution Explanation
-  </div>
+<div class="title">
+🧠 Pollution Explanation
+</div>
 
-  <div id="explanation" class="alert">
-    Waiting for data...
-  </div>
+<div id="explanation" class="status">
+Waiting for AQ + weather data...
+</div>
 
 </section>
 
 
-<!-- 72 HOUR FORECAST -->
+<!-- 72H CHART -->
+
 <section class="card">
 
-  <div class="section-title">
-    🔮 72-Hour Pollution Forecast
-  </div>
+<div class="title">
+🔮 72-Hour AQI Forecast
+</div>
 
-  <div class="chart-container">
-    <canvas id="forecastChart"></canvas>
-  </div>
+<div id="chartStatus" class="status">
+Waiting for forecast...
+</div>
+
+<br>
+
+<div class="chart">
+<canvas id="forecastChart"></canvas>
+</div>
 
 </section>
 
 
-<!-- FORECAST TABLE -->
+<!-- 72H TABLE -->
+
 <section class="card">
 
-  <div class="section-title">
-    📊 72-Hour Forecast Details
-  </div>
+<div class="title">
+📊 72-Hour Forecast Details
+</div>
 
-  <div style="overflow-x:auto;">
+<div class="table-wrap">
 
-    <table>
+<table>
 
-      <thead>
-        <tr>
-          <th>Time</th>
-          <th>AQI</th>
-          <th>PM2.5</th>
-          <th>PM10</th>
-          <th>NO₂</th>
-          <th>O₃</th>
-          <th>Temperature</th>
-          <th>Wind</th>
-        </tr>
-      </thead>
+<thead>
 
-      <tbody id="forecastTable">
-      </tbody>
+<tr>
+<th>Time</th>
+<th>AQI</th>
+<th>PM2.5</th>
+<th>PM10</th>
+<th>NO₂</th>
+<th>O₃</th>
+<th>Temp</th>
+<th>Wind</th>
+</tr>
 
-    </table>
+</thead>
 
-  </div>
+<tbody id="forecastTable">
+
+</tbody>
+
+</table>
+
+</div>
 
 </section>
 
 
-<!-- PREDICTIVE HOTSPOT -->
+<!-- RISK -->
+
 <section class="card">
 
-  <div class="section-title">
-    🔥 Predictive Pollution Risk
-  </div>
+<div class="title">
+🔥 Predictive Pollution Risk
+</div>
 
-  <div class="grid">
+<div class="grid">
 
-    <div class="pollutant">
-      <small>NOW</small>
-      <strong id="riskNow">--</strong>
-    </div>
+<div class="box">
+<small>NOW</small>
+<strong id="risk0">--</strong>
+</div>
 
-    <div class="pollutant">
-      <small>24H</small>
-      <strong id="risk24">--</strong>
-    </div>
+<div class="box">
+<small>24H</small>
+<strong id="risk24">--</strong>
+</div>
 
-    <div class="pollutant">
-      <small>48H</small>
-      <strong id="risk48">--</strong>
-    </div>
+<div class="box">
+<small>48H</small>
+<strong id="risk48">--</strong>
+</div>
 
-    <div class="pollutant">
-      <small>72H</small>
-      <strong id="risk72">--</strong>
-    </div>
+<div class="box">
+<small>72H</small>
+<strong id="risk72">--</strong>
+</div>
 
-  </div>
+</div>
 
 </section>
 
 
 <!-- EARLY WARNING -->
+
 <section class="card">
 
-  <div class="section-title">
-    🚨 Early Warning System
-  </div>
+<div class="title">
+🚨 Early Warning System
+</div>
 
-  <div id="earlyWarning" class="alert good">
-    Monitoring...
-  </div>
+<div id="warning" class="status">
+Monitoring...
+</div>
 
 </section>
 
 
 <!-- WHAT IF -->
+
 <section class="card">
 
-  <div class="section-title">
-    🧪 What-If Pollution Simulation
-  </div>
+<div class="title">
+🧪 What-If Simulation
+</div>
 
-  <div class="simulator">
+<p>
+Traffic change:
+<b id="trafficText">0%</b>
+</p>
 
-    <label>
-      Traffic change:
-      <b id="trafficValue">0%</b>
-    </label>
+<input
+class="range"
+id="traffic"
+type="range"
+min="-50"
+max="100"
+value="0"
+oninput="simulate()"
+>
 
-    <div class="range-row">
-      <input
-        type="range"
-        id="trafficSlider"
-        min="-50"
-        max="100"
-        value="0"
-        oninput="runSimulation()"
-      >
-    </div>
+<p>
+Emission change:
+<b id="emissionText">0%</b>
+</p>
 
-    <label>
-      Emission change:
-      <b id="emissionValue">0%</b>
-    </label>
+<input
+class="range"
+id="emission"
+type="range"
+min="-50"
+max="100"
+value="0"
+oninput="simulate()"
+>
 
-    <div class="range-row">
-      <input
-        type="range"
-        id="emissionSlider"
-        min="-50"
-        max="100"
-        value="0"
-        oninput="runSimulation()"
-      >
-    </div>
-
-    <div id="simulationResult" class="alert">
-      Select current conditions to simulate.
-    </div>
-
-  </div>
+<div id="simulation" class="status">
+Waiting for data...
+</div>
 
 </section>
 
 
-<!-- DATA SOURCES -->
+<!-- SOURCES -->
+
 <section class="card">
 
-  <div class="section-title">
-    📡 Data Sources & Status
-  </div>
+<div class="title">
+📡 Data Sources
+</div>
 
-  <div class="grid">
+<div class="grid">
 
-    <div class="pollutant">
-      <small>Phone GPS</small>
-      <strong class="live">AVAILABLE</strong>
-    </div>
+<div class="box">
+<small>Phone GPS</small>
+<strong class="live">AVAILABLE</strong>
+</div>
 
-    <div class="pollutant">
-      <small>OpenStreetMap</small>
-      <strong class="live">AVAILABLE</strong>
-    </div>
+<div class="box">
+<small>OpenStreetMap</small>
+<strong class="live">AVAILABLE</strong>
+</div>
 
-    <div class="pollutant">
-      <small>Open-Meteo AQ</small>
-      <strong class="live">AVAILABLE</strong>
-    </div>
+<div class="box">
+<small>Open-Meteo AQ</small>
+<strong class="live">AVAILABLE</strong>
+</div>
 
-    <div class="pollutant">
-      <small>Open-Meteo Weather</small>
-      <strong class="live">AVAILABLE</strong>
-    </div>
+<div class="box">
+<small>Open-Meteo Weather</small>
+<strong class="live">AVAILABLE</strong>
+</div>
 
-    <div class="pollutant">
-      <small>NASA FIRMS</small>
-      <strong class="unavailable">UNAVAILABLE</strong>
-    </div>
+<div class="box">
+<small>NASA FIRMS</small>
+<strong class="unavailable">UNAVAILABLE</strong>
+</div>
 
-    <div class="pollutant">
-      <small>Live Traffic API</small>
-      <strong class="unavailable">UNAVAILABLE</strong>
-    </div>
+<div class="box">
+<small>Live Traffic API</small>
+<strong class="unavailable">UNAVAILABLE</strong>
+</div>
 
-    <div class="pollutant">
-      <small>Sentinel-5P Live</small>
-      <strong class="unavailable">UNAVAILABLE</strong>
-    </div>
+<div class="box">
+<small>Sentinel-5P</small>
+<strong class="unavailable">UNAVAILABLE</strong>
+</div>
 
-  </div>
-
-  <div class="status">
-    ℹ️ NASA FIRMS, live traffic and Sentinel-5P are not fabricated here.
-    They are marked unavailable because no API/backend connection is configured.
-  </div>
+</div>
 
 </section>
+
 
 </main>
 
 
 <footer>
-  NCR AIR WATCH • Open-Meteo • OpenStreetMap • Leaflet
+
+NCR AIR WATCH • Open-Meteo • OpenStreetMap • Leaflet
+
 </footer>
 
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
 
 <script>
 
 let map;
 let marker;
 let accuracyCircle;
-let forecastChart;
+let chart;
 
-let selectedLocation = {
-  name: "Not selected",
-  lat: null,
-  lon: null
+let locationData={
+name:null,
+lat:null,
+lon:null
 };
 
-let currentAQ = null;
-let currentWeather = null;
-let forecastData = null;
+let aqData=null;
+let weatherData=null;
 
 
 /* =========================
-   MAP INITIALIZATION
+MAP
 ========================= */
 
 function initMap(){
 
-  map = L.map("map").setView(
-    [20.5937,78.9629],
-    5
-  );
+map=L.map("map").setView(
+[20.5937,78.9629],
+5
+);
 
-  L.tileLayer(
-    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-    {
-      maxZoom:19,
-      attribution:
-        '&copy; OpenStreetMap contributors'
-    }
-  ).addTo(map);
+L.tileLayer(
+"https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+{
+maxZoom:19,
+attribution:"© OpenStreetMap contributors"
+}
+).addTo(map);
 
 }
 
 
 /* =========================
-   MAP LOCATION
+GPS
 ========================= */
 
-function setMapLocation(
-  lat,
-  lon,
-  name,
-  accuracy=null
-){
+function getGPS(){
 
-  if(marker){
-    map.removeLayer(marker);
-  }
+const status=
+document.getElementById("gpsStatus");
 
-  if(accuracyCircle){
-    map.removeLayer(accuracyCircle);
-  }
+if(!navigator.geolocation){
 
-  marker = L.marker([lat,lon])
-    .addTo(map)
-    .bindPopup(
-      `<b>${escapeHTML(name)}</b><br>
-       Latitude: ${lat.toFixed(6)}<br>
-       Longitude: ${lon.toFixed(6)}`
-    )
-    .openPopup();
+status.innerHTML=
+"❌ GPS is not supported by this browser.";
 
-  if(accuracy){
+return;
 
-    accuracyCircle = L.circle(
-      [lat,lon],
-      {
-        radius:accuracy,
-        weight:1
-      }
-    ).addTo(map);
+}
 
-  }
+status.innerHTML=
+"📱 Getting phone GPS...";
 
-  map.setView(
-    [lat,lon],
-    13
-  );
+navigator.geolocation.getCurrentPosition(
+
+async position=>{
+
+const lat=
+position.coords.latitude;
+
+const lon=
+position.coords.longitude;
+
+const accuracy=
+position.coords.accuracy;
+
+status.innerHTML=
+`✅ GPS location detected.<br>
+Accuracy: approximately ${Math.round(accuracy)} metres`;
+
+let name=
+`GPS Location (${lat.toFixed(5)}, ${lon.toFixed(5)})`;
+
+try{
+
+const response=
+await fetch(
+`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`
+);
+
+if(response.ok){
+
+const data=
+await response.json();
+
+if(data.display_name){
+name=data.display_name;
+}
+
+}
+
+}catch(e){
+
+console.log("Reverse geocoding failed");
+
+}
+
+selectLocation(
+name,
+lat,
+lon,
+accuracy
+);
+
+},
+
+error=>{
+
+if(error.code===1){
+
+status.innerHTML=
+"❌ Location permission denied. Allow GPS permission.";
+
+}else if(error.code===2){
+
+status.innerHTML=
+"❌ GPS location unavailable.";
+
+}else if(error.code===3){
+
+status.innerHTML=
+"❌ GPS request timed out.";
+
+}else{
+
+status.innerHTML=
+"❌ Unable to get GPS.";
+
+}
+
+},
+
+{
+enableHighAccuracy:true,
+timeout:20000,
+maximumAge:0
+}
+
+);
+
 }
 
 
 /* =========================
-   GPS
+SEARCH
 ========================= */
 
-function useMyLocation(){
+async function searchPlace(){
 
-  const status =
-    document.getElementById("gpsStatus");
+const query=
+document.getElementById("searchInput")
+.value
+.trim();
 
-  if(!navigator.geolocation){
+const results=
+document.getElementById("results");
 
-    status.innerHTML =
-      "❌ This browser does not support GPS.";
+if(!query){
 
-    return;
-  }
+results.innerHTML=
+"Please enter a place.";
 
-  status.innerHTML =
-    "📱 Getting your phone GPS location...";
+return;
 
-  navigator.geolocation.getCurrentPosition(
+}
 
-    async function(position){
+results.innerHTML=
+"🔎 Searching...";
 
-      const lat =
-        position.coords.latitude;
+try{
 
-      const lon =
-        position.coords.longitude;
+const response=
+await fetch(
+`https://nominatim.openstreetmap.org/search?format=jsonv2&limit=5&q=${encodeURIComponent(query)}`
+);
 
-      const accuracy =
-        position.coords.accuracy;
+if(!response.ok)
+throw new Error();
 
-      status.innerHTML =
-        `✅ GPS location detected.<br>
-         Accuracy: approximately ${Math.round(accuracy)} metres`;
+const data=
+await response.json();
 
-      let placeName =
-        `GPS Location (${lat.toFixed(5)}, ${lon.toFixed(5)})`;
+window.searchResults=data;
 
-      try{
+if(!data.length){
 
-        const response =
-          await fetch(
-            `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}&zoom=18&addressdetails=1`
-          );
+results.innerHTML=
+"No location found.";
 
-        if(response.ok){
+return;
 
-          const data =
-            await response.json();
+}
 
-          if(data.display_name){
-            placeName =
-              data.display_name;
-          }
+results.innerHTML=
+data.map(
+(item,index)=>`
 
-        }
+<div
+class="result"
+onclick="chooseSearch(${index})"
+>
+📍 ${escapeHTML(item.display_name)}
+</div>
 
-      }catch(error){
+`
+).join("");
 
-        console.log(
-          "Reverse geocoding unavailable",
-          error
-        );
+}catch(error){
 
-      }
+results.innerHTML=
+"❌ Search failed. Check internet connection.";
 
-      selectLocation(
-        placeName,
-        lat,
-        lon,
-        accuracy
-      );
+}
 
-    },
+}
 
-    function(error){
 
-      let message =
-        "Unable to get GPS location.";
+function chooseSearch(index){
 
-      if(error.code === 1){
-        message =
-          "❌ Location permission denied. Please allow location access.";
-      }
+const item=
+window.searchResults[index];
 
-      if(error.code === 2){
-        message =
-          "❌ GPS position unavailable.";
-      }
+selectLocation(
+item.display_name,
+parseFloat(item.lat),
+parseFloat(item.lon)
+);
 
-      if(error.code === 3){
-        message =
-          "❌ GPS request timed out.";
-      }
-
-      status.innerHTML = message;
-
-    },
-
-    {
-      enableHighAccuracy:true,
-      timeout:15000,
-      maximumAge:0
-    }
-
-  );
+document.getElementById(
+"results"
+).innerHTML="";
 
 }
 
 
 /* =========================
-   SEARCH LOCATION
-========================= */
-
-async function searchLocation(){
-
-  const input =
-    document.getElementById("locationSearch");
-
-  const query =
-    input.value.trim();
-
-  const results =
-    document.getElementById("searchResults");
-
-  if(!query){
-
-    results.innerHTML =
-      "Enter a place name.";
-
-    return;
-  }
-
-  results.innerHTML =
-    "🔎 Searching...";
-
-  try{
-
-    const response =
-      await fetch(
-        `https://nominatim.openstreetmap.org/search?format=jsonv2&limit=5&q=${encodeURIComponent(query)}`
-      );
-
-    if(!response.ok){
-      throw new Error("Search failed");
-    }
-
-    const data =
-      await response.json();
-
-    showSearchResults(data);
-
-  }catch(error){
-
-    results.innerHTML =
-      "❌ Location search failed.";
-
-    console.error(error);
-
-  }
-
-}
-
-
-function showSearchResults(data){
-
-  const results =
-    document.getElementById("searchResults");
-
-  if(!data.length){
-
-    results.innerHTML =
-      "No location found.";
-
-    return;
-  }
-
-  results.innerHTML =
-    data.map(
-      (item,index)=>`
-
-        <div
-          class="result-item"
-          onclick="selectSearchResult(${index})"
-        >
-          📍 ${escapeHTML(item.display_name)}
-        </div>
-
-      `
-    ).join("");
-
-  window.searchData = data;
-
-}
-
-
-function selectSearchResult(index){
-
-  const item =
-    window.searchData[index];
-
-  const lat =
-    parseFloat(item.lat);
-
-  const lon =
-    parseFloat(item.lon);
-
-  selectLocation(
-    item.display_name,
-    lat,
-    lon
-  );
-
-  document.getElementById(
-    "searchResults"
-  ).innerHTML = "";
-
-}
-
-
-/* =========================
-   SELECT LOCATION
+SELECT LOCATION
 ========================= */
 
 async function selectLocation(
-  name,
-  lat,
-  lon,
-  accuracy=null
+name,
+lat,
+lon,
+accuracy=null
 ){
 
-  selectedLocation = {
-    name:name,
-    lat:lat,
-    lon:lon
-  };
+locationData={
+name:name,
+lat:lat,
+lon:lon
+};
 
-  document.getElementById(
-    "placeName"
-  ).textContent = name;
+document.getElementById(
+"place"
+).textContent=name;
 
-  document.getElementById(
-    "latitude"
-  ).textContent = lat.toFixed(6);
+document.getElementById(
+"lat"
+).textContent=lat.toFixed(6);
 
-  document.getElementById(
-    "longitude"
-  ).textContent = lon.toFixed(6);
+document.getElementById(
+"lon"
+).textContent=lon.toFixed(6);
 
-  document.getElementById(
-    "dataStatus"
-  ).textContent = "LOADING";
+document.getElementById(
+"dataStatus"
+).textContent=
+"LOADING";
 
-  setMapLocation(
-    lat,
-    lon,
-    name,
-    accuracy
-  );
+setMap(
+lat,
+lon,
+name,
+accuracy
+);
 
-  await loadAllData();
+await loadData();
 
 }
 
 
 /* =========================
-   LOAD ALL DATA
+MAP MARKER
 ========================= */
 
-async function loadAllData(){
+function setMap(
+lat,
+lon,
+name,
+accuracy
+){
 
-  document.getElementById(
-    "dataStatus"
-  ).textContent = "LOADING";
+if(marker)
+map.removeLayer(marker);
 
-  try{
+if(accuracyCircle)
+map.removeLayer(accuracyCircle);
 
-    await Promise.all([
-      fetchAirQuality(),
-      fetchWeather()
-    ]);
+marker=
+L.marker([lat,lon])
+.addTo(map)
+.bindPopup(
+`<b>${escapeHTML(name)}</b><br>
+Latitude: ${lat.toFixed(6)}<br>
+Longitude: ${lon.toFixed(6)}`
+)
+.openPopup();
 
-    updateExplanation();
-    updateRisk();
-    updateEarlyWarning();
-    runSimulation();
+if(accuracy){
 
-    document.getElementById(
-      "dataStatus"
-    ).textContent = "UPDATED";
+accuracyCircle=
+L.circle(
+[lat,lon],
+{
+radius:accuracy
+}
+).addTo(map);
 
-  }catch(error){
+}
 
-    console.error(error);
-
-    document.getElementById(
-      "dataStatus"
-    ).textContent = "ERROR";
-
-  }
+map.setView(
+[lat,lon],
+14
+);
 
 }
 
 
 /* =========================
-   AIR QUALITY API
+LOAD DATA
 ========================= */
 
-async function fetchAirQuality(){
+async function loadData(){
 
-  const lat =
-    selectedLocation.lat;
+document.getElementById(
+"dataStatus"
+).textContent="LOADING";
 
-  const lon =
-    selectedLocation.lon;
 
-  const url =
-    `https://air-quality-api.open-meteo.com/v1/air-quality`+
-    `?latitude=${lat}`+
-    `&longitude=${lon}`+
-    `&hourly=`+
-    `pm10,pm2_5,carbon_monoxide,carbon_dioxide,`+
-    `nitrogen_dioxide,sulphur_dioxide,ozone,`+
-    `aerosol_optical_depth,dust,ammonia,`+
-    `european_aqi`+
-    `&forecast_hours=72`+
-    `&timezone=Asia%2FKolkata`;
+const aqResult=
+await loadAQ();
 
-  const response =
-    await fetch(url);
+const weatherResult=
+await loadWeather();
 
-  if(!response.ok){
-    throw new Error(
-      "Air quality API failed"
-    );
-  }
 
-  currentAQ =
-    await response.json();
+if(aqResult || weatherResult){
 
-  updateAirUI();
-  updateForecast();
+document.getElementById(
+"dataStatus"
+).textContent="UPDATED";
+
+}else{
+
+document.getElementById(
+"dataStatus"
+).textContent="DATA UNAVAILABLE";
+
+}
+
+updateExplanation();
+updateWarning();
+simulate();
 
 }
 
 
 /* =========================
-   WEATHER API
+AIR QUALITY
 ========================= */
 
-async function fetchWeather(){
+async function loadAQ(){
 
-  const lat =
-    selectedLocation.lat;
+try{
 
-  const lon =
-    selectedLocation.lon;
+const lat=locationData.lat;
+const lon=locationData.lon;
 
-  const url =
-    `https://api.open-meteo.com/v1/forecast`+
-    `?latitude=${lat}`+
-    `&longitude=${lon}`+
-    `&current=`+
-    `temperature_2m,relative_humidity_2m,`+
-    `wind_speed_10m,pressure_msl`+
-    `&hourly=`+
-    `temperature_2m,relative_humidity_2m,`+
-    `wind_speed_10m,pressure_msl`+
-    `&forecast_hours=72`+
-    `&timezone=Asia%2FKolkata`;
+const url=
+`https://air-quality-api.open-meteo.com/v1/air-quality`+
+`?latitude=${lat}`+
+`&longitude=${lon}`+
+`&hourly=pm10,pm2_5,carbon_monoxide,carbon_dioxide,nitrogen_dioxide,sulphur_dioxide,ozone,aerosol_optical_depth,dust,ammonia,european_aqi`+
+`&forecast_hours=72`+
+`&timezone=Asia%2FKolkata`;
 
-  const response =
-    await fetch(url);
+const response=
+await fetch(url);
 
-  if(!response.ok){
-    throw new Error(
-      "Weather API failed"
-    );
-  }
+if(!response.ok)
+throw new Error();
 
-  currentWeather =
-    await response.json();
+aqData=
+await response.json();
 
-  updateWeatherUI();
+updateAQ();
+updateForecast();
+
+document.getElementById(
+"aqStatus"
+).innerHTML=
+"🟢 AQ data updated successfully.";
+
+return true;
+
+}catch(error){
+
+console.error(error);
+
+document.getElementById(
+"aqStatus"
+).innerHTML=
+"❌ Air-quality data unavailable.";
+
+return false;
+
+}
 
 }
 
 
 /* =========================
-   AIR UI
+WEATHER
 ========================= */
 
-function updateAirUI(){
+async function loadWeather(){
 
-  const h =
-    currentAQ.hourly;
+try{
 
-  const i = 0;
+const lat=locationData.lat;
+const lon=locationData.lon;
 
-  setText(
-    "aqi",
-    value(h.european_aqi,i)
-  );
+const url=
+`https://api.open-meteo.com/v1/forecast`+
+`?latitude=${lat}`+
+`&longitude=${lon}`+
+`&current=temperature_2m,relative_humidity_2m,wind_speed_10m,pressure_msl`+
+`&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m,pressure_msl`+
+`&forecast_hours=72`+
+`&timezone=Asia%2FKolkata`;
 
-  setText(
-    "pm25",
-    value(h.pm2_5,i)
-  );
+const response=
+await fetch(url);
 
-  setText(
-    "pm10",
-    value(h.pm10,i)
-  );
+if(!response.ok)
+throw new Error();
 
-  setText(
-    "no2",
-    value(h.nitrogen_dioxide,i)
-  );
+weatherData=
+await response.json();
 
-  setText(
-    "o3",
-    value(h.ozone,i)
-  );
+updateWeather();
 
-  setText(
-    "co",
-    value(h.carbon_monoxide,i)
-  );
+document.getElementById(
+"weatherStatus"
+).innerHTML=
+"🟢 Weather data updated successfully.";
 
-  setText(
-    "so2",
-    value(h.sulphur_dioxide,i)
-  );
+return true;
 
-  setText(
-    "dust",
-    value(h.dust,i)
-  );
+}catch(error){
 
-  setText(
-    "aod",
-    value(h.aerosol_optical_depth,i)
-  );
+console.error(error);
 
-  setText(
-    "nh3",
-    value(h.ammonia,i)
-  );
+document.getElementById(
+"weatherStatus"
+).innerHTML=
+"❌ Weather data unavailable.";
 
+return false;
 
-  const aqi =
-    h.european_aqi?.[i];
-
-  const box =
-    document.getElementById(
-      "aqiStatus"
-    );
-
-  if(aqi == null){
-
-    box.className =
-      "alert";
-
-    box.innerHTML =
-      "AQI unavailable.";
-
-    return;
-
-  }
-
-  if(aqi <= 50){
-
-    box.className =
-      "alert good";
-
-    box.innerHTML =
-      `🟢 AQI ${Math.round(aqi)} — Good`;
-
-  }else if(aqi <= 100){
-
-    box.className =
-      "alert";
-
-    box.innerHTML =
-      `🟡 AQI ${Math.round(aqi)} — Moderate`;
-
-  }else if(aqi <= 150){
-
-    box.className =
-      "alert warning";
-
-    box.innerHTML =
-      `🟠 AQI ${Math.round(aqi)} — Unhealthy for sensitive groups`;
-
-  }else if(aqi <= 200){
-
-    box.className =
-      "alert danger";
-
-    box.innerHTML =
-      `🔴 AQI ${Math.round(aqi)} — Unhealthy`;
-
-  }else{
-
-    box.className =
-      "alert danger";
-
-    box.innerHTML =
-      `🟣 AQI ${Math.round(aqi)} — Very unhealthy / hazardous`;
-
-  }
+}
 
 }
 
 
 /* =========================
-   WEATHER UI
+AQ UI
 ========================= */
 
-function updateWeatherUI(){
+function updateAQ(){
 
-  const c =
-    currentWeather.current;
+const h=aqData.hourly;
 
-  setText(
-    "temperature",
-    c.temperature_2m != null
-      ? `${c.temperature_2m} °C`
-      : "--"
-  );
+const i=0;
 
-  setText(
-    "humidity",
-    c.relative_humidity_2m != null
-      ? `${c.relative_humidity_2m} %`
-      : "--"
-  );
+set(
+"aqi",
+num(h.european_aqi?.[i])
+);
 
-  setText(
-    "wind",
-    c.wind_speed_10m != null
-      ? `${c.wind_speed_10m} km/h`
-      : "--"
-  );
+set(
+"pm25",
+num(h.pm2_5?.[i])
+);
 
-  setText(
-    "pressure",
-    c.pressure_msl != null
-      ? `${c.pressure_msl} hPa`
-      : "--"
-  );
+set(
+"pm10",
+num(h.pm10?.[i])
+);
+
+set(
+"no2",
+num(h.nitrogen_dioxide?.[i])
+);
+
+set(
+"o3",
+num(h.ozone?.[i])
+);
+
+set(
+"co",
+num(h.carbon_monoxide?.[i])
+);
+
+set(
+"so2",
+num(h.sulphur_dioxide?.[i])
+);
+
+set(
+"dust",
+num(h.dust?.[i])
+);
+
+set(
+"aod",
+num(h.aerosol_optical_depth?.[i])
+);
+
+set(
+"nh3",
+num(h.ammonia?.[i])
+);
+
+const aqi=
+h.european_aqi?.[i];
+
+const box=
+document.getElementById("aqStatus");
+
+if(aqi<=50){
+
+box.className="status good";
+box.innerHTML=
+`🟢 AQI ${Math.round(aqi)} — Good`;
+
+}else if(aqi<=100){
+
+box.className="status";
+box.innerHTML=
+`🟡 AQI ${Math.round(aqi)} — Moderate`;
+
+}else if(aqi<=150){
+
+box.className="status warning";
+box.innerHTML=
+`🟠 AQI ${Math.round(aqi)} — Elevated`;
+
+}else{
+
+box.className="status danger";
+box.innerHTML=
+`🔴 AQI ${Math.round(aqi)} — Unhealthy`;
+
+}
 
 }
 
 
 /* =========================
-   EXPLANATION
+WEATHER UI
 ========================= */
 
-function updateExplanation(){
+function updateWeather(){
 
-  if(!currentAQ || !currentWeather){
-    return;
-  }
+const c=
+weatherData.current;
 
-  const aqi =
-    currentAQ.hourly.european_aqi?.[0];
+set(
+"temp",
+`${num(c.temperature_2m)} °C`
+);
 
-  const pm25 =
-    currentAQ.hourly.pm2_5?.[0];
+set(
+"humidity",
+`${num(c.relative_humidity_2m)} %`
+);
 
-  const wind =
-    currentWeather.current.wind_speed_10m;
+set(
+"wind",
+`${num(c.wind_speed_10m)} km/h`
+);
 
-  let messages = [];
-
-  if(aqi != null){
-
-    if(aqi > 150){
-
-      messages.push(
-        "AQI is currently high."
-      );
-
-    }else if(aqi > 100){
-
-      messages.push(
-        "Air quality is elevated."
-      );
-
-    }else{
-
-      messages.push(
-        "Current AQI is relatively lower."
-      );
-
-    }
-
-  }
-
-  if(pm25 != null && pm25 > 35){
-
-    messages.push(
-      "PM2.5 is elevated and is contributing to the pollution level."
-    );
-
-  }
-
-  if(wind != null){
-
-    if(wind < 5){
-
-      messages.push(
-        "Low wind can reduce atmospheric dispersion and allow pollutants to accumulate."
-      );
-
-    }else if(wind < 15){
-
-      messages.push(
-        "Moderate wind provides some pollutant dispersion."
-      );
-
-    }else{
-
-      messages.push(
-        "Higher wind can improve pollutant dispersion."
-      );
-
-    }
-
-  }
-
-  document.getElementById(
-    "explanation"
-  ).innerHTML =
-    "🧠 " + messages.join(" ");
+set(
+"pressure",
+`${num(c.pressure_msl)} hPa`
+);
 
 }
 
 
 /* =========================
-   FORECAST
+FORECAST
 ========================= */
 
 function updateForecast(){
 
-  const aq =
-    currentAQ.hourly;
+if(!aqData)
+return;
 
-  const weather =
-    currentWeather.hourly;
+const aq=aqData.hourly;
 
-  const rows = [];
+const weather=
+weatherData?.hourly;
 
-  const length =
-    Math.min(
-      72,
-      aq.time.length
-    );
+const rows=[];
 
-  for(let i=0;i<length;i++){
+for(let i=0;i<72;i++){
 
-    rows.push({
+rows.push({
 
-      time:aq.time[i],
+time:aq.time?.[i],
 
-      aqi:aq.european_aqi?.[i],
+aqi:aq.european_aqi?.[i],
 
-      pm25:aq.pm2_5?.[i],
+pm25:aq.pm2_5?.[i],
 
-      pm10:aq.pm10?.[i],
+pm10:aq.pm10?.[i],
 
-      no2:aq.nitrogen_dioxide?.[i],
+no2:aq.nitrogen_dioxide?.[i],
 
-      o3:aq.ozone?.[i],
+o3:aq.ozone?.[i],
 
-      temperature:
-        weather.temperature_2m?.[i],
+temp:
+weather?.temperature_2m?.[i],
 
-      wind:
-        weather.wind_speed_10m?.[i]
+wind:
+weather?.wind_speed_10m?.[i]
 
-    });
+});
 
-  }
+}
 
-  forecastData = rows;
+window.forecast=rows;
 
-  updateForecastTable();
-  drawForecastChart();
-  updateHotspotRisk();
+drawChart();
+drawTable();
+updateRisk();
 
 }
 
 
 /* =========================
-   FORECAST TABLE
+TABLE
 ========================= */
 
-function updateForecastTable(){
+function drawTable(){
 
-  const tbody =
-    document.getElementById(
-      "forecastTable"
-    );
+const tbody=
+document.getElementById(
+"forecastTable"
+);
 
-  if(!forecastData){
-    return;
-  }
+tbody.innerHTML=
+window.forecast.map(
+r=>`
 
-  tbody.innerHTML =
-    forecastData.map(row => `
+<tr>
 
-      <tr>
+<td>${formatTime(r.time)}</td>
 
-        <td>
-          ${formatTime(row.time)}
-        </td>
+<td>${num(r.aqi)}</td>
 
-        <td>
-          ${round(row.aqi)}
-        </td>
+<td>${num(r.pm25)}</td>
 
-        <td>
-          ${round(row.pm25)}
-        </td>
+<td>${num(r.pm10)}</td>
 
-        <td>
-          ${round(row.pm10)}
-        </td>
+<td>${num(r.no2)}</td>
 
-        <td>
-          ${round(row.no2)}
-        </td>
+<td>${num(r.o3)}</td>
 
-        <td>
-          ${round(row.o3)}
-        </td>
+<td>${num(r.temp)} °C</td>
 
-        <td>
-          ${round(row.temperature)} °C
-        </td>
+<td>${num(r.wind)} km/h</td>
 
-        <td>
-          ${round(row.wind)} km/h
-        </td>
+</tr>
 
-      </tr>
-
-    `).join("");
+`
+).join("");
 
 }
 
 
 /* =========================
-   CHART
+CHART
 ========================= */
 
-function drawForecastChart(){
+function drawChart(){
 
-  const canvas =
-    document.getElementById(
-      "forecastChart"
-    );
+const status=
+document.getElementById(
+"chartStatus"
+);
 
-  const labels =
-    forecastData.map(
-      x => formatTime(x.time)
-    );
+if(typeof Chart==="undefined"){
 
-  const values =
-    forecastData.map(
-      x => x.aqi
-    );
+status.innerHTML=
+"⚠️ Chart library unavailable. Forecast table is still available.";
 
-  if(forecastChart){
-    forecastChart.destroy();
-  }
+return;
 
-  forecastChart =
-    new Chart(
-      canvas,
-      {
-        type:"line",
+}
 
-        data:{
-          labels:labels,
+try{
 
-          datasets:[
-            {
-              label:"European AQI",
-              data:values,
-              tension:.3,
-              fill:false
-            }
-          ]
-        },
+const canvas=
+document.getElementById(
+"forecastChart"
+);
 
-        options:{
-          responsive:true,
-          maintainAspectRatio:false,
+if(chart)
+chart.destroy();
 
-          scales:{
-            y:{
-              beginAtZero:true
-            }
-          }
-        }
+chart=
+new Chart(
+canvas,
+{
 
-      }
-    );
+type:"line",
+
+data:{
+
+labels:
+window.forecast.map(
+r=>formatTime(r.time)
+),
+
+datasets:[
+
+{
+label:"European AQI",
+data:
+window.forecast.map(
+r=>r.aqi
+),
+tension:.3,
+fill:false
+}
+
+]
+
+},
+
+options:{
+responsive:true,
+maintainAspectRatio:false,
+scales:{
+y:{
+beginAtZero:true
+}
+}
+}
+
+}
+);
+
+status.innerHTML=
+"🟢 72-hour forecast loaded.";
+
+}catch(error){
+
+console.error(error);
+
+status.innerHTML=
+"⚠️ Chart unavailable. Forecast table is available.";
+
+}
 
 }
 
 
 /* =========================
-   RISK
+RISK
 ========================= */
 
-function updateHotspotRisk(){
+function updateRisk(){
 
-  if(!forecastData){
-    return;
-  }
+if(!window.forecast)
+return;
 
-  const indexes = [
-    0,
-    24,
-    48,
-    71
-  ];
+const points=[
+0,
+24,
+48,
+71
+];
 
-  const ids = [
-    "riskNow",
-    "risk24",
-    "risk48",
-    "risk72"
-  ];
+const ids=[
+"risk0",
+"risk24",
+"risk48",
+"risk72"
+];
 
-  indexes.forEach(
-    (index,i)=>{
+points.forEach(
+(point,index)=>{
 
-      const row =
-        forecastData[
-          Math.min(
-            index,
-            forecastData.length-1
-          )
-        ];
+const row=
+window.forecast[
+Math.min(
+point,
+window.forecast.length-1
+)
+];
 
-      const risk =
-        getRisk(row.aqi);
+document.getElementById(
+ids[index]
+).textContent=
+risk(row.aqi);
 
-      document.getElementById(
-        ids[i]
-      ).textContent =
-        risk;
+});
 
-    }
-  );
+}
+
+
+function risk(aqi){
+
+if(aqi==null)
+return"N/A";
+
+if(aqi<=50)
+return"LOW";
+
+if(aqi<=100)
+return"MODERATE";
+
+if(aqi<=150)
+return"HIGH";
+
+if(aqi<=200)
+return"VERY HIGH";
+
+return"SEVERE";
 
 }
 
 
 /* =========================
-   EARLY WARNING
+EXPLANATION
 ========================= */
 
-function updateEarlyWarning(){
+function updateExplanation(){
 
-  if(!currentAQ){
-    return;
-  }
+const box=
+document.getElementById(
+"explanation"
+);
 
-  const aqi =
-    currentAQ.hourly.european_aqi?.[0];
+if(!aqData || !weatherData){
 
-  const box =
-    document.getElementById(
-      "earlyWarning"
-    );
+box.innerHTML=
+"Waiting for AQ + weather data...";
 
-  if(aqi == null){
+return;
 
-    box.className =
-      "alert";
+}
 
-    box.innerHTML =
-      "⚪ AQI unavailable.";
+const aqi=
+aqData.hourly.european_aqi?.[0];
 
-    return;
+const pm25=
+aqData.hourly.pm2_5?.[0];
 
-  }
+const wind=
+weatherData.current.wind_speed_10m;
 
-  if(aqi >= 200){
+let text=[];
 
-    box.className =
-      "alert danger";
+if(aqi<=50)
+text.push("Current AQI is good.");
 
-    box.innerHTML =
-      "🚨 SEVERE WARNING: Very unhealthy air conditions detected.";
+else if(aqi<=100)
+text.push("Air quality is moderate.");
 
-  }else if(aqi >= 150){
+else
+text.push("Air quality is elevated.");
 
-    box.className =
-      "alert danger";
 
-    box.innerHTML =
-      "⚠️ HIGH WARNING: Pollution is at an unhealthy level.";
+if(pm25>35)
+text.push(
+"PM2.5 is elevated."
+);
 
-  }else if(aqi >= 100){
 
-    box.className =
-      "alert warning";
+if(wind<5)
+text.push(
+"Low wind may reduce pollutant dispersion and increase accumulation."
+);
 
-    box.innerHTML =
-      "⚠️ CAUTION: Elevated pollution level detected.";
+else if(wind<15)
+text.push(
+"Moderate wind provides some pollutant dispersion."
+);
 
-  }else{
+else
+text.push(
+"Relatively higher wind can improve pollutant dispersion."
+);
 
-    box.className =
-      "alert good";
 
-    box.innerHTML =
-      "✅ No major AQI warning at the moment.";
-
-  }
+box.innerHTML=
+"🧠 "+text.join(" ");
 
 }
 
 
 /* =========================
-   WHAT IF SIMULATION
+EARLY WARNING
 ========================= */
 
-function runSimulation(){
+function updateWarning(){
 
-  const traffic =
-    Number(
-      document.getElementById(
-        "trafficSlider"
-      ).value
-    );
+const box=
+document.getElementById(
+"warning"
+);
 
-  const emission =
-    Number(
-      document.getElementById(
-        "emissionSlider"
-      ).value
-    );
+if(!aqData){
 
-  document.getElementById(
-    "trafficValue"
-  ).textContent =
-    `${traffic}%`;
+box.innerHTML=
+"Monitoring...";
 
-  document.getElementById(
-    "emissionValue"
-  ).textContent =
-    `${emission}%`;
+return;
 
-  if(!currentAQ){
-    return;
-  }
+}
 
-  const base =
-    currentAQ.hourly.european_aqi?.[0];
+const aqi=
+aqData.hourly.european_aqi?.[0];
 
-  if(base == null){
-    return;
-  }
+if(aqi>=200){
 
-  /*
-    Simple scenario estimate.
-    This is NOT a trained ML model.
-  */
+box.className=
+"status danger";
 
-  const estimated =
-    base *
-    (
-      1 +
-      (traffic * 0.002) +
-      (emission * 0.003)
-    );
+box.innerHTML=
+"🚨 SEVERE WARNING — Very unhealthy pollution.";
 
-  document.getElementById(
-    "simulationResult"
-  ).innerHTML =
+}else if(aqi>=150){
 
-    `🧪 Current AQI: <b>${Math.round(base)}</b><br>
-     Estimated scenario AQI:
-     <b>${Math.max(
-       0,
-       Math.round(estimated)
-     )}</b><br>
-     <small>
-       Scenario simulation only — not a certified ML prediction.
-     </small>`;
+box.className=
+"status danger";
+
+box.innerHTML=
+"⚠️ HIGH WARNING — Unhealthy air.";
+
+}else if(aqi>=100){
+
+box.className=
+"status warning";
+
+box.innerHTML=
+"⚠️ CAUTION — Elevated pollution.";
+
+}else{
+
+box.className=
+"status good";
+
+box.innerHTML=
+"✅ No major AQI warning currently.";
+
+}
 
 }
 
 
 /* =========================
-   HELPERS
+SIMULATION
 ========================= */
 
-function setText(id,value){
+function simulate(){
 
-  document.getElementById(
-    id
-  ).textContent =
-    value;
+const traffic=
+Number(
+document.getElementById(
+"traffic"
+).value
+);
+
+const emission=
+Number(
+document.getElementById(
+"emission"
+).value
+);
+
+document.getElementById(
+"trafficText"
+).textContent=
+traffic+"%";
+
+document.getElementById(
+"emissionText"
+).textContent=
+emission+"%";
+
+if(!aqData)
+return;
+
+const base=
+aqData.hourly.european_aqi?.[0];
+
+if(base==null)
+return;
+
+const estimated=
+base*
+(
+1+
+traffic*.002+
+emission*.003
+);
+
+document.getElementById(
+"simulation"
+).innerHTML=
+`Current AQI: <b>${Math.round(base)}</b><br>
+Scenario estimate: <b>${Math.max(0,Math.round(estimated))}</b>
+<br><small>
+Scenario estimate only — not a trained ML prediction.
+</small>`;
 
 }
 
 
-function value(array,index){
+/* =========================
+HELPERS
+========================= */
 
-  if(!array || array[index] == null){
-    return "--";
-  }
+function set(id,value){
 
-  return Number(
-    array[index]
-  ).toFixed(2);
+document.getElementById(
+id
+).textContent=value;
 
 }
 
 
-function round(value){
+function num(value){
 
-  if(value == null){
-    return "--";
-  }
+if(value==null ||
+Number.isNaN(Number(value)))
+return"--";
 
-  return Number(
-    value
-  ).toFixed(1);
+return Number(value).toFixed(2);
 
 }
 
 
 function formatTime(time){
 
-  if(!time){
-    return "--";
-  }
+if(!time)
+return"--";
 
-  const d =
-    new Date(time);
-
-  return d.toLocaleString(
-    "en-IN",
-    {
-      day:"2-digit",
-      month:"2-digit",
-      hour:"2-digit",
-      minute:"2-digit"
-    }
-  );
+return new Date(time)
+.toLocaleString(
+"en-IN",
+{
+day:"2-digit",
+month:"2-digit",
+hour:"2-digit",
+minute:"2-digit"
+}
+);
 
 }
 
 
-function getRisk(aqi){
+function escapeHTML(value){
 
-  if(aqi == null){
-    return "N/A";
-  }
-
-  if(aqi <= 50){
-    return "LOW";
-  }
-
-  if(aqi <= 100){
-    return "MODERATE";
-  }
-
-  if(aqi <= 150){
-    return "HIGH";
-  }
-
-  if(aqi <= 200){
-    return "VERY HIGH";
-  }
-
-  return "SEVERE";
-
-}
-
-
-function escapeHTML(str){
-
-  return String(str)
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
+return String(value)
+.replaceAll("&","&amp;")
+.replaceAll("<","&lt;")
+.replaceAll(">","&gt;")
+.replaceAll('"',"&quot;")
+.replaceAll("'","&#039;");
 
 }
 
 
 /* =========================
-   ENTER KEY SEARCH
+ENTER SEARCH
 ========================= */
 
 document
-  .getElementById("locationSearch")
-  .addEventListener(
-    "keydown",
-    function(event){
+.getElementById("searchInput")
+.addEventListener(
+"keydown",
+event=>{
 
-      if(event.key === "Enter"){
-        searchLocation();
-      }
+if(event.key==="Enter")
+searchPlace();
 
-    }
-  );
+});
 
 
 /* =========================
-   AUTO REFRESH
+AUTO REFRESH
 ========================= */
 
 setInterval(
-  function(){
+()=>{
 
-    if(
-      selectedLocation.lat !== null &&
-      selectedLocation.lon !== null
-    ){
+if(
+locationData.lat!==null &&
+locationData.lon!==null
+){
 
-      loadAllData();
+loadData();
 
-    }
+}
 
-  },
-  15 * 60 * 1000
+},
+15*60*1000
 );
 
 
 /* =========================
-   START
+START
 ========================= */
 
-function init(){
-
-  initMap();
-
-}
-
-init();
+initMap();
 
 </script>
 
 </body>
-    </html>
+  </html>
