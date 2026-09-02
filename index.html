@@ -1,3281 +1,1639 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>NCR AIR WATCH</title>
 
 <link
-rel="stylesheet"
-href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
 />
 
-<style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+<style>
 *{
-    box-sizing:border-box;
+  box-sizing:border-box;
 }
 
 body{
-    margin:0;
-    font-family:Arial,sans-serif;
-    background:#eef6f4;
-    color:#173b3a;
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:#f4f7fb;
+  color:#172033;
 }
 
 header{
-    background:linear-gradient(135deg,#063b36,#0b7569);
-    color:white;
-    padding:22px 18px;
-    text-align:center;
+  background:linear-gradient(135deg,#071c35,#0d4770);
+  color:white;
+  padding:24px 18px;
 }
 
 header h1{
-    margin:0;
-    font-size:30px;
+  margin:0;
+  font-size:30px;
 }
 
 header p{
-    margin:7px 0 0;
-    opacity:.9;
-}
-
-.statusbar{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:12px;
-    padding:15px;
-    max-width:1200px;
-    margin:auto;
-}
-
-.statusbox{
-    background:white;
-    border-radius:14px;
-    padding:15px;
-    box-shadow:0 4px 15px rgba(0,0,0,.08);
-}
-
-.statusbox span{
-    display:block;
-    font-size:13px;
-    color:#6a7776;
-    margin-bottom:5px;
-}
-
-.statusbox strong{
-    font-size:16px;
+  margin:8px 0 0;
+  opacity:.85;
 }
 
 .container{
-    max-width:1200px;
-    margin:auto;
-    padding:0 15px 30px;
-}
-
-.section{
-    margin-top:20px;
-}
-
-.section-title{
-    font-size:22px;
-    margin-bottom:12px;
-}
-
-.cards{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:15px;
+  max-width:1250px;
+  margin:auto;
+  padding:18px;
 }
 
 .card{
-    background:white;
-    border-radius:16px;
-    padding:18px;
-    box-shadow:0 5px 18px rgba(0,0,0,.08);
-    border-left:6px solid #35a853;
+  background:white;
+  border-radius:16px;
+  padding:18px;
+  margin-bottom:18px;
+  box-shadow:0 5px 20px rgba(0,0,0,.07);
 }
 
-.card h3{
-    margin:0 0 10px;
+.section-title{
+  font-size:20px;
+  font-weight:700;
+  margin-bottom:14px;
 }
 
-.aqi{
-    font-size:38px;
-    font-weight:bold;
-    margin:5px 0;
+.search-box{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
 }
 
-.aqi-status{
-    font-weight:bold;
-    margin-bottom:12px;
+input{
+  flex:1;
+  min-width:220px;
+  padding:13px;
+  border:1px solid #ccd5df;
+  border-radius:10px;
+  font-size:15px;
 }
 
-.metrics{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:7px;
-    font-size:13px;
+button{
+  border:none;
+  padding:12px 16px;
+  border-radius:10px;
+  cursor:pointer;
+  background:#087f5b;
+  color:white;
+  font-weight:700;
 }
 
-.metric{
-    background:#f1f6f5;
-    border-radius:8px;
-    padding:7px;
+button:hover{
+  opacity:.9;
 }
 
-.map-box{
-    background:white;
-    padding:12px;
-    border-radius:16px;
-    box-shadow:0 5px 18px rgba(0,0,0,.08);
+.gps-btn{
+  background:#1769aa;
 }
 
-#ncrMap{
-    width:100%;
-    height:480px;
-    border-radius:12px;
+.status{
+  margin-top:12px;
+  padding:10px;
+  border-radius:10px;
+  background:#eef4f8;
+  font-size:14px;
 }
 
-.alert-section{
-    background:white;
-    border-radius:16px;
-    padding:18px;
-    box-shadow:0 5px 18px rgba(0,0,0,.08);
+.results{
+  margin-top:10px;
 }
 
-.alert-controls{
-    display:flex;
-    flex-wrap:wrap;
-    gap:10px;
-    align-items:center;
+.result-item{
+  padding:12px;
+  border-bottom:1px solid #eee;
+  cursor:pointer;
 }
 
-.alert-button{
-    border:0;
-    border-radius:10px;
-    padding:11px 16px;
-    font-weight:bold;
-    cursor:pointer;
-    background:#087f70;
-    color:white;
+.result-item:hover{
+  background:#f2f7fb;
 }
 
-.alert-button:hover{
-    opacity:.9;
+.location-info{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:12px;
 }
 
-.alert-status{
-    padding:9px 13px;
-    border-radius:10px;
-    background:#edf5f3;
-    font-size:14px;
+.info-box{
+  background:#f6f9fc;
+  padding:14px;
+  border-radius:12px;
 }
 
-.alert-list{
-    margin-top:14px;
-    display:flex;
-    flex-direction:column;
-    gap:8px;
+.info-box small{
+  display:block;
+  color:#657080;
+  margin-bottom:5px;
 }
 
-.alert-item{
-    padding:12px;
-    border-radius:10px;
-    background:#fff5d9;
-    border-left:5px solid #e6a700;
+.info-box strong{
+  font-size:21px;
 }
 
-.alert-item.danger{
-    background:#ffe7e7;
-    border-left-color:#d93025;
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+  gap:12px;
 }
 
-.alert-item.info{
-    background:#e8f3ff;
-    border-left-color:#2878c8;
+.pollutant{
+  padding:15px;
+  border-radius:13px;
+  background:#f6f8fb;
 }
 
-.alert-empty{
-    color:#687675;
-    padding:10px 0;
+.pollutant small{
+  color:#657080;
 }
 
-.summary{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:15px;
+.pollutant strong{
+  display:block;
+  font-size:23px;
+  margin-top:5px;
 }
 
-.summary-box{
-    background:white;
-    padding:18px;
-    border-radius:14px;
-    box-shadow:0 5px 18px rgba(0,0,0,.08);
+.live{
+  color:#087f5b;
+  font-weight:bold;
 }
 
-.summary-box span{
-    display:block;
-    font-size:13px;
-    color:#687675;
+.unavailable{
+  color:#d9480f;
+  font-weight:bold;
 }
 
-.summary-box strong{
-    font-size:28px;
-    display:block;
-    margin-top:6px;
+#map{
+  height:430px;
+  border-radius:14px;
 }
 
-.prediction{
-    background:white;
-    padding:18px;
-    border-radius:16px;
-    box-shadow:0 5px 18px rgba(0,0,0,.08);
+.chart-container{
+  height:360px;
 }
 
-.prediction-description{
-    color:#647674;
-    margin-top:0;
+table{
+  width:100%;
+  border-collapse:collapse;
+  font-size:14px;
 }
 
-.location-buttons,
-.forecast-map-controls{
-    display:flex;
-    flex-wrap:wrap;
-    gap:8px;
-    margin-bottom:15px;
+th,td{
+  padding:10px;
+  border-bottom:1px solid #e5e9ef;
+  text-align:left;
 }
 
-.location-buttons button,
-.forecast-map-controls button{
-    border:0;
-    padding:9px 13px;
-    border-radius:9px;
-    cursor:pointer;
-    background:#d9ebe8;
-    color:#17413e;
-    font-weight:bold;
+th{
+  background:#f0f4f8;
 }
 
-.location-buttons button.active,
-.forecast-map-controls button.active{
-    background:#087f70;
-    color:white;
+.alert{
+  padding:14px;
+  border-radius:12px;
+  background:#fff4e6;
+  margin-bottom:10px;
 }
 
-.chart-wrapper{
-    width:100%;
-    overflow:hidden;
-    background:#f8fbfa;
-    border-radius:12px;
+.good{
+  background:#e6fcf5;
 }
 
-#predictionCanvas{
-    width:100%;
-    height:340px;
-    display:block;
-    background:#f8fbfa;
-    border-radius:12px;
+.warning{
+  background:#fff3bf;
 }
 
-.map-marker{
-    border-radius:50%;
-    border:3px solid white;
-    box-shadow:0 2px 8px rgba(0,0,0,.35);
+.danger{
+  background:#ffe3e3;
 }
 
-/* HOTSPOT */
-
-.hotspot-info{
-    background:#f1f6f5;
-    border-radius:10px;
-    padding:10px;
-    margin-bottom:12px;
-    font-weight:bold;
+.simulator{
+  display:grid;
+  gap:12px;
 }
 
-.legend{
-    display:flex;
-    flex-wrap:wrap;
-    gap:12px;
-    font-size:12px;
-    margin-top:10px;
+.range-row{
+  display:flex;
+  align-items:center;
+  gap:10px;
 }
 
-.legend span{
-    display:flex;
-    align-items:center;
-    gap:5px;
-}
-
-.legend-dot{
-    width:12px;
-    height:12px;
-    border-radius:50%;
-}
-
-/* RISK */
-
-.risk-grid{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:12px;
-}
-
-.risk-card{
-    background:white;
-    border-radius:12px;
-    padding:14px;
-    border-left:6px solid #777;
-    box-shadow:0 3px 10px rgba(0,0,0,.05);
-}
-
-.risk-card strong{
-    display:block;
-    font-size:26px;
-    margin:6px 0;
-}
-
-/* EXPLAIN */
-
-.explain-panel{
-    background:white;
-    border-radius:16px;
-    padding:18px;
-    box-shadow:0 5px 18px rgba(0,0,0,.08);
-}
-
-.explain-bar{
-    margin:12px 0;
-}
-
-.explain-bar span{
-    display:flex;
-    justify-content:space-between;
-    font-size:13px;
-    margin-bottom:5px;
-}
-
-.explain-track{
-    height:10px;
-    background:#dce7e5;
-    border-radius:10px;
-    overflow:hidden;
-}
-
-.explain-fill{
-    height:100%;
-    background:#087f70;
-    border-radius:10px;
-}
-
-/* WHAT IF */
-
-.whatif-panel{
-    background:white;
-    border-radius:16px;
-    padding:18px;
-    box-shadow:0 5px 18px rgba(0,0,0,.08);
-}
-
-.whatif-controls{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:20px;
-}
-
-.whatif-controls input{
-    width:100%;
-}
-
-.simulate-button{
-    margin-top:15px;
-    border:0;
-    background:#087f70;
-    color:white;
-    padding:11px 17px;
-    border-radius:9px;
-    cursor:pointer;
-    font-weight:bold;
-}
-
-.simulation-result{
-    margin-top:14px;
-    padding:14px;
-    border-radius:10px;
-    background:#f1f6f5;
-}
-
-/* EVALUATION */
-
-.evaluation-box{
-    background:white;
-    border-radius:16px;
-    padding:18px;
-    box-shadow:0 5px 18px rgba(0,0,0,.08);
-}
-
-.evaluation-grid{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:12px;
-}
-
-.evaluation-item{
-    background:#f1f6f5;
-    border-radius:10px;
-    padding:15px;
-    text-align:center;
-}
-
-.evaluation-item strong{
-    display:block;
-    font-size:25px;
-    margin-top:6px;
-}
-
-.note{
-    font-size:13px;
-    color:#687675;
-    margin-top:12px;
-}
-
-/* =========================
-   TRAFFIC + STUBBLE
-========================= */
-
-.factor-section{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:15px;
-}
-
-.factor-card{
-    background:white;
-    border-radius:16px;
-    padding:18px;
-    box-shadow:0 5px 18px rgba(0,0,0,.08);
-    border-left:6px solid #777;
-}
-
-.factor-card h3{
-    margin:0 0 12px;
-}
-
-.factor-value{
-    font-size:25px;
-    font-weight:bold;
-    margin:8px 0;
-}
-
-.factor-note{
-    font-size:12px;
-    color:#687675;
-}
-
-.factor-bar{
-    height:12px;
-    background:#e1e9e7;
-    border-radius:10px;
-    overflow:hidden;
-    margin:10px 0;
-}
-
-.factor-fill{
-    height:100%;
-    border-radius:10px;
-    transition:width .5s ease;
-}
-
-.combined-risk{
-    margin-top:15px;
-    padding:16px;
-    border-radius:12px;
-    background:#f1f6f5;
-}
-
-/* TRAFFIC TABLE */
-
-.factor-table{
-    width:100%;
-    border-collapse:collapse;
-    margin-top:15px;
-    background:white;
-    border-radius:10px;
-    overflow:hidden;
-}
-
-.factor-table th,
-.factor-table td{
-    padding:10px;
-    text-align:left;
-    border-bottom:1px solid #e1e9e7;
-    font-size:13px;
-}
-
-.factor-table th{
-    background:#eef6f4;
+.range-row input{
+  min-width:0;
 }
 
 footer{
-    text-align:center;
-    padding:22px;
-    font-size:12px;
-    color:#667674;
-}
-
-@media(max-width:900px){
-
-    .cards{
-        grid-template-columns:repeat(2,1fr);
-    }
-
-    .summary{
-        grid-template-columns:repeat(2,1fr);
-    }
-
-    .risk-grid{
-        grid-template-columns:repeat(2,1fr);
-    }
-
+  text-align:center;
+  padding:25px;
+  color:#687386;
+  font-size:13px;
 }
 
 @media(max-width:600px){
+  header h1{
+    font-size:24px;
+  }
 
-    header h1{
-        font-size:25px;
-    }
+  .container{
+    padding:10px;
+  }
 
-    .statusbar{
-        grid-template-columns:1fr;
-    }
+  .card{
+    padding:14px;
+  }
 
-    .cards{
-        grid-template-columns:1fr;
-    }
+  #map{
+    height:350px;
+  }
 
-    .summary{
-        grid-template-columns:1fr 1fr;
-    }
+  .chart-container{
+    height:280px;
+  }
 
-    .risk-grid{
-        grid-template-columns:1fr 1fr;
-    }
-
-    .whatif-controls{
-        grid-template-columns:1fr;
-    }
-
-    .evaluation-grid{
-        grid-template-columns:1fr;
-    }
-
-    .factor-section{
-        grid-template-columns:1fr;
-    }
-
-    #ncrMap{
-        height:380px;
-    }
-
-    #predictionCanvas{
-        height:280px;
-    }
-
+  button{
+    width:100%;
+  }
 }
-
 </style>
-
 </head>
 
 <body>
 
 <header>
-
-<h1>🌍 NCR AIR WATCH</h1>
-
-<p>
-Live Air Quality • Traffic • Stubble Burning • Atmospheric Monitoring • 72-Hour Prediction
-</p>
-
+  <div class="container">
+    <h1>🌍 NCR AIR WATCH</h1>
+    <p>
+      Live Air Quality • GPS Location • Weather • Pollution Forecast • Early Warning
+    </p>
+  </div>
 </header>
 
+<main class="container">
 
-<div class="statusbar">
+<!-- LOCATION -->
+<section class="card">
 
-<div class="statusbox">
+  <div class="section-title">📍 Location</div>
 
-<span>System Status</span>
+  <div class="search-box">
 
-<strong id="systemStatus">
-CONNECTING...
-</strong>
+    <input
+      id="locationSearch"
+      type="text"
+      placeholder="Search any place..."
+    >
 
-</div>
+    <button onclick="searchLocation()">
+      🔎 Search
+    </button>
 
-<div class="statusbox">
+    <button class="gps-btn" onclick="useMyLocation()">
+      📱 Use My GPS
+    </button>
 
-<span>Last Updated</span>
+  </div>
 
-<strong id="lastUpdated">
---
-</strong>
+  <div id="gpsStatus" class="status">
+    GPS: Waiting for location permission...
+  </div>
 
-</div>
-
-<div class="statusbox">
-
-<span>NCR Time</span>
-
-<strong id="ncrClock">
---
-</strong>
-
-</div>
-
-</div>
-
-
-<div class="container">
-
-
-<!-- LIVE AIR QUALITY -->
-
-<section class="section">
-
-<div class="section-title">
-📍 Live NCR Air Quality
-</div>
-
-<div class="cards">
-
-
-<div class="card" id="card-delhi">
-
-<h3>Delhi</h3>
-
-<div class="aqi">--</div>
-
-<div class="aqi-status">
-Loading...
-</div>
-
-<div class="metrics">
-
-<div class="metric">PM2.5: --</div>
-<div class="metric">PM10: --</div>
-<div class="metric">NO₂: --</div>
-<div class="metric">O₃: --</div>
-<div class="metric">Temp: --</div>
-<div class="metric">Humidity: --</div>
-<div class="metric">Wind: --</div>
-<div class="metric">Pressure: --</div>
-
-</div>
-
-</div>
-
-
-<div class="card" id="card-gurugram">
-
-<h3>Gurugram</h3>
-
-<div class="aqi">--</div>
-
-<div class="aqi-status">
-Loading...
-</div>
-
-<div class="metrics">
-
-<div class="metric">PM2.5: --</div>
-<div class="metric">PM10: --</div>
-<div class="metric">NO₂: --</div>
-<div class="metric">O₃: --</div>
-<div class="metric">Temp: --</div>
-<div class="metric">Humidity: --</div>
-<div class="metric">Wind: --</div>
-<div class="metric">Pressure: --</div>
-
-</div>
-
-</div>
-
-
-<div class="card" id="card-noida">
-
-<h3>Noida</h3>
-
-<div class="aqi">--</div>
-
-<div class="aqi-status">
-Loading...
-</div>
-
-<div class="metrics">
-
-<div class="metric">PM2.5: --</div>
-<div class="metric">PM10: --</div>
-<div class="metric">NO₂: --</div>
-<div class="metric">O₃: --</div>
-<div class="metric">Temp: --</div>
-<div class="metric">Humidity: --</div>
-<div class="metric">Wind: --</div>
-<div class="metric">Pressure: --</div>
-
-</div>
-
-</div>
-
-
-<div class="card" id="card-ghaziabad">
-
-<h3>Ghaziabad</h3>
-
-<div class="aqi">--</div>
-
-<div class="aqi-status">
-Loading...
-</div>
-
-<div class="metrics">
-
-<div class="metric">PM2.5: --</div>
-<div class="metric">PM10: --</div>
-<div class="metric">NO₂: --</div>
-<div class="metric">O₃: --</div>
-<div class="metric">Temp: --</div>
-<div class="metric">Humidity: --</div>
-<div class="metric">Wind: --</div>
-<div class="metric">Pressure: --</div>
-
-</div>
-
-</div>
-
-</div>
+  <div id="searchResults" class="results"></div>
 
 </section>
 
 
-<!-- TRAFFIC + STUBBLE BURNING -->
+<!-- SELECTED LOCATION -->
+<section class="card">
 
-<section class="section">
+  <div class="section-title">📌 Selected Location</div>
 
-<div class="section-title">
-🚗🌾 Pollution Contributing Factors
-</div>
+  <div class="location-info">
 
-<div class="factor-section">
+    <div class="info-box">
+      <small>Place</small>
+      <strong id="placeName">Not selected</strong>
+    </div>
 
-<div class="factor-card" id="trafficFactor">
+    <div class="info-box">
+      <small>Latitude</small>
+      <strong id="latitude">--</strong>
+    </div>
 
-<h3>🚗 Traffic Level</h3>
+    <div class="info-box">
+      <small>Longitude</small>
+      <strong id="longitude">--</strong>
+    </div>
 
-<div
-class="factor-value"
-id="trafficValue">
-Loading...
-</div>
+    <div class="info-box">
+      <small>Data Status</small>
+      <strong class="live" id="dataStatus">WAITING</strong>
+    </div>
 
-<div class="factor-bar">
-
-<div
-class="factor-fill"
-id="trafficFill"
-style="width:0%">
-</div>
-
-</div>
-
-<div
-class="factor-note">
-Traffic indicator • Demo/Indicator mode
-</div>
-
-</div>
-
-
-<div class="factor-card" id="stubbleFactor">
-
-<h3>🌾 Stubble Burning</h3>
-
-<div
-class="factor-value"
-id="stubbleValue">
-Loading...
-</div>
-
-<div class="factor-bar">
-
-<div
-class="factor-fill"
-id="stubbleFill"
-style="width:0%">
-</div>
-
-</div>
-
-<div
-class="factor-note">
-Regional burning indicator • Demo/Indicator mode
-</div>
-
-</div>
-
-</div>
-
-
-<div
-class="combined-risk"
-id="combinedRisk">
-
-Checking pollution contributing factors...
-
-</div>
+  </div>
 
 </section>
 
 
-<!-- ALERTS -->
+<!-- MAP -->
+<section class="card">
 
-<section class="section">
+  <div class="section-title">
+    🗺️ OpenStreetMap + Phone GPS
+  </div>
 
-<div class="section-title">
-🚨 Smart Air Quality Alerts
-</div>
+  <div id="map"></div>
 
-<div class="alert-section">
-
-<div class="alert-controls">
-
-<button
-class="alert-button"
-onclick="enableAlerts()">
-
-🔔 Enable Browser Alerts
-
-</button>
-
-<button
-class="alert-button"
-onclick="testNotification()">
-
-🧪 Test Notification
-
-</button>
-
-<div
-class="alert-status"
-id="alertPermission">
-
-Alerts: Checking...
-
-</div>
-
-</div>
-
-<div
-class="alert-list"
-id="alertList">
-
-<div class="alert-empty">
-No significant air-quality changes detected.
-</div>
-
-</div>
-
-</div>
+  <div class="status">
+    📱 GPS gives your phone's coordinates.
+    🗺️ OpenStreetMap displays the location.
+    🌫️ Air-quality data comes from Open-Meteo.
+  </div>
 
 </section>
 
 
-<!-- CURRENT MAP -->
+<!-- AIR QUALITY -->
+<section class="card">
 
-<section class="section">
+  <div class="section-title">
+    🌫️ Air Quality
+  </div>
 
-<div class="section-title">
-🗺️ Interactive NCR Air Quality Map
-</div>
+  <div id="aqiStatus" class="alert">
+    Waiting for air-quality data...
+  </div>
 
-<div class="map-box">
+  <div class="grid">
 
-<div id="ncrMap"></div>
+    <div class="pollutant">
+      <small>European AQI</small>
+      <strong id="aqi">--</strong>
+    </div>
 
-</div>
+    <div class="pollutant">
+      <small>PM2.5</small>
+      <strong id="pm25">--</strong>
+    </div>
+
+    <div class="pollutant">
+      <small>PM10</small>
+      <strong id="pm10">--</strong>
+    </div>
+
+    <div class="pollutant">
+      <small>NO₂</small>
+      <strong id="no2">--</strong>
+    </div>
+
+    <div class="pollutant">
+      <small>O₃</small>
+      <strong id="o3">--</strong>
+    </div>
+
+    <div class="pollutant">
+      <small>CO</small>
+      <strong id="co">--</strong>
+    </div>
+
+    <div class="pollutant">
+      <small>SO₂</small>
+      <strong id="so2">--</strong>
+    </div>
+
+    <div class="pollutant">
+      <small>Dust</small>
+      <strong id="dust">--</strong>
+    </div>
+
+    <div class="pollutant">
+      <small>Aerosol Optical Depth</small>
+      <strong id="aod">--</strong>
+    </div>
+
+    <div class="pollutant">
+      <small>Ammonia</small>
+      <strong id="nh3">--</strong>
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- WEATHER -->
+<section class="card">
+
+  <div class="section-title">
+    🌦️ Live Weather
+  </div>
+
+  <div class="grid">
+
+    <div class="pollutant">
+      <small>Temperature</small>
+      <strong id="temperature">--</strong>
+    </div>
+
+    <div class="pollutant">
+      <small>Humidity</small>
+      <strong id="humidity">--</strong>
+    </div>
+
+    <div class="pollutant">
+      <small>Wind Speed</small>
+      <strong id="wind">--</strong>
+    </div>
+
+    <div class="pollutant">
+      <small>Pressure</small>
+      <strong id="pressure">--</strong>
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- EXPLANATION -->
+<section class="card">
+
+  <div class="section-title">
+    🧠 Pollution Explanation
+  </div>
+
+  <div id="explanation" class="alert">
+    Waiting for data...
+  </div>
+
+</section>
+
+
+<!-- 72 HOUR FORECAST -->
+<section class="card">
+
+  <div class="section-title">
+    🔮 72-Hour Pollution Forecast
+  </div>
+
+  <div class="chart-container">
+    <canvas id="forecastChart"></canvas>
+  </div>
+
+</section>
+
+
+<!-- FORECAST TABLE -->
+<section class="card">
+
+  <div class="section-title">
+    📊 72-Hour Forecast Details
+  </div>
+
+  <div style="overflow-x:auto;">
+
+    <table>
+
+      <thead>
+        <tr>
+          <th>Time</th>
+          <th>AQI</th>
+          <th>PM2.5</th>
+          <th>PM10</th>
+          <th>NO₂</th>
+          <th>O₃</th>
+          <th>Temperature</th>
+          <th>Wind</th>
+        </tr>
+      </thead>
+
+      <tbody id="forecastTable">
+      </tbody>
+
+    </table>
+
+  </div>
 
 </section>
 
 
 <!-- PREDICTIVE HOTSPOT -->
+<section class="card">
 
-<section class="section">
+  <div class="section-title">
+    🔥 Predictive Pollution Risk
+  </div>
 
-<div class="section-title">
-🔥 Predictive Pollution Hotspot Map
-</div>
+  <div class="grid">
 
-<div class="map-box">
+    <div class="pollutant">
+      <small>NOW</small>
+      <strong id="riskNow">--</strong>
+    </div>
 
-<div class="forecast-map-controls">
+    <div class="pollutant">
+      <small>24H</small>
+      <strong id="risk24">--</strong>
+    </div>
 
-<button
-id="hotspot-now"
-class="active"
-onclick="showHotspot('now')">
-NOW
-</button>
+    <div class="pollutant">
+      <small>48H</small>
+      <strong id="risk48">--</strong>
+    </div>
 
-<button
-id="hotspot-24"
-onclick="showHotspot('24')">
-24H
-</button>
+    <div class="pollutant">
+      <small>72H</small>
+      <strong id="risk72">--</strong>
+    </div>
 
-<button
-id="hotspot-48"
-onclick="showHotspot('48')">
-48H
-</button>
-
-<button
-id="hotspot-72"
-onclick="showHotspot('72')">
-72H
-</button>
-
-</div>
-
-<div
-id="hotspotInfo"
-class="hotspot-info">
-
-Showing current AQI hotspots
-
-</div>
-
-<div class="legend">
-
-<span>
-<span class="legend-dot"
-style="background:#2e9d55"></span>
-Good
-</span>
-
-<span>
-<span class="legend-dot"
-style="background:#8bbd3f"></span>
-Fair
-</span>
-
-<span>
-<span class="legend-dot"
-style="background:#e4ad2f"></span>
-Moderate
-</span>
-
-<span>
-<span class="legend-dot"
-style="background:#e17b32"></span>
-Poor
-</span>
-
-<span>
-<span class="legend-dot"
-style="background:#d84a38"></span>
-Very Poor
-</span>
-
-<span>
-<span class="legend-dot"
-style="background:#8e2020"></span>
-Extremely Poor
-</span>
-
-</div>
-
-</div>
-
-</section>
-
-
-<!-- SUMMARY -->
-
-<section class="section">
-
-<div class="section-title">
-🌐 NCR Regional Overview
-</div>
-
-<div class="summary">
-
-<div class="summary-box">
-
-<span>Average AQI</span>
-
-<strong id="avgAQI">--</strong>
-
-</div>
-
-<div class="summary-box">
-
-<span>Highest AQI</span>
-
-<strong id="highAQI">--</strong>
-
-</div>
-
-<div class="summary-box">
-
-<span>Lowest AQI</span>
-
-<strong id="lowAQI">--</strong>
-
-</div>
-
-<div class="summary-box">
-
-<span>Locations Online</span>
-
-<strong id="onlineLocations">
-0 / 4
-</strong>
-
-</div>
-
-</div>
+  </div>
 
 </section>
 
 
 <!-- EARLY WARNING -->
+<section class="card">
 
-<section class="section">
+  <div class="section-title">
+    🚨 Early Warning System
+  </div>
 
-<div class="section-title">
-⚠️ Early Warning System
-</div>
-
-<div class="alert-section">
-
-<div
-id="riskGrid"
-class="risk-grid">
-</div>
-
-</div>
-
-</section>
-
-
-<!-- 72 HOUR PREDICTION -->
-
-<section class="section">
-
-<div class="section-title">
-📈 72-Hour Prediction
-</div>
-
-<div class="prediction">
-
-<p class="prediction-description">
-
-Hourly air-quality forecast for the next 72 hours
-using Open-Meteo/CAMS forecast data.
-
-</p>
-
-<div class="location-buttons">
-
-<button
-id="btn-delhi"
-class="active"
-onclick="showPrediction('delhi')">
-Delhi
-</button>
-
-<button
-id="btn-gurugram"
-onclick="showPrediction('gurugram')">
-Gurugram
-</button>
-
-<button
-id="btn-noida"
-onclick="showPrediction('noida')">
-Noida
-</button>
-
-<button
-id="btn-ghaziabad"
-onclick="showPrediction('ghaziabad')">
-Ghaziabad
-</button>
-
-</div>
-
-<div class="chart-wrapper">
-
-<canvas id="predictionCanvas"></canvas>
-
-</div>
-
-</div>
-
-</section>
-
-
-<!-- EXPLAINABLE PREDICTION -->
-
-<section class="section">
-
-<div class="section-title">
-🧠 Explainable Prediction
-</div>
-
-<div class="explain-panel">
-
-<h3 id="explainTitle">
-Why is AQI expected to change?
-</h3>
-
-<div id="explainContent">
-Waiting for forecast data...
-</div>
-
-</div>
+  <div id="earlyWarning" class="alert good">
+    Monitoring...
+  </div>
 
 </section>
 
 
 <!-- WHAT IF -->
+<section class="card">
 
-<section class="section">
+  <div class="section-title">
+    🧪 What-If Pollution Simulation
+  </div>
 
-<div class="section-title">
-🧪 What-If Simulation
-</div>
+  <div class="simulator">
 
-<div class="whatif-panel">
+    <label>
+      Traffic change:
+      <b id="trafficValue">0%</b>
+    </label>
 
-<p>
-Adjust atmospheric conditions to explore a
-scenario-based AQI estimate.
-</p>
+    <div class="range-row">
+      <input
+        type="range"
+        id="trafficSlider"
+        min="-50"
+        max="100"
+        value="0"
+        oninput="runSimulation()"
+      >
+    </div>
 
-<div class="whatif-controls">
+    <label>
+      Emission change:
+      <b id="emissionValue">0%</b>
+    </label>
 
-<div>
+    <div class="range-row">
+      <input
+        type="range"
+        id="emissionSlider"
+        min="-50"
+        max="100"
+        value="0"
+        oninput="runSimulation()"
+      >
+    </div>
 
-<label>
-PM2.5 Change:
-<b id="pm25Value">0%</b>
-</label>
+    <div id="simulationResult" class="alert">
+      Select current conditions to simulate.
+    </div>
 
-<br>
-
-<input
-type="range"
-id="pm25Change"
-min="-50"
-max="50"
-value="0"
-oninput="updateWhatIfLabels()">
-
-</div>
-
-<div>
-
-<label>
-Wind Speed Change:
-<b id="windValue">0%</b>
-</label>
-
-<br>
-
-<input
-type="range"
-id="windChange"
-min="-50"
-max="50"
-value="0"
-oninput="updateWhatIfLabels()">
-
-</div>
-
-</div>
-
-<button
-class="simulate-button"
-onclick="runWhatIfSimulation()">
-
-▶ Run Simulation
-
-</button>
-
-<div
-id="simulationResult"
-class="simulation-result">
-
-Change the values and run the simulation.
-
-</div>
-
-<p class="note">
-Note: This is a scenario estimator, not an ML prediction.
-</p>
-
-</div>
+  </div>
 
 </section>
 
 
-<!-- MODEL EVALUATION -->
+<!-- DATA SOURCES -->
+<section class="card">
 
-<section class="section">
+  <div class="section-title">
+    📡 Data Sources & Status
+  </div>
 
-<div class="section-title">
-📊 Model Evaluation
-</div>
+  <div class="grid">
 
-<div class="evaluation-box">
+    <div class="pollutant">
+      <small>Phone GPS</small>
+      <strong class="live">AVAILABLE</strong>
+    </div>
 
-<div class="evaluation-grid">
+    <div class="pollutant">
+      <small>OpenStreetMap</small>
+      <strong class="live">AVAILABLE</strong>
+    </div>
 
-<div class="evaluation-item">
+    <div class="pollutant">
+      <small>Open-Meteo AQ</small>
+      <strong class="live">AVAILABLE</strong>
+    </div>
 
-<span>MAE</span>
+    <div class="pollutant">
+      <small>Open-Meteo Weather</small>
+      <strong class="live">AVAILABLE</strong>
+    </div>
 
-<strong id="maeValue">
-N/A
-</strong>
+    <div class="pollutant">
+      <small>NASA FIRMS</small>
+      <strong class="unavailable">UNAVAILABLE</strong>
+    </div>
 
-</div>
+    <div class="pollutant">
+      <small>Live Traffic API</small>
+      <strong class="unavailable">UNAVAILABLE</strong>
+    </div>
 
-<div class="evaluation-item">
+    <div class="pollutant">
+      <small>Sentinel-5P Live</small>
+      <strong class="unavailable">UNAVAILABLE</strong>
+    </div>
 
-<span>RMSE</span>
+  </div>
 
-<strong id="rmseValue">
-N/A
-</strong>
-
-</div>
-
-<div class="evaluation-item">
-
-<span>R²</span>
-
-<strong id="r2Value">
-N/A
-</strong>
-
-</div>
-
-</div>
-
-<p class="note">
-
-MAE, RMSE and R² require an actual historical
-dataset and an independent test set.
-
-</p>
-
-<p class="note">
-
-Data leakage prevention:
-future observations should not be used during
-training. A chronological train/test split is
-recommended for the ML version.
-
-</p>
-
-</div>
+  <div class="status">
+    ℹ️ NASA FIRMS, live traffic and Sentinel-5P are not fabricated here.
+    They are marked unavailable because no API/backend connection is configured.
+  </div>
 
 </section>
 
-
-</div>
+</main>
 
 
 <footer>
-
-NCR AIR WATCH • Smart Air Quality Monitoring System
-
-<br><br>
-
-Air-quality forecast data:
-Open-Meteo / CAMS
-
-<br>
-
-Map data:
-© OpenStreetMap contributors • Leaflet
-
+  NCR AIR WATCH • Open-Meteo • OpenStreetMap • Leaflet
 </footer>
 
 
-<script
-src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
-</script>
-
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <script>
 
-/* =========================
-   LOCATIONS
-========================= */
-
-const locations = {
-
-delhi:{
-name:"Delhi",
-lat:28.6139,
-lon:77.2090
-},
-
-gurugram:{
-name:"Gurugram",
-lat:28.4595,
-lon:77.0266
-},
-
-noida:{
-name:"Noida",
-lat:28.5355,
-lon:77.3910
-},
-
-ghaziabad:{
-name:"Ghaziabad",
-lat:28.6692,
-lon:77.4538
-}
-
-};
-
-
 let map;
+let marker;
+let accuracyCircle;
+let forecastChart;
 
-let mapMarkers = {};
-
-let forecastData = {};
-
-let selectedLocation = "delhi";
-
-let hotspotPeriod = "now";
-
-
-let previousAQI =
-JSON.parse(
-localStorage.getItem(
-"ncrPreviousAQI"
-) || "{}"
-);
-
-
-let alertsHistory =
-JSON.parse(
-localStorage.getItem(
-"ncrAlertsHistory"
-) || "[]"
-);
-
-
-/* =========================
-   TRAFFIC + STUBBLE
-========================= */
-
-/*
-   IMPORTANT:
-
-   These are INDICATOR/DEMO values.
-
-   0 = Low
-   1 = Moderate
-   2 = High
-
-   They are NOT direct live measurements.
-*/
-
-const contributingFactors = {
-
-delhi:{
-    traffic:2,
-    stubble:2
-},
-
-gurugram:{
-    traffic:2,
-    stubble:1
-},
-
-noida:{
-    traffic:1,
-    stubble:1
-},
-
-ghaziabad:{
-    traffic:2,
-    stubble:1
-}
-
+let selectedLocation = {
+  name: "Not selected",
+  lat: null,
+  lon: null
 };
 
-
-/* =========================
-   CLOCK
-========================= */
-
-function updateClock(){
-
-const now = new Date();
-
-const time =
-now.toLocaleTimeString(
-"en-IN",
-{
-hour:"2-digit",
-minute:"2-digit",
-second:"2-digit",
-hour12:true,
-timeZone:"Asia/Kolkata"
-}
-);
-
-document.getElementById(
-"ncrClock"
-).textContent = time;
-
-}
-
-setInterval(
-updateClock,
-1000
-);
-
-updateClock();
+let currentAQ = null;
+let currentWeather = null;
+let forecastData = null;
 
 
 /* =========================
-   AQI STATUS
+   MAP INITIALIZATION
 ========================= */
 
-function getAQIStatus(aqi){
+function initMap(){
 
-if(
-aqi === null ||
-isNaN(aqi)
-)
-return "Unavailable";
+  map = L.map("map").setView(
+    [20.5937,78.9629],
+    5
+  );
 
-if(aqi <= 20)
-return "Good";
-
-if(aqi <= 40)
-return "Fair";
-
-if(aqi <= 60)
-return "Moderate";
-
-if(aqi <= 80)
-return "Poor";
-
-if(aqi <= 100)
-return "Very Poor";
-
-return "Extremely Poor";
+  L.tileLayer(
+    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+    {
+      maxZoom:19,
+      attribution:
+        '&copy; OpenStreetMap contributors'
+    }
+  ).addTo(map);
 
 }
 
 
 /* =========================
-   AQI COLOR
+   MAP LOCATION
 ========================= */
 
-function getAQIColor(aqi){
+function setMapLocation(
+  lat,
+  lon,
+  name,
+  accuracy=null
+){
 
-if(
-aqi === null ||
-isNaN(aqi)
-)
-return "#777";
+  if(marker){
+    map.removeLayer(marker);
+  }
 
-if(aqi <= 20)
-return "#2e9d55";
+  if(accuracyCircle){
+    map.removeLayer(accuracyCircle);
+  }
 
-if(aqi <= 40)
-return "#8bbd3f";
+  marker = L.marker([lat,lon])
+    .addTo(map)
+    .bindPopup(
+      `<b>${escapeHTML(name)}</b><br>
+       Latitude: ${lat.toFixed(6)}<br>
+       Longitude: ${lon.toFixed(6)}`
+    )
+    .openPopup();
 
-if(aqi <= 60)
-return "#e4ad2f";
+  if(accuracy){
 
-if(aqi <= 80)
-return "#e17b32";
+    accuracyCircle = L.circle(
+      [lat,lon],
+      {
+        radius:accuracy,
+        weight:1
+      }
+    ).addTo(map);
 
-if(aqi <= 100)
-return "#d84a38";
+  }
 
-return "#8e2020";
+  map.setView(
+    [lat,lon],
+    13
+  );
+}
+
+
+/* =========================
+   GPS
+========================= */
+
+function useMyLocation(){
+
+  const status =
+    document.getElementById("gpsStatus");
+
+  if(!navigator.geolocation){
+
+    status.innerHTML =
+      "❌ This browser does not support GPS.";
+
+    return;
+  }
+
+  status.innerHTML =
+    "📱 Getting your phone GPS location...";
+
+  navigator.geolocation.getCurrentPosition(
+
+    async function(position){
+
+      const lat =
+        position.coords.latitude;
+
+      const lon =
+        position.coords.longitude;
+
+      const accuracy =
+        position.coords.accuracy;
+
+      status.innerHTML =
+        `✅ GPS location detected.<br>
+         Accuracy: approximately ${Math.round(accuracy)} metres`;
+
+      let placeName =
+        `GPS Location (${lat.toFixed(5)}, ${lon.toFixed(5)})`;
+
+      try{
+
+        const response =
+          await fetch(
+            `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}&zoom=18&addressdetails=1`
+          );
+
+        if(response.ok){
+
+          const data =
+            await response.json();
+
+          if(data.display_name){
+            placeName =
+              data.display_name;
+          }
+
+        }
+
+      }catch(error){
+
+        console.log(
+          "Reverse geocoding unavailable",
+          error
+        );
+
+      }
+
+      selectLocation(
+        placeName,
+        lat,
+        lon,
+        accuracy
+      );
+
+    },
+
+    function(error){
+
+      let message =
+        "Unable to get GPS location.";
+
+      if(error.code === 1){
+        message =
+          "❌ Location permission denied. Please allow location access.";
+      }
+
+      if(error.code === 2){
+        message =
+          "❌ GPS position unavailable.";
+      }
+
+      if(error.code === 3){
+        message =
+          "❌ GPS request timed out.";
+      }
+
+      status.innerHTML = message;
+
+    },
+
+    {
+      enableHighAccuracy:true,
+      timeout:15000,
+      maximumAge:0
+    }
+
+  );
 
 }
 
 
 /* =========================
-   MAP
+   SEARCH LOCATION
 ========================= */
 
-function createMap(){
+async function searchLocation(){
 
-map =
-L.map("ncrMap")
-.setView(
-[28.55,77.25],
-9
-);
+  const input =
+    document.getElementById("locationSearch");
 
-L.tileLayer(
-"https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-{
-maxZoom:19,
-attribution:
-'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  const query =
+    input.value.trim();
+
+  const results =
+    document.getElementById("searchResults");
+
+  if(!query){
+
+    results.innerHTML =
+      "Enter a place name.";
+
+    return;
+  }
+
+  results.innerHTML =
+    "🔎 Searching...";
+
+  try{
+
+    const response =
+      await fetch(
+        `https://nominatim.openstreetmap.org/search?format=jsonv2&limit=5&q=${encodeURIComponent(query)}`
+      );
+
+    if(!response.ok){
+      throw new Error("Search failed");
+    }
+
+    const data =
+      await response.json();
+
+    showSearchResults(data);
+
+  }catch(error){
+
+    results.innerHTML =
+      "❌ Location search failed.";
+
+    console.error(error);
+
+  }
+
 }
-).addTo(map);
 
 
-Object.keys(locations)
-.forEach(
-key => {
+function showSearchResults(data){
 
-const loc =
-locations[key];
+  const results =
+    document.getElementById("searchResults");
 
-const icon =
-createMarkerIcon("#777");
+  if(!data.length){
 
-const marker =
-L.marker(
-[loc.lat,loc.lon],
-{icon}
-).addTo(map);
+    results.innerHTML =
+      "No location found.";
 
-marker.bindPopup(
-`
-<b>${loc.name}</b>
-<br>
-AQI: Loading...
-`
-);
+    return;
+  }
 
-mapMarkers[key] =
-marker;
+  results.innerHTML =
+    data.map(
+      (item,index)=>`
 
-});
+        <div
+          class="result-item"
+          onclick="selectSearchResult(${index})"
+        >
+          📍 ${escapeHTML(item.display_name)}
+        </div>
+
+      `
+    ).join("");
+
+  window.searchData = data;
 
 }
 
 
-function createMarkerIcon(color){
+function selectSearchResult(index){
 
-return L.divIcon({
+  const item =
+    window.searchData[index];
 
-className:
-"custom-map-icon",
+  const lat =
+    parseFloat(item.lat);
 
-html:
-`
-<div
-class="map-marker"
-style="
-width:22px;
-height:22px;
-background:${color};
-">
-</div>
-`,
+  const lon =
+    parseFloat(item.lon);
 
-iconSize:[22,22],
+  selectLocation(
+    item.display_name,
+    lat,
+    lon
+  );
 
-iconAnchor:[11,11]
-
-});
+  document.getElementById(
+    "searchResults"
+  ).innerHTML = "";
 
 }
 
 
 /* =========================
-   UPDATE MAP
+   SELECT LOCATION
 ========================= */
 
-function updateMapMarker(
-key,
-data
+async function selectLocation(
+  name,
+  lat,
+  lon,
+  accuracy=null
 ){
 
-if(!mapMarkers[key])
-return;
+  selectedLocation = {
+    name:name,
+    lat:lat,
+    lon:lon
+  };
 
-const aqi =
-data.aqi;
+  document.getElementById(
+    "placeName"
+  ).textContent = name;
 
-const color =
-getAQIColor(aqi);
+  document.getElementById(
+    "latitude"
+  ).textContent = lat.toFixed(6);
 
-mapMarkers[key].setIcon(
-createMarkerIcon(color)
-);
+  document.getElementById(
+    "longitude"
+  ).textContent = lon.toFixed(6);
 
-mapMarkers[key].setPopupContent(
+  document.getElementById(
+    "dataStatus"
+  ).textContent = "LOADING";
 
-`
-<div style="min-width:180px">
+  setMapLocation(
+    lat,
+    lon,
+    name,
+    accuracy
+  );
 
-<h3 style="margin:0 0 8px">
-${locations[key].name}
-</h3>
-
-<b>
-AQI:
-${aqi !== null
-? Math.round(aqi)
-: "--"}
-</b>
-
-<br>
-
-Status:
-${getAQIStatus(aqi)}
-
-<hr>
-
-PM2.5:
-${data.pm25 ?? "--"} µg/m³
-
-<br>
-
-PM10:
-${data.pm10 ?? "--"} µg/m³
-
-<br>
-
-NO₂:
-${data.no2 ?? "--"} µg/m³
-
-<br>
-
-O₃:
-${data.o3 ?? "--"} µg/m³
-
-<br>
-
-Temperature:
-${data.temp ?? "--"} °C
-
-<br>
-
-Humidity:
-${data.humidity ?? "--"}%
-
-<br>
-
-Wind:
-${data.wind ?? "--"} km/h
-
-<br>
-
-Pressure:
-${data.pressure ?? "--"} hPa
-
-<br><br>
-
-🚗 Traffic:
-${getFactorStatus(
-contributingFactors[key]?.traffic
-).text}
-
-<br>
-
-🌾 Stubble Burning:
-${getFactorStatus(
-contributingFactors[key]?.stubble
-).text}
-
-</div>
-`
-
-);
+  await loadAllData();
 
 }
 
 
 /* =========================
-   API DATA
+   LOAD ALL DATA
 ========================= */
 
-async function getData(key){
+async function loadAllData(){
 
-const loc =
-locations[key];
+  document.getElementById(
+    "dataStatus"
+  ).textContent = "LOADING";
 
+  try{
 
-const airURL =
-`https://air-quality-api.open-meteo.com/v1/air-quality`
-+
-`?latitude=${loc.lat}`
-+
-`&longitude=${loc.lon}`
-+
-`&hourly=pm2_5,pm10,nitrogen_dioxide,ozone,european_aqi`
-+
-`&forecast_hours=72`
-+
-`&timezone=Asia%2FKolkata`;
+    await Promise.all([
+      fetchAirQuality(),
+      fetchWeather()
+    ]);
 
+    updateExplanation();
+    updateRisk();
+    updateEarlyWarning();
+    runSimulation();
 
-const weatherURL =
-`https://api.open-meteo.com/v1/forecast`
-+
-`?latitude=${loc.lat}`
-+
-`&longitude=${loc.lon}`
-+
-`&current=temperature_2m,relative_humidity_2m,wind_speed_10m,pressure_msl`
-+
-`&hourly=wind_speed_10m`
-+
-`&forecast_hours=72`
-+
-`&timezone=Asia%2FKolkata`;
+    document.getElementById(
+      "dataStatus"
+    ).textContent = "UPDATED";
 
+  }catch(error){
 
-const [
-airResponse,
-weatherResponse
-] =
-await Promise.all([
-fetch(airURL),
-fetch(weatherURL)
-]);
+    console.error(error);
 
+    document.getElementById(
+      "dataStatus"
+    ).textContent = "ERROR";
 
-if(
-!airResponse.ok ||
-!weatherResponse.ok
-)
-throw new Error(
-"API request failed"
-);
-
-
-const air =
-await airResponse.json();
-
-const weather =
-await weatherResponse.json();
-
-
-return {
-
-aqi:
-air.hourly?.european_aqi?.[0] ?? null,
-
-pm25:
-air.hourly?.pm2_5?.[0] ?? null,
-
-pm10:
-air.hourly?.pm10?.[0] ?? null,
-
-no2:
-air.hourly?.nitrogen_dioxide?.[0] ?? null,
-
-o3:
-air.hourly?.ozone?.[0] ?? null,
-
-temp:
-weather.current?.temperature_2m ?? null,
-
-humidity:
-weather.current?.relative_humidity_2m ?? null,
-
-wind:
-weather.current?.wind_speed_10m ?? null,
-
-pressure:
-weather.current?.pressure_msl ?? null,
-
-times:
-air.hourly?.time || [],
-
-aqiForecast:
-air.hourly?.european_aqi || [],
-
-pm25Forecast:
-air.hourly?.pm2_5 || [],
-
-pm10Forecast:
-air.hourly?.pm10 || [],
-
-windForecast:
-weather.hourly?.wind_speed_10m || []
-
-};
+  }
 
 }
 
 
 /* =========================
-   CARD
+   AIR QUALITY API
 ========================= */
 
-function updateCard(
-key,
-data
-){
+async function fetchAirQuality(){
 
-const card =
-document.getElementById(
-"card-" + key
-);
+  const lat =
+    selectedLocation.lat;
 
-const aqiElement =
-card.querySelector(".aqi");
+  const lon =
+    selectedLocation.lon;
 
-const statusElement =
-card.querySelector(".aqi-status");
+  const url =
+    `https://air-quality-api.open-meteo.com/v1/air-quality`+
+    `?latitude=${lat}`+
+    `&longitude=${lon}`+
+    `&hourly=`+
+    `pm10,pm2_5,carbon_monoxide,carbon_dioxide,`+
+    `nitrogen_dioxide,sulphur_dioxide,ozone,`+
+    `aerosol_optical_depth,dust,ammonia,`+
+    `european_aqi`+
+    `&forecast_hours=72`+
+    `&timezone=Asia%2FKolkata`;
 
-const metrics =
-card.querySelectorAll(".metric");
+  const response =
+    await fetch(url);
 
-const aqi =
-data.aqi;
+  if(!response.ok){
+    throw new Error(
+      "Air quality API failed"
+    );
+  }
 
-aqiElement.textContent =
-aqi !== null
-? Math.round(aqi)
-: "--";
+  currentAQ =
+    await response.json();
 
-statusElement.textContent =
-getAQIStatus(aqi);
-
-card.style.borderLeftColor =
-getAQIColor(aqi);
-
-metrics[0].textContent =
-`PM2.5: ${data.pm25 ?? "--"} µg/m³`;
-
-metrics[1].textContent =
-`PM10: ${data.pm10 ?? "--"} µg/m³`;
-
-metrics[2].textContent =
-`NO₂: ${data.no2 ?? "--"} µg/m³`;
-
-metrics[3].textContent =
-`O₃: ${data.o3 ?? "--"} µg/m³`;
-
-metrics[4].textContent =
-`Temp: ${data.temp ?? "--"} °C`;
-
-metrics[5].textContent =
-`Humidity: ${data.humidity ?? "--"}%`;
-
-metrics[6].textContent =
-`Wind: ${data.wind ?? "--"} km/h`;
-
-metrics[7].textContent =
-`Pressure: ${data.pressure ?? "--"} hPa`;
+  updateAirUI();
+  updateForecast();
 
 }
 
 
 /* =========================
-   FACTOR STATUS
+   WEATHER API
 ========================= */
 
-function getFactorStatus(value){
+async function fetchWeather(){
 
-if(value === undefined || value === null){
+  const lat =
+    selectedLocation.lat;
 
-return {
-text:"Unavailable",
-color:"#777",
-percent:0
-};
+  const lon =
+    selectedLocation.lon;
 
-}
+  const url =
+    `https://api.open-meteo.com/v1/forecast`+
+    `?latitude=${lat}`+
+    `&longitude=${lon}`+
+    `&current=`+
+    `temperature_2m,relative_humidity_2m,`+
+    `wind_speed_10m,pressure_msl`+
+    `&hourly=`+
+    `temperature_2m,relative_humidity_2m,`+
+    `wind_speed_10m,pressure_msl`+
+    `&forecast_hours=72`+
+    `&timezone=Asia%2FKolkata`;
 
-if(value <= 0){
+  const response =
+    await fetch(url);
 
-return {
-text:"Low",
-color:"#35a853",
-percent:25
-};
+  if(!response.ok){
+    throw new Error(
+      "Weather API failed"
+    );
+  }
 
-}
+  currentWeather =
+    await response.json();
 
-if(value === 1){
-
-return {
-text:"Moderate",
-color:"#e4ad2f",
-percent:55
-};
-
-}
-
-return {
-text:"High",
-color:"#d93025",
-percent:90
-};
+  updateWeatherUI();
 
 }
 
 
 /* =========================
-   UPDATE FACTORS
+   AIR UI
 ========================= */
 
-function updateContributingFactors(){
+function updateAirUI(){
 
-const factor =
-contributingFactors[
-selectedLocation
-];
+  const h =
+    currentAQ.hourly;
 
-if(!factor)
-return;
+  const i = 0;
 
+  setText(
+    "aqi",
+    value(h.european_aqi,i)
+  );
 
-const traffic =
-getFactorStatus(
-factor.traffic
-);
+  setText(
+    "pm25",
+    value(h.pm2_5,i)
+  );
 
-const stubble =
-getFactorStatus(
-factor.stubble
-);
+  setText(
+    "pm10",
+    value(h.pm10,i)
+  );
 
+  setText(
+    "no2",
+    value(h.nitrogen_dioxide,i)
+  );
 
-const trafficValue =
-document.getElementById(
-"trafficValue"
-);
+  setText(
+    "o3",
+    value(h.ozone,i)
+  );
 
-const trafficFill =
-document.getElementById(
-"trafficFill"
-);
+  setText(
+    "co",
+    value(h.carbon_monoxide,i)
+  );
 
-const stubbleValue =
-document.getElementById(
-"stubbleValue"
-);
+  setText(
+    "so2",
+    value(h.sulphur_dioxide,i)
+  );
 
-const stubbleFill =
-document.getElementById(
-"stubbleFill"
-);
+  setText(
+    "dust",
+    value(h.dust,i)
+  );
 
+  setText(
+    "aod",
+    value(h.aerosol_optical_depth,i)
+  );
 
-trafficValue.textContent =
-traffic.text;
-
-trafficValue.style.color =
-traffic.color;
-
-trafficFill.style.width =
-traffic.percent + "%";
-
-trafficFill.style.background =
-traffic.color;
-
-
-stubbleValue.textContent =
-stubble.text;
-
-stubbleValue.style.color =
-stubble.color;
-
-stubbleFill.style.width =
-stubble.percent + "%";
-
-stubbleFill.style.background =
-stubble.color;
+  setText(
+    "nh3",
+    value(h.ammonia,i)
+  );
 
 
-updateCombinedRisk();
+  const aqi =
+    h.european_aqi?.[i];
+
+  const box =
+    document.getElementById(
+      "aqiStatus"
+    );
+
+  if(aqi == null){
+
+    box.className =
+      "alert";
+
+    box.innerHTML =
+      "AQI unavailable.";
+
+    return;
+
+  }
+
+  if(aqi <= 50){
+
+    box.className =
+      "alert good";
+
+    box.innerHTML =
+      `🟢 AQI ${Math.round(aqi)} — Good`;
+
+  }else if(aqi <= 100){
+
+    box.className =
+      "alert";
+
+    box.innerHTML =
+      `🟡 AQI ${Math.round(aqi)} — Moderate`;
+
+  }else if(aqi <= 150){
+
+    box.className =
+      "alert warning";
+
+    box.innerHTML =
+      `🟠 AQI ${Math.round(aqi)} — Unhealthy for sensitive groups`;
+
+  }else if(aqi <= 200){
+
+    box.className =
+      "alert danger";
+
+    box.innerHTML =
+      `🔴 AQI ${Math.round(aqi)} — Unhealthy`;
+
+  }else{
+
+    box.className =
+      "alert danger";
+
+    box.innerHTML =
+      `🟣 AQI ${Math.round(aqi)} — Very unhealthy / hazardous`;
+
+  }
 
 }
 
 
 /* =========================
-   COMBINED RISK
+   WEATHER UI
 ========================= */
 
-function updateCombinedRisk(){
+function updateWeatherUI(){
 
-const factor =
-contributingFactors[
-selectedLocation
-];
+  const c =
+    currentWeather.current;
 
-const data =
-forecastData[
-selectedLocation
-];
+  setText(
+    "temperature",
+    c.temperature_2m != null
+      ? `${c.temperature_2m} °C`
+      : "--"
+  );
 
-const box =
-document.getElementById(
-"combinedRisk"
-);
+  setText(
+    "humidity",
+    c.relative_humidity_2m != null
+      ? `${c.relative_humidity_2m} %`
+      : "--"
+  );
 
-if(!factor || !box)
-return;
+  setText(
+    "wind",
+    c.wind_speed_10m != null
+      ? `${c.wind_speed_10m} km/h`
+      : "--"
+  );
 
-
-const traffic =
-getFactorStatus(
-factor.traffic
-);
-
-const stubble =
-getFactorStatus(
-factor.stubble
-);
-
-
-const pm25 =
-Number(
-data?.pm25
-);
-
-
-let riskScore =
-factor.traffic +
-factor.stubble;
-
-
-if(
-Number.isFinite(pm25)
-){
-
-if(pm25 >= 90)
-riskScore += 2;
-
-else if(pm25 >= 50)
-riskScore += 1;
-
-}
-
-
-let riskText;
-let riskColor;
-
-
-if(riskScore >= 4){
-
-riskText =
-"🔴 HIGH POLLUTION RISK";
-
-riskColor =
-"#d93025";
-
-}
-
-else if(riskScore >= 2){
-
-riskText =
-"🟡 MODERATE POLLUTION RISK";
-
-riskColor =
-"#e4ad2f";
-
-}
-
-else{
-
-riskText =
-"🟢 LOW POLLUTION RISK";
-
-riskColor =
-"#35a853";
-
-}
-
-
-box.style.borderLeft =
-"6px solid " + riskColor;
-
-
-box.innerHTML = `
-
-<div style="
-color:${riskColor};
-font-size:18px;
-margin-bottom:8px;
-font-weight:bold;
-">
-
-${riskText}
-
-</div>
-
-🚗 Traffic:
-<b>${traffic.text}</b>
-
-&nbsp;&nbsp; | &nbsp;&nbsp;
-
-🌾 Stubble Burning:
-<b>${stubble.text}</b>
-
-<br><br>
-
-🌫️ Current PM2.5:
-<b>
-${Number.isFinite(pm25)
-? pm25.toFixed(1) + " µg/m³"
-: "--"}
-</b>
-
-<br><br>
-
-<span style="
-font-size:12px;
-color:#687675;
-">
-
-Traffic and stubble-burning values are
-indicator/demo values in this prototype.
-They are not direct live measurements.
-
-</span>
-
-`;
+  setText(
+    "pressure",
+    c.pressure_msl != null
+      ? `${c.pressure_msl} hPa`
+      : "--"
+  );
 
 }
 
 
 /* =========================
-   ALERT SYSTEM
+   EXPLANATION
 ========================= */
 
-function addAlert(
-key,
-message,
-type="info"
-){
+function updateExplanation(){
 
-const list =
-document.getElementById(
-"alertList"
-);
+  if(!currentAQ || !currentWeather){
+    return;
+  }
 
-const empty =
-list.querySelector(
-".alert-empty"
-);
+  const aqi =
+    currentAQ.hourly.european_aqi?.[0];
 
-if(empty)
-empty.remove();
+  const pm25 =
+    currentAQ.hourly.pm2_5?.[0];
 
-const item =
-document.createElement(
-"div"
-);
+  const wind =
+    currentWeather.current.wind_speed_10m;
 
-item.className =
-"alert-item " + type;
+  let messages = [];
 
-item.innerHTML =
-`
-<b>${locations[key].name}</b>
-—
-${message}
-`;
+  if(aqi != null){
 
-list.prepend(item);
+    if(aqi > 150){
 
-while(
-list.children.length > 6
-)
-list.removeChild(
-list.lastChild
-);
+      messages.push(
+        "AQI is currently high."
+      );
 
+    }else if(aqi > 100){
 
-const record = {
+      messages.push(
+        "Air quality is elevated."
+      );
 
-location:
-locations[key].name,
+    }else{
 
-message,
+      messages.push(
+        "Current AQI is relatively lower."
+      );
 
-time:
-new Date().toISOString()
+    }
 
-};
+  }
 
-alertsHistory.unshift(
-record
-);
+  if(pm25 != null && pm25 > 35){
 
-alertsHistory =
-alertsHistory.slice(
-0,
-20
-);
+    messages.push(
+      "PM2.5 is elevated and is contributing to the pollution level."
+    );
 
-localStorage.setItem(
-"ncrAlertsHistory",
-JSON.stringify(
-alertsHistory
-)
-);
+  }
+
+  if(wind != null){
+
+    if(wind < 5){
+
+      messages.push(
+        "Low wind can reduce atmospheric dispersion and allow pollutants to accumulate."
+      );
+
+    }else if(wind < 15){
+
+      messages.push(
+        "Moderate wind provides some pollutant dispersion."
+      );
+
+    }else{
+
+      messages.push(
+        "Higher wind can improve pollutant dispersion."
+      );
+
+    }
+
+  }
+
+  document.getElementById(
+    "explanation"
+  ).innerHTML =
+    "🧠 " + messages.join(" ");
 
 }
 
 
 /* =========================
-   NOTIFICATIONS
+   FORECAST
 ========================= */
 
-async function sendBrowserNotification(
-title,
-body
-){
+function updateForecast(){
 
-if(
-!("Notification" in window)
-)
-return;
+  const aq =
+    currentAQ.hourly;
 
-if(
-Notification.permission !== "granted"
-)
-return;
+  const weather =
+    currentWeather.hourly;
 
-try{
+  const rows = [];
 
-if(
-"serviceWorker" in navigator
-){
+  const length =
+    Math.min(
+      72,
+      aq.time.length
+    );
 
-const registration =
-await navigator.serviceWorker.ready;
+  for(let i=0;i<length;i++){
 
-await registration.showNotification(
-title,
-{
-body:body,
-tag:"ncr-air-alert",
-renotify:true
-}
-);
+    rows.push({
 
-}
+      time:aq.time[i],
 
-}catch(error){
+      aqi:aq.european_aqi?.[i],
 
-console.log(
-"Notification unavailable",
-error
-);
+      pm25:aq.pm2_5?.[i],
 
-}
+      pm10:aq.pm10?.[i],
 
-}
+      no2:aq.nitrogen_dioxide?.[i],
 
+      o3:aq.ozone?.[i],
 
-async function enableAlerts(){
+      temperature:
+        weather.temperature_2m?.[i],
 
-const status =
-document.getElementById(
-"alertPermission"
-);
+      wind:
+        weather.wind_speed_10m?.[i]
 
-if(
-!("Notification" in window)
-){
+    });
 
-status.textContent =
-"Alerts: Browser not supported";
+  }
 
-return;
+  forecastData = rows;
 
-}
-
-try{
-
-const permission =
-await Notification.requestPermission();
-
-updateNotificationStatus(
-permission
-);
-
-if(
-permission === "granted"
-){
-
-addAlert(
-"delhi",
-"Browser alerts enabled successfully.",
-"info"
-);
-
-await sendBrowserNotification(
-"NCR AIR WATCH",
-"Smart air-quality alerts are now enabled."
-);
-
-}
-
-}catch(error){
-
-status.textContent =
-"Alerts: Permission unavailable";
-
-}
-
-}
-
-
-function updateNotificationStatus(
-permission
-){
-
-const status =
-document.getElementById(
-"alertPermission"
-);
-
-if(
-permission === "granted"
-)
-
-status.textContent =
-"🔔 Alerts: Enabled";
-
-else if(
-permission === "denied"
-)
-
-status.textContent =
-"🔕 Alerts: Blocked";
-
-else
-
-status.textContent =
-"🔔 Alerts: Not enabled";
-
-}
-
-
-function checkNotificationStatus(){
-
-if(
-!("Notification" in window)
-){
-
-document.getElementById(
-"alertPermission"
-).textContent =
-"Alerts: Not supported";
-
-return;
-
-}
-
-updateNotificationStatus(
-Notification.permission
-);
-
-}
-
-
-async function testNotification(){
-
-if(
-!("Notification" in window)
-){
-
-alert(
-"Browser notifications are not supported."
-);
-
-return;
-
-}
-
-if(
-Notification.permission !== "granted"
-){
-
-alert(
-"Please enable Browser Alerts first."
-);
-
-return;
-
-}
-
-try{
-
-if(
-"serviceWorker" in navigator
-){
-
-const registration =
-await navigator.serviceWorker.ready;
-
-await registration.showNotification(
-"NCR AIR WATCH 🚨",
-{
-body:
-"Test notification successful! 📱",
-
-tag:
-"ncr-test-notification",
-
-renotify:true
-}
-);
-
-}
-
-}catch(error){
-
-console.error(
-"Test notification failed:",
-error
-);
-
-alert(
-"Notification test failed."
-);
-
-}
+  updateForecastTable();
+  drawForecastChart();
+  updateHotspotRisk();
 
 }
 
 
 /* =========================
-   AQI CHANGE DETECTION
+   FORECAST TABLE
 ========================= */
 
-function checkForChanges(
-key,
-data
-){
+function updateForecastTable(){
 
-if(
-data.aqi === null ||
-isNaN(data.aqi)
-)
-return;
+  const tbody =
+    document.getElementById(
+      "forecastTable"
+    );
 
-const currentAQI =
-Math.round(data.aqi);
+  if(!forecastData){
+    return;
+  }
 
-const oldAQI =
-previousAQI[key];
+  tbody.innerHTML =
+    forecastData.map(row => `
 
-if(
-oldAQI !== undefined
-){
+      <tr>
 
-const difference =
-currentAQI - oldAQI;
+        <td>
+          ${formatTime(row.time)}
+        </td>
 
+        <td>
+          ${round(row.aqi)}
+        </td>
 
-if(
-difference >= 15
-){
+        <td>
+          ${round(row.pm25)}
+        </td>
 
-const message =
-`AQI increased sharply from ${oldAQI} to ${currentAQI}.`;
+        <td>
+          ${round(row.pm10)}
+        </td>
 
-addAlert(
-key,
-"🚨 " + message,
-"danger"
-);
+        <td>
+          ${round(row.no2)}
+        </td>
 
-sendBrowserNotification(
-`🚨 ${locations[key].name} AQI Alert`,
-message
-);
+        <td>
+          ${round(row.o3)}
+        </td>
 
-}
+        <td>
+          ${round(row.temperature)} °C
+        </td>
 
-else if(
-oldAQI < 80 &&
-currentAQI >= 80
-){
+        <td>
+          ${round(row.wind)} km/h
+        </td>
 
-const message =
-`AQI crossed 80 and is now ${currentAQI}. Air quality is poor.`;
+      </tr>
 
-addAlert(
-key,
-"⚠️ " + message,
-"danger"
-);
-
-sendBrowserNotification(
-`⚠️ ${locations[key].name} Air Quality`,
-message
-);
-
-}
-
-else if(
-oldAQI < 100 &&
-currentAQI >= 100
-){
-
-const message =
-`AQI crossed 100 and is now ${currentAQI}.`;
-
-addAlert(
-key,
-"🚨 " + message,
-"danger"
-);
-
-sendBrowserNotification(
-`🚨 ${locations[key].name} Critical AQI`,
-message
-);
-
-}
-
-}
-
-previousAQI[key] =
-currentAQI;
-
-localStorage.setItem(
-"ncrPreviousAQI",
-JSON.stringify(
-previousAQI
-)
-);
+    `).join("");
 
 }
 
 
 /* =========================
-   SUMMARY
+   CHART
 ========================= */
 
-function updateSummary(){
+function drawForecastChart(){
 
-const values =
-Object.values(
-forecastData
-)
-.map(
-item => item.aqi
-)
-.filter(
-value =>
-value !== null &&
-!isNaN(value)
-);
+  const canvas =
+    document.getElementById(
+      "forecastChart"
+    );
 
+  const labels =
+    forecastData.map(
+      x => formatTime(x.time)
+    );
 
-if(
-!values.length
-){
+  const values =
+    forecastData.map(
+      x => x.aqi
+    );
 
-document.getElementById(
-"avgAQI"
-).textContent = "--";
+  if(forecastChart){
+    forecastChart.destroy();
+  }
 
-document.getElementById(
-"highAQI"
-).textContent = "--";
+  forecastChart =
+    new Chart(
+      canvas,
+      {
+        type:"line",
 
-document.getElementById(
-"lowAQI"
-).textContent = "--";
+        data:{
+          labels:labels,
 
-return;
+          datasets:[
+            {
+              label:"European AQI",
+              data:values,
+              tension:.3,
+              fill:false
+            }
+          ]
+        },
 
-}
+        options:{
+          responsive:true,
+          maintainAspectRatio:false,
 
+          scales:{
+            y:{
+              beginAtZero:true
+            }
+          }
+        }
 
-const average =
-values.reduce(
-(a,b)=>a+b,
-0
-) /
-values.length;
-
-
-document.getElementById(
-"avgAQI"
-).textContent =
-Math.round(average);
-
-document.getElementById(
-"highAQI"
-).textContent =
-Math.round(
-Math.max(...values)
-);
-
-document.getElementById(
-"lowAQI"
-).textContent =
-Math.round(
-Math.min(...values)
-);
+      }
+    );
 
 }
 
 
 /* =========================
-   72H GRAPH
+   RISK
 ========================= */
 
-function showPrediction(
-key
-){
-
-selectedLocation =
-key;
-
-document
-.querySelectorAll(
-".location-buttons button"
-)
-.forEach(
-button =>
-button.classList.remove(
-"active"
-)
-);
-
-document
-.getElementById(
-"btn-" + key
-)
-.classList.add(
-"active"
-);
-
-drawGraph();
-
-updateExplanation();
-
-updateContributingFactors();
-
-}
-
-
-function drawGraph(){
-
-const canvas =
-document.getElementById(
-"predictionCanvas"
-);
-
-if(!canvas)
-return;
-
-const ctx =
-canvas.getContext("2d");
-
-const data =
-forecastData[
-selectedLocation
-];
-
-const values =
-data?.aqiForecast || [];
-
-const times =
-data?.times || [];
-
-const width =
-canvas.clientWidth || 600;
-
-const height =
-canvas.clientHeight || 340;
-
-const ratio =
-window.devicePixelRatio || 1;
-
-canvas.width =
-width * ratio;
-
-canvas.height =
-height * ratio;
-
-ctx.setTransform(
-ratio,
-0,
-0,
-ratio,
-0,
-0
-);
-
-ctx.clearRect(
-0,
-0,
-width,
-height
-);
-
-
-if(!values.length){
-
-ctx.fillStyle =
-"#607270";
-
-ctx.font =
-"16px Arial";
-
-ctx.fillText(
-"Loading 72-hour prediction...",
-25,
-45
-);
-
-return;
-
-}
-
-
-const points =
-values
-.map(
-(value,index)=>({
-
-value:
-Number(value),
-
-time:
-times[index] || ""
-
-})
-)
-.filter(
-point =>
-Number.isFinite(
-point.value
-)
-);
-
-
-if(!points.length){
-
-ctx.fillStyle =
-"#607270";
-
-ctx.font =
-"16px Arial";
-
-ctx.fillText(
-"Prediction data unavailable",
-25,
-45
-);
-
-return;
-
-}
-
-
-const clean =
-points.map(
-point => point.value
-);
-
-const min =
-Math.min(...clean);
-
-const max =
-Math.max(...clean);
-
-const paddingLeft = 55;
-const paddingRight = 20;
-const paddingTop = 30;
-const paddingBottom = 48;
-
-const graphWidth =
-width -
-paddingLeft -
-paddingRight;
-
-const graphHeight =
-height -
-paddingTop -
-paddingBottom;
-
-
-ctx.fillStyle =
-"#f8fbfa";
-
-ctx.fillRect(
-0,
-0,
-width,
-height
-);
-
-
-ctx.fillStyle =
-"#17413e";
-
-ctx.font =
-"bold 14px Arial";
-
-ctx.fillText(
-`${locations[selectedLocation].name} — 72-Hour AQI Forecast`,
-paddingLeft,
-18
-);
-
-
-ctx.strokeStyle =
-"#dbe7e4";
-
-ctx.lineWidth = 1;
-
-
-for(
-let i=0;
-i<=4;
-i++
-){
-
-const y =
-paddingTop +
-graphHeight *
-i /
-4;
-
-ctx.beginPath();
-
-ctx.moveTo(
-paddingLeft,
-y
-);
-
-ctx.lineTo(
-width-paddingRight,
-y
-);
-
-ctx.stroke();
-
-}
-
-
-ctx.fillStyle =
-"#536866";
-
-ctx.font =
-"12px Arial";
-
-
-for(
-let i=0;
-i<=4;
-i++
-){
-
-const value =
-max -
-(max-min) *
-i /
-4;
-
-const y =
-paddingTop +
-graphHeight *
-i /
-4;
-
-ctx.fillText(
-Math.round(value),
-10,
-y+4
-);
-
-}
-
-
-ctx.beginPath();
-
-
-points.forEach(
-(point,index)=>{
-
-const x =
-paddingLeft +
-graphWidth *
-index /
-Math.max(
-points.length-1,
-1
-);
-
-const normalized =
-(point.value-min) /
-Math.max(
-max-min,
-1
-);
-
-const y =
-paddingTop +
-graphHeight -
-normalized *
-graphHeight;
-
-
-if(index === 0)
-
-ctx.moveTo(
-x,
-y
-);
-
-else
-
-ctx.lineTo(
-x,
-y
-);
-
-}
-);
-
-
-ctx.strokeStyle =
-"#087f70";
-
-ctx.lineWidth = 3;
-
-ctx.lineJoin =
-"round";
-
-ctx.lineCap =
-"round";
-
-ctx.stroke();
-
-
-points.forEach(
-(point,index)=>{
-
-const x =
-paddingLeft +
-graphWidth *
-index /
-Math.max(
-points.length-1,
-1
-);
-
-const normalized =
-(point.value-min) /
-Math.max(
-max-min,
-1
-);
-
-const y =
-paddingTop +
-graphHeight -
-normalized *
-graphHeight;
-
-
-ctx.beginPath();
-
-ctx.arc(
-x,
-y,
-2.5,
-0,
-Math.PI*2
-);
-
-ctx.fillStyle =
-"#087f70";
-
-ctx.fill();
-
-}
-);
-
-
-ctx.fillStyle =
-"#536866";
-
-ctx.font =
-"11px Arial";
-
-
-const labelIndexes = [
-
-0,
-
-Math.floor(
-points.length / 3
-),
-
-Math.floor(
-points.length * 2 / 3
-),
-
-points.length - 1
-
-];
-
-
-labelIndexes.forEach(
-(index)=>{
-
-const point =
-points[index];
-
-if(!point)
-return;
-
-const x =
-paddingLeft +
-graphWidth *
-index /
-Math.max(
-points.length-1,
-1
-);
-
-let label =
-"Now";
-
-
-if(index !== 0){
-
-const date =
-new Date(
-point.time
-);
-
-if(
-!isNaN(
-date.getTime()
-)
-){
-
-label =
-date.toLocaleTimeString(
-"en-IN",
-{
-hour:"2-digit",
-minute:"2-digit",
-hour12:true,
-timeZone:"Asia/Kolkata"
-}
-);
-
-}
-
-}
-
-
-ctx.fillText(
-label,
-Math.max(
-paddingLeft,
-Math.min(
-x-20,
-width-paddingRight-55
-)
-),
-height-15
-);
-
-}
-);
-
-}
-
-
-/* =========================
-   PREDICTIVE HOTSPOT
-========================= */
-
-function getForecastAQI(
-key,
-hours
-){
-
-const data =
-forecastData[key];
-
-if(
-!data ||
-!data.aqiForecast
-)
-return null;
-
-
-const index =
-Math.min(
-hours,
-data.aqiForecast.length - 1
-);
-
-const value =
-Number(
-data.aqiForecast[index]
-);
-
-return Number.isFinite(value)
-? Math.round(value)
-: null;
-
-}
-
-
-function showHotspot(
-period
-){
-
-hotspotPeriod =
-period;
-
-
-document
-.querySelectorAll(
-".forecast-map-controls button"
-)
-.forEach(
-button =>
-button.classList.remove(
-"active"
-)
-);
-
-
-document
-.getElementById(
-"hotspot-" + period
-)
-.classList.add(
-"active"
-);
-
-
-let hours = 0;
-
-
-if(period === "24")
-hours = 24;
-
-if(period === "48")
-hours = 48;
-
-if(period === "72")
-hours = 71;
-
-
-Object.keys(locations)
-.forEach(
-key => {
-
-const aqi =
-getForecastAQI(
-key,
-hours
-);
-
-if(!mapMarkers[key])
-return;
-
-
-const color =
-getAQIColor(aqi);
-
-
-mapMarkers[key].setIcon(
-createMarkerIcon(color)
-);
-
-
-mapMarkers[key].setPopupContent(
-
-`
-<b>${locations[key].name}</b>
-
-<br>
-
-Forecast:
-${period === "now"
-? "NOW"
-: period + " hours"}
-
-<br>
-
-<b>
-AQI:
-${aqi ?? "--"}
-</b>
-
-<br>
-
-Status:
-${getAQIStatus(aqi)}
-
-<br><br>
-
-🚗 Traffic:
-${getFactorStatus(
-contributingFactors[key]?.traffic
-).text}
-
-<br>
-
-🌾 Stubble Burning:
-${getFactorStatus(
-contributingFactors[key]?.stubble
-).text}
-
-`
-
-);
-
-});
-
-
-document.getElementById(
-"hotspotInfo"
-).textContent =
-
-period === "now"
-
-? "Showing current AQI hotspots"
-
-: `Showing predicted AQI hotspots after ${period} hours`;
-
-
-updateRiskPanel();
-
-updateExplanation();
+function updateHotspotRisk(){
+
+  if(!forecastData){
+    return;
+  }
+
+  const indexes = [
+    0,
+    24,
+    48,
+    71
+  ];
+
+  const ids = [
+    "riskNow",
+    "risk24",
+    "risk48",
+    "risk72"
+  ];
+
+  indexes.forEach(
+    (index,i)=>{
+
+      const row =
+        forecastData[
+          Math.min(
+            index,
+            forecastData.length-1
+          )
+        ];
+
+      const risk =
+        getRisk(row.aqi);
+
+      document.getElementById(
+        ids[i]
+      ).textContent =
+        risk;
+
+    }
+  );
 
 }
 
@@ -3284,673 +1642,257 @@ updateExplanation();
    EARLY WARNING
 ========================= */
 
-function getRiskLevel(
-aqi
-){
+function updateEarlyWarning(){
 
-if(aqi === null)
+  if(!currentAQ){
+    return;
+  }
 
-return {
-text:"Unavailable",
-color:"#777"
-};
+  const aqi =
+    currentAQ.hourly.european_aqi?.[0];
 
-if(aqi < 60)
+  const box =
+    document.getElementById(
+      "earlyWarning"
+    );
 
-return {
-text:"Low Risk",
-color:"#35a853"
-};
+  if(aqi == null){
 
-if(aqi < 80)
+    box.className =
+      "alert";
 
-return {
-text:"Moderate Risk",
-color:"#e4ad2f"
-};
+    box.innerHTML =
+      "⚪ AQI unavailable.";
 
-if(aqi < 100)
+    return;
 
-return {
-text:"High Risk",
-color:"#e17b32"
-};
+  }
 
-return {
-text:"Critical Risk",
-color:"#d93025"
-};
+  if(aqi >= 200){
 
-}
+    box.className =
+      "alert danger";
 
+    box.innerHTML =
+      "🚨 SEVERE WARNING: Very unhealthy air conditions detected.";
 
-function updateRiskPanel(){
+  }else if(aqi >= 150){
 
-const grid =
-document.getElementById(
-"riskGrid"
-);
+    box.className =
+      "alert danger";
 
-if(!grid)
-return;
+    box.innerHTML =
+      "⚠️ HIGH WARNING: Pollution is at an unhealthy level.";
 
+  }else if(aqi >= 100){
 
-grid.innerHTML = "";
+    box.className =
+      "alert warning";
 
+    box.innerHTML =
+      "⚠️ CAUTION: Elevated pollution level detected.";
 
-Object.keys(locations)
-.forEach(
-key => {
+  }else{
 
-const hours =
-hotspotPeriod === "now"
-? 0
-: Number(hotspotPeriod);
+    box.className =
+      "alert good";
 
+    box.innerHTML =
+      "✅ No major AQI warning at the moment.";
 
-const aqi =
-getForecastAQI(
-key,
-hours
-);
-
-
-const risk =
-getRiskLevel(aqi);
-
-
-const card =
-document.createElement(
-"div"
-);
-
-card.className =
-"risk-card";
-
-card.style.borderLeftColor =
-risk.color;
-
-
-const traffic =
-getFactorStatus(
-contributingFactors[key]?.traffic
-);
-
-const stubble =
-getFactorStatus(
-contributingFactors[key]?.stubble
-);
-
-
-card.innerHTML = `
-
-<b>
-${locations[key].name}
-</b>
-
-<strong>
-${aqi ?? "--"}
-</strong>
-
-<span
-style="
-color:${risk.color};
-font-weight:bold;
-">
-
-${risk.text}
-
-</span>
-
-<br><br>
-
-<span style="font-size:12px">
-🚗 Traffic: ${traffic.text}
-</span>
-
-<br>
-
-<span style="font-size:12px">
-🌾 Stubble: ${stubble.text}
-</span>
-
-`;
-
-
-grid.appendChild(card);
-
-});
+  }
 
 }
 
 
 /* =========================
-   EXPLAINABLE FORECAST
+   WHAT IF SIMULATION
 ========================= */
 
-function updateExplanation(){
-
-const data =
-forecastData[
-selectedLocation
-];
-
-const content =
-document.getElementById(
-"explainContent"
-);
-
-
-if(!data){
-
-content.textContent =
-"Forecast data unavailable.";
-
-return;
-
-}
-
-
-const futureHours =
-hotspotPeriod === "now"
-? 24
-: Number(hotspotPeriod);
-
-
-const currentAQI =
-getForecastAQI(
-selectedLocation,
-0
-);
-
-
-const futureAQI =
-getForecastAQI(
-selectedLocation,
-futureHours
-);
-
-
-if(
-currentAQI === null ||
-futureAQI === null
-){
-
-content.textContent =
-"Waiting for sufficient forecast data.";
-
-return;
-
-}
-
-
-const change =
-futureAQI -
-currentAQI;
-
-
-const factor =
-contributingFactors[
-selectedLocation
-];
-
-
-const traffic =
-getFactorStatus(
-factor?.traffic
-);
-
-const stubble =
-getFactorStatus(
-factor?.stubble
-);
-
-
-let explanation = "";
-
-
-if(change > 0){
-
-explanation = `
-
-<p>
-
-AQI is expected to increase from
-<b>${currentAQI}</b> to
-<b>${futureAQI}</b>.
-
-</p>
-
-<div class="explain-bar">
-
-<span>
-<b>PM2.5</b>
-<b>High relevance</b>
-</span>
-
-<div class="explain-track">
-
-<div
-class="explain-fill"
-style="width:75%">
-</div>
-
-</div>
-
-</div>
-
-
-<div class="explain-bar">
-
-<span>
-<b>Wind conditions</b>
-<b>Medium relevance</b>
-</span>
-
-<div class="explain-track">
-
-<div
-class="explain-fill"
-style="width:55%">
-</div>
-
-</div>
-
-</div>
-
-<p>
-
-🚗 Traffic indicator:
-<b>${traffic.text}</b>
-
-<br>
-
-🌾 Stubble-burning indicator:
-<b>${stubble.text}</b>
-
-</p>
-
-<p>
-
-Possible explanation: particulate pollution
-and atmospheric conditions may affect pollutant
-dispersion.
-
-</p>
-
-`;
-
-}
-
-else if(change < 0){
-
-explanation = `
-
-<p>
-
-AQI is expected to decrease from
-<b>${currentAQI}</b> to
-<b>${futureAQI}</b>.
-
-</p>
-
-<div class="explain-bar">
-
-<span>
-<b>Pollutant dispersion</b>
-<b>Higher influence</b>
-</span>
-
-<div class="explain-track">
-
-<div
-class="explain-fill"
-style="width:70%">
-</div>
-
-</div>
-
-</div>
-
-<p>
-
-Possible explanation: improved atmospheric
-dispersion may reduce pollutant concentration.
-
-</p>
-
-`;
-
-}
-
-else{
-
-explanation = `
-
-<p>
-
-AQI is expected to remain relatively stable
-around <b>${currentAQI}</b>.
-
-</p>
-
-`;
-
-}
-
-
-content.innerHTML =
-explanation;
+function runSimulation(){
+
+  const traffic =
+    Number(
+      document.getElementById(
+        "trafficSlider"
+      ).value
+    );
+
+  const emission =
+    Number(
+      document.getElementById(
+        "emissionSlider"
+      ).value
+    );
+
+  document.getElementById(
+    "trafficValue"
+  ).textContent =
+    `${traffic}%`;
+
+  document.getElementById(
+    "emissionValue"
+  ).textContent =
+    `${emission}%`;
+
+  if(!currentAQ){
+    return;
+  }
+
+  const base =
+    currentAQ.hourly.european_aqi?.[0];
+
+  if(base == null){
+    return;
+  }
+
+  /*
+    Simple scenario estimate.
+    This is NOT a trained ML model.
+  */
+
+  const estimated =
+    base *
+    (
+      1 +
+      (traffic * 0.002) +
+      (emission * 0.003)
+    );
+
+  document.getElementById(
+    "simulationResult"
+  ).innerHTML =
+
+    `🧪 Current AQI: <b>${Math.round(base)}</b><br>
+     Estimated scenario AQI:
+     <b>${Math.max(
+       0,
+       Math.round(estimated)
+     )}</b><br>
+     <small>
+       Scenario simulation only — not a certified ML prediction.
+     </small>`;
 
 }
 
 
 /* =========================
-   WHAT IF
+   HELPERS
 ========================= */
 
-function updateWhatIfLabels(){
+function setText(id,value){
 
-const pm =
-document.getElementById(
-"pm25Change"
-).value;
-
-
-const wind =
-document.getElementById(
-"windChange"
-).value;
-
-
-document.getElementById(
-"pm25Value"
-).textContent =
-pm + "%";
-
-
-document.getElementById(
-"windValue"
-).textContent =
-wind + "%";
+  document.getElementById(
+    id
+  ).textContent =
+    value;
 
 }
 
 
-function runWhatIfSimulation(){
+function value(array,index){
 
-const data =
-forecastData[
-selectedLocation
-];
+  if(!array || array[index] == null){
+    return "--";
+  }
 
-
-const result =
-document.getElementById(
-"simulationResult"
-);
-
-
-if(
-!data ||
-data.aqi === null
-){
-
-result.innerHTML =
-"Current AQI data unavailable.";
-
-return;
+  return Number(
+    array[index]
+  ).toFixed(2);
 
 }
 
 
-const currentAQI =
-Number(data.aqi);
+function round(value){
+
+  if(value == null){
+    return "--";
+  }
+
+  return Number(
+    value
+  ).toFixed(1);
+
+}
 
 
-const pmChange =
-Number(
-document.getElementById(
-"pm25Change"
-).value
-);
+function formatTime(time){
+
+  if(!time){
+    return "--";
+  }
+
+  const d =
+    new Date(time);
+
+  return d.toLocaleString(
+    "en-IN",
+    {
+      day:"2-digit",
+      month:"2-digit",
+      hour:"2-digit",
+      minute:"2-digit"
+    }
+  );
+
+}
 
 
-const windChange =
-Number(
-document.getElementById(
-"windChange"
-).value
-);
+function getRisk(aqi){
+
+  if(aqi == null){
+    return "N/A";
+  }
+
+  if(aqi <= 50){
+    return "LOW";
+  }
+
+  if(aqi <= 100){
+    return "MODERATE";
+  }
+
+  if(aqi <= 150){
+    return "HIGH";
+  }
+
+  if(aqi <= 200){
+    return "VERY HIGH";
+  }
+
+  return "SEVERE";
+
+}
 
 
-let simulatedAQI =
-currentAQI;
+function escapeHTML(str){
 
-
-simulatedAQI *=
-1 + (pmChange * 0.006);
-
-
-simulatedAQI *=
-1 - (windChange * 0.002);
-
-
-simulatedAQI =
-Math.max(
-0,
-Math.round(
-simulatedAQI
-)
-);
-
-
-const risk =
-getRiskLevel(
-simulatedAQI
-);
-
-
-result.innerHTML = `
-
-<b>
-${locations[selectedLocation].name}
-What-If Result
-</b>
-
-<p>
-
-Current AQI:
-<strong>
-${Math.round(currentAQI)}
-</strong>
-
-</p>
-
-<p>
-
-Simulated AQI:
-<strong>
-${simulatedAQI}
-</strong>
-
-</p>
-
-<p>
-
-Estimated Risk:
-
-<strong
-style="color:${risk.color}">
-
-${risk.text}
-
-</strong>
-
-</p>
-
-<small>
-
-Scenario estimate based on the selected
-PM2.5 and wind changes.
-
-</small>
-
-`;
+  return String(str)
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
 
 }
 
 
 /* =========================
-   LOAD ALL
+   ENTER KEY SEARCH
 ========================= */
 
-async function loadAll(){
+document
+  .getElementById("locationSearch")
+  .addEventListener(
+    "keydown",
+    function(event){
 
-const system =
-document.getElementById(
-"systemStatus"
-);
+      if(event.key === "Enter"){
+        searchLocation();
+      }
 
-system.textContent =
-"UPDATING...";
-
-
-let online = 0;
-
-
-for(
-const key of Object.keys(
-locations
-)
-){
-
-try{
-
-const data =
-await getData(key);
-
-
-forecastData[key] =
-data;
-
-
-updateCard(
-key,
-data
-);
-
-
-updateMapMarker(
-key,
-data
-);
-
-
-checkForChanges(
-key,
-data
-);
-
-
-online++;
-
-
-}catch(error){
-
-console.error(
-key,
-error
-);
-
-}
-
-}
-
-
-updateSummary();
-
-
-document.getElementById(
-"onlineLocations"
-).textContent =
-`${online} / 4`;
-
-
-document.getElementById(
-"lastUpdated"
-).textContent =
-new Date().toLocaleTimeString(
-"en-IN",
-{
-hour:"2-digit",
-minute:"2-digit",
-second:"2-digit"
-}
-);
-
-
-if(
-online === 4
-)
-
-system.textContent =
-"🟢 LIVE";
-
-else if(
-online > 0
-)
-
-system.textContent =
-"🟡 PARTIAL";
-
-else
-
-system.textContent =
-"🔴 OFFLINE";
-
-
-drawGraph();
-
-showHotspot(
-hotspotPeriod
-);
-
-updateRiskPanel();
-
-updateExplanation();
-
-updateContributingFactors();
-
-}
-
-
-/* =========================
-   INITIALIZE
-========================= */
-
-document.addEventListener(
-"DOMContentLoaded",
-()=>{
-
-createMap();
-
-checkNotificationStatus();
-
-loadAll();
-
-
-setTimeout(
-()=>{
-
-if(map)
-map.invalidateSize();
-
-},
-500
-);
-
-});
+    }
+  );
 
 
 /* =========================
@@ -3958,88 +1900,35 @@ map.invalidateSize();
 ========================= */
 
 setInterval(
-loadAll,
-15 * 60 * 1000
+  function(){
+
+    if(
+      selectedLocation.lat !== null &&
+      selectedLocation.lon !== null
+    ){
+
+      loadAllData();
+
+    }
+
+  },
+  15 * 60 * 1000
 );
 
 
 /* =========================
-   RESIZE
+   START
 ========================= */
 
-window.addEventListener(
-"resize",
-()=>{
+function init(){
 
-if(map)
-map.invalidateSize();
-
-drawGraph();
-
-});
-
-
-/* =========================
-   ERROR LOG
-========================= */
-
-window.addEventListener(
-"error",
-event=>{
-
-console.error(
-"Application error:",
-event.error
-);
-
-});
-
-
-/* =========================
-   SERVICE WORKER
-========================= */
-
-if(
-"serviceWorker" in navigator
-){
-
-window.addEventListener(
-"load",
-()=>{
-
-navigator.serviceWorker
-.register(
-"./service-worker.js"
-)
-
-.then(
-registration=>{
-
-console.log(
-"NCR AIR WATCH Service Worker registered:",
-registration.scope
-);
+  initMap();
 
 }
-)
 
-.catch(
-error=>{
-
-console.error(
-"Service Worker registration failed:",
-error
-);
-
-}
-);
-
-});
-
-}
+init();
 
 </script>
 
 </body>
-
     </html>
