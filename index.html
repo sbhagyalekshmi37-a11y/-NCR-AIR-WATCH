@@ -443,6 +443,83 @@ header p{
     margin-top:12px;
 }
 
+/* =========================
+   TRAFFIC + STUBBLE
+========================= */
+
+.factor-section{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+}
+
+.factor-card{
+    background:white;
+    border-radius:16px;
+    padding:18px;
+    box-shadow:0 5px 18px rgba(0,0,0,.08);
+    border-left:6px solid #777;
+}
+
+.factor-card h3{
+    margin:0 0 12px;
+}
+
+.factor-value{
+    font-size:25px;
+    font-weight:bold;
+    margin:8px 0;
+}
+
+.factor-note{
+    font-size:12px;
+    color:#687675;
+}
+
+.factor-bar{
+    height:12px;
+    background:#e1e9e7;
+    border-radius:10px;
+    overflow:hidden;
+    margin:10px 0;
+}
+
+.factor-fill{
+    height:100%;
+    border-radius:10px;
+    transition:width .5s ease;
+}
+
+.combined-risk{
+    margin-top:15px;
+    padding:16px;
+    border-radius:12px;
+    background:#f1f6f5;
+}
+
+/* TRAFFIC TABLE */
+
+.factor-table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:15px;
+    background:white;
+    border-radius:10px;
+    overflow:hidden;
+}
+
+.factor-table th,
+.factor-table td{
+    padding:10px;
+    text-align:left;
+    border-bottom:1px solid #e1e9e7;
+    font-size:13px;
+}
+
+.factor-table th{
+    background:#eef6f4;
+}
+
 footer{
     text-align:center;
     padding:22px;
@@ -496,6 +573,10 @@ footer{
         grid-template-columns:1fr;
     }
 
+    .factor-section{
+        grid-template-columns:1fr;
+    }
+
     #ncrMap{
         height:380px;
     }
@@ -517,7 +598,7 @@ footer{
 <h1>🌍 NCR AIR WATCH</h1>
 
 <p>
-Live Air Quality • Atmospheric Monitoring • 72-Hour Prediction
+Live Air Quality • Traffic • Stubble Burning • Atmospheric Monitoring • 72-Hour Prediction
 </p>
 
 </header>
@@ -680,6 +761,85 @@ Loading...
 </section>
 
 
+<!-- TRAFFIC + STUBBLE BURNING -->
+
+<section class="section">
+
+<div class="section-title">
+🚗🌾 Pollution Contributing Factors
+</div>
+
+<div class="factor-section">
+
+<div class="factor-card" id="trafficFactor">
+
+<h3>🚗 Traffic Level</h3>
+
+<div
+class="factor-value"
+id="trafficValue">
+Loading...
+</div>
+
+<div class="factor-bar">
+
+<div
+class="factor-fill"
+id="trafficFill"
+style="width:0%">
+</div>
+
+</div>
+
+<div
+class="factor-note">
+Traffic indicator • Demo/Indicator mode
+</div>
+
+</div>
+
+
+<div class="factor-card" id="stubbleFactor">
+
+<h3>🌾 Stubble Burning</h3>
+
+<div
+class="factor-value"
+id="stubbleValue">
+Loading...
+</div>
+
+<div class="factor-bar">
+
+<div
+class="factor-fill"
+id="stubbleFill"
+style="width:0%">
+</div>
+
+</div>
+
+<div
+class="factor-note">
+Regional burning indicator • Demo/Indicator mode
+</div>
+
+</div>
+
+</div>
+
+
+<div
+class="combined-risk"
+id="combinedRisk">
+
+Checking pollution contributing factors...
+
+</div>
+
+</section>
+
+
 <!-- ALERTS -->
 
 <section class="section">
@@ -800,50 +960,38 @@ Showing current AQI hotspots
 <div class="legend">
 
 <span>
-<span
-class="legend-dot"
-style="background:#2e9d55">
-</span>
+<span class="legend-dot"
+style="background:#2e9d55"></span>
 Good
 </span>
 
 <span>
-<span
-class="legend-dot"
-style="background:#8bbd3f">
-</span>
+<span class="legend-dot"
+style="background:#8bbd3f"></span>
 Fair
 </span>
 
 <span>
-<span
-class="legend-dot"
-style="background:#e4ad2f">
-</span>
+<span class="legend-dot"
+style="background:#e4ad2f"></span>
 Moderate
 </span>
 
 <span>
-<span
-class="legend-dot"
-style="background:#e17b32">
-</span>
+<span class="legend-dot"
+style="background:#e17b32"></span>
 Poor
 </span>
 
 <span>
-<span
-class="legend-dot"
-style="background:#d84a38">
-</span>
+<span class="legend-dot"
+style="background:#d84a38"></span>
 Very Poor
 </span>
 
 <span>
-<span
-class="legend-dot"
-style="background:#8e2020">
-</span>
+<span class="legend-dot"
+style="background:#8e2020"></span>
 Extremely Poor
 </span>
 
@@ -868,9 +1016,7 @@ Extremely Poor
 
 <span>Average AQI</span>
 
-<strong id="avgAQI">
---
-</strong>
+<strong id="avgAQI">--</strong>
 
 </div>
 
@@ -878,9 +1024,7 @@ Extremely Poor
 
 <span>Highest AQI</span>
 
-<strong id="highAQI">
---
-</strong>
+<strong id="highAQI">--</strong>
 
 </div>
 
@@ -888,9 +1032,7 @@ Extremely Poor
 
 <span>Lowest AQI</span>
 
-<strong id="lowAQI">
---
-</strong>
+<strong id="lowAQI">--</strong>
 
 </div>
 
@@ -1138,8 +1280,7 @@ N/A
 <p class="note">
 
 MAE, RMSE and R² require an actual historical
-dataset and an independent test set. Values are
-intentionally not fabricated in this prototype.
+dataset and an independent test set.
 
 </p>
 
@@ -1242,6 +1383,47 @@ localStorage.getItem(
 "ncrAlertsHistory"
 ) || "[]"
 );
+
+
+/* =========================
+   TRAFFIC + STUBBLE
+========================= */
+
+/*
+   IMPORTANT:
+
+   These are INDICATOR/DEMO values.
+
+   0 = Low
+   1 = Moderate
+   2 = High
+
+   They are NOT direct live measurements.
+*/
+
+const contributingFactors = {
+
+delhi:{
+    traffic:2,
+    stubble:2
+},
+
+gurugram:{
+    traffic:2,
+    stubble:1
+},
+
+noida:{
+    traffic:1,
+    stubble:1
+},
+
+ghaziabad:{
+    traffic:2,
+    stubble:1
+}
+
+};
 
 
 /* =========================
@@ -1508,6 +1690,20 @@ ${data.wind ?? "--"} km/h
 Pressure:
 ${data.pressure ?? "--"} hPa
 
+<br><br>
+
+🚗 Traffic:
+${getFactorStatus(
+contributingFactors[key]?.traffic
+).text}
+
+<br>
+
+🌾 Stubble Burning:
+${getFactorStatus(
+contributingFactors[key]?.stubble
+).text}
+
 </div>
 `
 
@@ -1548,6 +1744,8 @@ const weatherURL =
 `&longitude=${loc.lon}`
 +
 `&current=temperature_2m,relative_humidity_2m,wind_speed_10m,pressure_msl`
++
+`&hourly=wind_speed_10m`
 +
 `&forecast_hours=72`
 +
@@ -1689,6 +1887,276 @@ metrics[6].textContent =
 
 metrics[7].textContent =
 `Pressure: ${data.pressure ?? "--"} hPa`;
+
+}
+
+
+/* =========================
+   FACTOR STATUS
+========================= */
+
+function getFactorStatus(value){
+
+if(value === undefined || value === null){
+
+return {
+text:"Unavailable",
+color:"#777",
+percent:0
+};
+
+}
+
+if(value <= 0){
+
+return {
+text:"Low",
+color:"#35a853",
+percent:25
+};
+
+}
+
+if(value === 1){
+
+return {
+text:"Moderate",
+color:"#e4ad2f",
+percent:55
+};
+
+}
+
+return {
+text:"High",
+color:"#d93025",
+percent:90
+};
+
+}
+
+
+/* =========================
+   UPDATE FACTORS
+========================= */
+
+function updateContributingFactors(){
+
+const factor =
+contributingFactors[
+selectedLocation
+];
+
+if(!factor)
+return;
+
+
+const traffic =
+getFactorStatus(
+factor.traffic
+);
+
+const stubble =
+getFactorStatus(
+factor.stubble
+);
+
+
+const trafficValue =
+document.getElementById(
+"trafficValue"
+);
+
+const trafficFill =
+document.getElementById(
+"trafficFill"
+);
+
+const stubbleValue =
+document.getElementById(
+"stubbleValue"
+);
+
+const stubbleFill =
+document.getElementById(
+"stubbleFill"
+);
+
+
+trafficValue.textContent =
+traffic.text;
+
+trafficValue.style.color =
+traffic.color;
+
+trafficFill.style.width =
+traffic.percent + "%";
+
+trafficFill.style.background =
+traffic.color;
+
+
+stubbleValue.textContent =
+stubble.text;
+
+stubbleValue.style.color =
+stubble.color;
+
+stubbleFill.style.width =
+stubble.percent + "%";
+
+stubbleFill.style.background =
+stubble.color;
+
+
+updateCombinedRisk();
+
+}
+
+
+/* =========================
+   COMBINED RISK
+========================= */
+
+function updateCombinedRisk(){
+
+const factor =
+contributingFactors[
+selectedLocation
+];
+
+const data =
+forecastData[
+selectedLocation
+];
+
+const box =
+document.getElementById(
+"combinedRisk"
+);
+
+if(!factor || !box)
+return;
+
+
+const traffic =
+getFactorStatus(
+factor.traffic
+);
+
+const stubble =
+getFactorStatus(
+factor.stubble
+);
+
+
+const pm25 =
+Number(
+data?.pm25
+);
+
+
+let riskScore =
+factor.traffic +
+factor.stubble;
+
+
+if(
+Number.isFinite(pm25)
+){
+
+if(pm25 >= 90)
+riskScore += 2;
+
+else if(pm25 >= 50)
+riskScore += 1;
+
+}
+
+
+let riskText;
+let riskColor;
+
+
+if(riskScore >= 4){
+
+riskText =
+"🔴 HIGH POLLUTION RISK";
+
+riskColor =
+"#d93025";
+
+}
+
+else if(riskScore >= 2){
+
+riskText =
+"🟡 MODERATE POLLUTION RISK";
+
+riskColor =
+"#e4ad2f";
+
+}
+
+else{
+
+riskText =
+"🟢 LOW POLLUTION RISK";
+
+riskColor =
+"#35a853";
+
+}
+
+
+box.style.borderLeft =
+"6px solid " + riskColor;
+
+
+box.innerHTML = `
+
+<div style="
+color:${riskColor};
+font-size:18px;
+margin-bottom:8px;
+font-weight:bold;
+">
+
+${riskText}
+
+</div>
+
+🚗 Traffic:
+<b>${traffic.text}</b>
+
+&nbsp;&nbsp; | &nbsp;&nbsp;
+
+🌾 Stubble Burning:
+<b>${stubble.text}</b>
+
+<br><br>
+
+🌫️ Current PM2.5:
+<b>
+${Number.isFinite(pm25)
+? pm25.toFixed(1) + " µg/m³"
+: "--"}
+</b>
+
+<br><br>
+
+<span style="
+font-size:12px;
+color:#687675;
+">
+
+Traffic and stubble-burning values are
+indicator/demo values in this prototype.
+They are not direct live measurements.
+
+</span>
+
+`;
 
 }
 
@@ -2207,6 +2675,8 @@ document
 drawGraph();
 
 updateExplanation();
+
+updateContributingFactors();
 
 }
 
@@ -2770,6 +3240,21 @@ ${aqi ?? "--"}
 
 Status:
 ${getAQIStatus(aqi)}
+
+<br><br>
+
+🚗 Traffic:
+${getFactorStatus(
+contributingFactors[key]?.traffic
+).text}
+
+<br>
+
+🌾 Stubble Burning:
+${getFactorStatus(
+contributingFactors[key]?.stubble
+).text}
+
 `
 
 );
@@ -2886,6 +3371,17 @@ card.style.borderLeftColor =
 risk.color;
 
 
+const traffic =
+getFactorStatus(
+contributingFactors[key]?.traffic
+);
+
+const stubble =
+getFactorStatus(
+contributingFactors[key]?.stubble
+);
+
+
 card.innerHTML = `
 
 <b>
@@ -2904,6 +3400,18 @@ font-weight:bold;
 
 ${risk.text}
 
+</span>
+
+<br><br>
+
+<span style="font-size:12px">
+🚗 Traffic: ${traffic.text}
+</span>
+
+<br>
+
+<span style="font-size:12px">
+🌾 Stubble: ${stubble.text}
 </span>
 
 `;
@@ -2981,6 +3489,23 @@ futureAQI -
 currentAQI;
 
 
+const factor =
+contributingFactors[
+selectedLocation
+];
+
+
+const traffic =
+getFactorStatus(
+factor?.traffic
+);
+
+const stubble =
+getFactorStatus(
+factor?.stubble
+);
+
+
 let explanation = "";
 
 
@@ -3033,12 +3558,23 @@ style="width:55%">
 
 </div>
 
+<p>
+
+🚗 Traffic indicator:
+<b>${traffic.text}</b>
+
+<br>
+
+🌾 Stubble-burning indicator:
+<b>${stubble.text}</b>
+
+</p>
 
 <p>
 
-Possible explanation: increased particulate
-pollution together with atmospheric conditions
-that may reduce pollutant dispersion.
+Possible explanation: particulate pollution
+and atmospheric conditions may affect pollutant
+dispersion.
 
 </p>
 
@@ -3187,12 +3723,6 @@ document.getElementById(
 ).value
 );
 
-
-/*
-Prototype scenario estimator.
-
-This is NOT a trained ML model.
-*/
 
 let simulatedAQI =
 currentAQI;
@@ -3389,6 +3919,8 @@ hotspotPeriod
 updateRiskPanel();
 
 updateExplanation();
+
+updateContributingFactors();
 
 }
 
